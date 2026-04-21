@@ -1,0 +1,11 @@
+# Personal / system files
+memory/
+.openclaw/
+USER.md
+SOUL.md
+TOOLS.md
+HEARTBEAT.md
+
+# Node / Next.js (covered by muncitorii-web/.gitignore but kept here too)
+node_modules/
+.next/
