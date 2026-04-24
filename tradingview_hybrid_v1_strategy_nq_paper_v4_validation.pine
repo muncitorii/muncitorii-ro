@@ -1,0 +1,108 @@
+//@version=6
+strategy("Hybrid Bot V4 - NQ Validation Strategy",
+     shorttitle              = "HBv4-NQ",
+     overlay                 = true,
+     initial_capital         = 10000,
+     default_qty_type        = strategy.fixed,
+     default_qty_value       = 1,
+     commission_type         = strategy.commission.cash_per_contract,
+     commission_value        = 2.5,
+     pyramiding              = 0,
+     calc_on_every_tick      = true,
+     process_orders_on_close = true)
+
+var string GRP_SESS = "Sessions"
+sessLondon = input.session("0300-0600", "London", group=GRP_SESS)
+sessNY     = input.session("0930-1600", "New York", group=GRP_SESS)
+tz         = input.string("America/New_York", "Timezone", group=GRP_SESS)
+
+var string GRP_ENTRY = "Entry"
+lookbackBars   = input.int(5, "Breakout lookback bars", minval=2, group=GRP_ENTRY)
+maxTradesPerDay = input.int(4, "Max trades per day", minval=1, maxval=20, group=GRP_ENTRY)
+allowLong      = input.bool(true, "Allow long", group=GRP_ENTRY)
+allowShort     = input.bool(true, "Allow short", group=GRP_ENTRY)
+
+var string GRP_RISK = "Risk"
+atrLen         = input.int(14, "ATR", minval=5, group=GRP_RISK)
+stopAtrMult    = input.float(0.80, "Stop ATR multiple", minval=0.1, step=0.05, group=GRP_RISK)
+targetAtrMult  = input.float(1.20, "Target ATR multiple", minval=0.2, step=0.05, group=GRP_RISK)
+riskPerTradePct = input.float(0.50, "Risk per trade (% equity)", minval=0.05, step=0.05, group=GRP_RISK)
+closeEndSession = input.bool(true, "Close at end of session", group=GRP_RISK)
+
+var string GRP_UI = "UI"
+showDashboard = input.bool(true, "Show dashboard", group=GRP_UI)
+showTradePlan = input.bool(true, "Plot stop/target", group=GRP_UI)
+
+inLondon = not na(time(timeframe.period, sessLondon, tz))
+inNY     = not na(time(timeframe.period, sessNY, tz))
+tradeWindow = inLondon or inNY
+sessionEndBar = (inLondon[1] and not inLondon) or (inNY[1] and not inNY)
+
+newDay = dayofmonth != dayofmonth[1] or month != month[1]
+var int tradesToday = 0
+if newDay
+    tradesToday := 0
+
+atr = ta.atr(atrLen)
+highestBreak = ta.highest(high[1], lookbackBars)
+lowestBreak  = ta.lowest(low[1], lookbackBars)
+
+longSignal = tradeWindow and allowLong and close > highestBreak
+shortSignal = tradeWindow and allowShort and close < lowestBreak
+canTrade = strategy.position_size == 0 and tradesToday < maxTradesPerDay
+
+longEntry = canTrade and longSignal
+shortEntry = canTrade and shortSignal
+
+longStop = close - atr * stopAtrMult
+shortStop = close + atr * stopAtrMult
+longTarget = close + atr * targetAtrMult
+shortTarget = close - atr * targetAtrMult
+
+longRisk = close - longStop
+shortRisk = shortStop - close
+riskCash = strategy.equity * riskPerTradePct / 100.0
+qtyLong = longRisk > 0 ? riskCash / longRisk : 0.0
+qtyShort = shortRisk > 0 ? riskCash / shortRisk : 0.0
+
+var float activeStop = na
+var float activeTarget = na
+
+if longEntry
+    strategy.entry("L", strategy.long, qty=qtyLong, comment="validation long")
+    strategy.exit("L-x", from_entry="L", stop=longStop, limit=longTarget)
+    activeStop := longStop
+    activeTarget := longTarget
+    tradesToday += 1
+
+if shortEntry
+    strategy.entry("S", strategy.short, qty=qtyShort, comment="validation short")
+    strategy.exit("S-x", from_entry="S", stop=shortStop, limit=shortTarget)
+    activeStop := shortStop
+    activeTarget := shortTarget
+    tradesToday += 1
+
+if closeEndSession and strategy.position_size != 0 and sessionEndBar
+    strategy.close_all(comment="session close")
+
+if strategy.position_size == 0
+    activeStop := na
+    activeTarget := na
+
+plot(highestBreak, "Break High", color.new(color.green, 60), style=plot.style_linebr)
+plot(lowestBreak, "Break Low", color.new(color.red, 60), style=plot.style_linebr)
+plot(showTradePlan and strategy.position_size != 0 ? activeStop : na, "Stop", color.new(color.red, 0), style=plot.style_linebr, linewidth=2)
+plot(showTradePlan and strategy.position_size != 0 ? activeTarget : na, "Target", color.new(color.green, 0), style=plot.style_linebr, linewidth=2)
+
+f_row(t, row, k, v, c) =>
+    table.cell(t, 0, row, k, text_color=color.white, bgcolor=color.new(color.black, 20))
+    table.cell(t, 1, row, v, text_color=color.white, bgcolor=c)
+
+var table dash = table.new(position.top_right, 2, 6, border_width=1)
+if barstate.islast and showDashboard
+    f_row(dash, 0, "session", inLondon ? "london" : inNY ? "new york" : "closed", color.new(color.blue, 40))
+    f_row(dash, 1, "long signal", longSignal ? "yes" : "no", longSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 2, "short signal", shortSignal ? "yes" : "no", shortSignal ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 3, "trades today", str.tostring(tradesToday), color.new(color.gray, 40))
+    f_row(dash, 4, "atr", str.tostring(atr, format.mintick), color.new(color.gray, 40))
+    f_row(dash, 5, "window", tradeWindow ? "open" : "closed", tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
