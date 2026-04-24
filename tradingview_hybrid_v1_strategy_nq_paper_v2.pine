@@ -181,17 +181,6 @@ f_jint(k, v) => '"' + k + '":' + str.tostring(v)
 f_jnum(k, v) => '"' + k + '":' + (na(v) ? "null" : str.tostring(v, format.mintick))
 f_jflt(k, v, fmt) => '"' + k + '":' + (na(v) ? "null" : str.tostring(v, fmt))
 f_session_label() => inPre ? "pre-open" : inOpen ? "open" : inA ? "primary" : inB ? "secondary" : overnightWindow ? "overnight" : "closed"
-f_base_json(eventType) => '{' +
-    f_jstr("version", "hbv2.0") + ',' +
-    f_jstr("mode", "paper") + ',' +
-    f_jstr("event_type", eventType) + ',' +
-    f_jstr("ticker", syminfo.tickerid) + ',' +
-    f_jstr("interval", timeframe.period) + ',' +
-    f_jint("time", time) + ',' +
-    f_jnum("bar_close", close) + ',' +
-    f_jstr("session", f_session_label()) + ',' +
-    f_jstr("bias", bias) + ',' +
-    f_jstr("no_trade_reason", noTradeReason == "" ? "-" : noTradeReason)
 
 if entryLong
     strategy.entry("L", strategy.long, qty=qtyLong, comment="nq-long")
@@ -202,15 +191,7 @@ if entryLong
     initialRisk := riskLong
     activeDir := "long"
     tradeTakenThisSession := true
-    body = f_base_json("entry_long") + ',' +
-        f_jstr("setup_type", "ORB-retest") + ',' +
-        f_jnum("trigger_price", close) + ',' +
-        f_jnum("stop", stopLong) + ',' +
-        f_jnum("target", targetLong) + ',' +
-        f_jflt("qty", qtyLong, "#.####") + ',' +
-        f_jflt("risk_atrs", riskLongATRs, "#.##") + ',' +
-        f_jflt("planned_rr", rewardToRisk, "#.##") +
-        '}'
+    body = '{"version":"hbv2.0","mode":"paper","event_type":"entry_long"}'
     alert(body, alert.freq_once_per_bar_close)
 
 if entryShort
@@ -222,15 +203,7 @@ if entryShort
     initialRisk := riskShort
     activeDir := "short"
     tradeTakenThisSession := true
-    body = f_base_json("entry_short") + ',' +
-        f_jstr("setup_type", "ORB-retest") + ',' +
-        f_jnum("trigger_price", close) + ',' +
-        f_jnum("stop", stopShort) + ',' +
-        f_jnum("target", targetShort) + ',' +
-        f_jflt("qty", qtyShort, "#.####") + ',' +
-        f_jflt("risk_atrs", riskShortATRs, "#.##") + ',' +
-        f_jflt("planned_rr", rewardToRisk, "#.##") +
-        '}'
+    body = '{"version":"hbv2.0","mode":"paper","event_type":"entry_short"}'
     alert(body, alert.freq_once_per_bar_close)
 
 if strategy.position_size > 0 and not na(activeEntry) and not na(initialRisk) and initialRisk > 0
@@ -253,10 +226,7 @@ justExited = (wasLong or wasShort) and nowFlat
 if useTimeStop and sessionEndBar and strategy.position_size != 0
     strategy.close_all(comment="time stop")
     tsSide = strategy.position_size > 0 ? "long" : "short"
-    tsBody = f_base_json("exit_time") + ',' +
-        f_jstr("side", tsSide) + ',' +
-        f_jstr("exit_reason", "time") +
-        '}'
+    tsBody = '{"version":"hbv2.0","mode":"paper","event_type":"exit_time"}'
     alert(tsBody, alert.freq_once_per_bar_close)
 
 if justExited
@@ -272,10 +242,7 @@ if justExited
         else if not na(activeTarget) and low <= activeTarget
             exitReason := "target"
     exitSide = wasLong ? "long" : "short"
-    exitBody = f_base_json("exit_" + exitReason) + ',' +
-        f_jstr("side", exitSide) + ',' +
-        f_jstr("exit_reason", exitReason) +
-        '}'
+    exitBody = '{"version":"hbv2.0","mode":"paper","event_type":"exit_generic"}'
     alert(exitBody, alert.freq_once_per_bar_close)
 
 if nowFlat
@@ -287,18 +254,7 @@ if nowFlat
 
 if emitHeartbeat
     posLabel = strategy.position_size > 0 ? "long" : strategy.position_size < 0 ? "short" : "flat"
-    hbBody = f_base_json("state_snapshot") + ',' +
-        f_jstr("entry_allowed", not noTrade and tradeWindow ? "yes" : "no") + ',' +
-        f_jstr("position", posLabel) + ',' +
-        f_jnum("pdH", pdH) + ',' +
-        f_jnum("pdL", pdL) + ',' +
-        f_jnum("onH", onH) + ',' +
-        f_jnum("onL", onL) + ',' +
-        f_jnum("orH", orH) + ',' +
-        f_jnum("orL", orL) + ',' +
-        f_jflt("atrRatio", atrRatio, "#.##") + ',' +
-        f_jflt("orbRangeATRs", orbRangeATRs, "#.##") +
-        '}'
+    hbBody = '{"version":"hbv2.0","mode":"paper","event_type":"state_snapshot"}'
     alert(hbBody, alert.freq_once_per_bar_close)
 
 plot(showPD ? pdH : na, "Prior Day High", color.new(color.teal, 0), style=plot.style_linebr, linewidth=1)
