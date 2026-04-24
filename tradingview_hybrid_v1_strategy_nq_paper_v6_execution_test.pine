@@ -1,0 +1,56 @@
+//@version=6
+strategy("Hybrid Bot V6 - Execution Test",
+     shorttitle              = "HBv6-Exec",
+     overlay                 = true,
+     initial_capital         = 10000,
+     default_qty_type        = strategy.fixed,
+     default_qty_value       = 1,
+     pyramiding              = 0,
+     calc_on_every_tick      = true,
+     process_orders_on_close = true)
+
+allowLong = input.bool(true, "Allow long")
+allowShort = input.bool(true, "Allow short")
+useTimeExit = input.bool(true, "Use time exit")
+barsToHold = input.int(3, "Bars to hold", minval=1)
+
+flat = strategy.position_size == 0
+longSignal = allowLong and close > close[1]
+shortSignal = allowShort and close < close[1]
+
+var int entryBarIndex = na
+var bool lastLongEntry = false
+var bool lastShortEntry = false
+lastLongEntry := false
+lastShortEntry := false
+
+if flat and longSignal
+    strategy.entry("L", strategy.long, qty=1, comment="exec long")
+    entryBarIndex := bar_index
+    lastLongEntry := true
+
+if flat and shortSignal
+    strategy.entry("S", strategy.short, qty=1, comment="exec short")
+    entryBarIndex := bar_index
+    lastShortEntry := true
+
+if useTimeExit and strategy.position_size != 0 and not na(entryBarIndex)
+    if bar_index - entryBarIndex >= barsToHold
+        strategy.close_all(comment="time exit")
+
+if strategy.position_size == 0
+    entryBarIndex := na
+
+f_row(t, row, k, v, c) =>
+    table.cell(t, 0, row, k, text_color=color.white, bgcolor=color.new(color.black, 20))
+    table.cell(t, 1, row, v, text_color=color.white, bgcolor=c)
+
+var table dash = table.new(position.top_right, 2, 7, border_width=1)
+if barstate.islast
+    f_row(dash, 0, "flat", flat ? "yes" : "no", flat ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 1, "long signal", longSignal ? "yes" : "no", longSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 2, "short signal", shortSignal ? "yes" : "no", shortSignal ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 3, "entry long", lastLongEntry ? "sent" : "-", lastLongEntry ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 4, "entry short", lastShortEntry ? "sent" : "-", lastShortEntry ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 5, "position", strategy.position_size > 0 ? "long" : strategy.position_size < 0 ? "short" : "flat", strategy.position_size == 0 ? color.new(color.gray, 40) : color.new(color.blue, 30))
+    f_row(dash, 6, "bars held", not na(entryBarIndex) ? str.tostring(bar_index - entryBarIndex) : "-", color.new(color.gray, 40))
