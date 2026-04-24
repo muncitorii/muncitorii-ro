@@ -55,7 +55,7 @@ lowestBreak  = ta.lowest(low[1], lookbackBars)
 
 longSignal = tradeWindow and allowLong and close > highestBreak
 shortSignal = tradeWindow and allowShort and close < lowestBreak
-canTrade = strategy.position_size == 0 and tradesToday < maxTradesPerDay
+canTrade = true
 
 longEntry = canTrade and longSignal
 shortEntry = canTrade and shortSignal
