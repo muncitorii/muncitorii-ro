@@ -40,8 +40,13 @@ sessionEndBar = (inLondon[1] and not inLondon) or (inNY[1] and not inNY)
 
 newDay = dayofmonth != dayofmonth[1] or month != month[1]
 var int tradesToday = 0
+var bool entryAttemptLong = false
+var bool entryAttemptShort = false
 if newDay
     tradesToday := 0
+
+entryAttemptLong := false
+entryAttemptShort := false
 
 atr = ta.atr(atrLen)
 highestBreak = ta.highest(high[1], lookbackBars)
@@ -69,6 +74,7 @@ var float activeStop = na
 var float activeTarget = na
 
 if longEntry
+    entryAttemptLong := true
     strategy.entry("L", strategy.long, qty=qtyLong, comment="validation long")
     strategy.exit("L-x", from_entry="L", stop=longStop, limit=longTarget)
     activeStop := longStop
@@ -76,6 +82,7 @@ if longEntry
     tradesToday += 1
 
 if shortEntry
+    entryAttemptShort := true
     strategy.entry("S", strategy.short, qty=qtyShort, comment="validation short")
     strategy.exit("S-x", from_entry="S", stop=shortStop, limit=shortTarget)
     activeStop := shortStop
@@ -98,11 +105,14 @@ f_row(t, row, k, v, c) =>
     table.cell(t, 0, row, k, text_color=color.white, bgcolor=color.new(color.black, 20))
     table.cell(t, 1, row, v, text_color=color.white, bgcolor=c)
 
-var table dash = table.new(position.top_right, 2, 6, border_width=1)
+var table dash = table.new(position.top_right, 2, 9, border_width=1)
 if barstate.islast and showDashboard
     f_row(dash, 0, "session", inLondon ? "london" : inNY ? "new york" : "closed", color.new(color.blue, 40))
-    f_row(dash, 1, "long signal", longSignal ? "yes" : "no", longSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
-    f_row(dash, 2, "short signal", shortSignal ? "yes" : "no", shortSignal ? color.new(color.red, 30) : color.new(color.gray, 40))
-    f_row(dash, 3, "trades today", str.tostring(tradesToday), color.new(color.gray, 40))
-    f_row(dash, 4, "atr", str.tostring(atr, format.mintick), color.new(color.gray, 40))
-    f_row(dash, 5, "window", tradeWindow ? "open" : "closed", tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 1, "window", tradeWindow ? "open" : "closed", tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 2, "can trade", canTrade ? "yes" : "no", canTrade ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 3, "long signal", longSignal ? "yes" : "no", longSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 4, "short signal", shortSignal ? "yes" : "no", shortSignal ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 5, "entry long", entryAttemptLong ? "sent" : "-", entryAttemptLong ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 6, "entry short", entryAttemptShort ? "sent" : "-", entryAttemptShort ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 7, "trades today", str.tostring(tradesToday), color.new(color.gray, 40))
+    f_row(dash, 8, "atr", str.tostring(atr, format.mintick), color.new(color.gray, 40))
