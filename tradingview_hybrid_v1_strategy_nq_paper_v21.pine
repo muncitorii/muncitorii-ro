@@ -1,0 +1,215 @@
+//@version=6
+strategy("Hybrid Bot V2.1 - NQ Paper Strategy",
+     shorttitle              = "HBv2.1-NQ",
+     overlay                 = true,
+     initial_capital         = 10000,
+     default_qty_type        = strategy.fixed,
+     default_qty_value       = 1,
+     commission_type         = strategy.commission.cash_per_contract,
+     commission_value        = 2.5,
+     pyramiding              = 0,
+     calc_on_every_tick      = true,
+     process_orders_on_close = true,
+     max_labels_count        = 100,
+     max_lines_count         = 50)
+
+var string GRP_SESS = "Sessions (New York time)"
+sessPre  = input.session("0800-0930", "Pre-open window", group=GRP_SESS)
+sessOpen = input.session("0930-0945", "Opening range window", group=GRP_SESS)
+sessA    = input.session("0945-1130", "Primary trade window", group=GRP_SESS)
+sessB    = input.session("1130-1330", "Secondary trade window", group=GRP_SESS)
+tz       = input.string("America/New_York", "Timezone", group=GRP_SESS)
+
+var string GRP_FILTER = "Filters"
+emaFastLen      = input.int(20, "EMA fast", minval=5, group=GRP_FILTER)
+emaSlowLen      = input.int(50, "EMA slow", minval=10, group=GRP_FILTER)
+atrLen          = input.int(14, "ATR length", minval=5, group=GRP_FILTER)
+atrBaseLen      = input.int(20, "ATR baseline", minval=10, group=GRP_FILTER)
+minAtrRatio     = input.float(0.70, "Minimum ATR ratio", step=0.05, group=GRP_FILTER)
+maxAtrRatio     = input.float(2.20, "Maximum ATR ratio", step=0.05, group=GRP_FILTER)
+maxDistanceATRs = input.float(1.20, "Max distance from EMA fast (ATRs)", step=0.05, group=GRP_FILTER)
+
+var string GRP_RISK = "Risk"
+riskPerTradePct = input.float(0.50, "Risk per trade (% equity)", minval=0.05, step=0.05, group=GRP_RISK)
+rewardToRisk    = input.float(1.80, "Reward to risk", minval=0.5, step=0.1, group=GRP_RISK)
+stopBufferATRs  = input.float(0.20, "Stop buffer (ATRs)", minval=0.0, step=0.05, group=GRP_RISK)
+minRiskATRs     = input.float(0.25, "Minimum risk (ATRs)", minval=0.1, step=0.05, group=GRP_RISK)
+maxRiskATRs     = input.float(2.00, "Maximum risk (ATRs)", minval=0.5, step=0.05, group=GRP_RISK)
+breakevenAtR    = input.float(1.00, "Breakeven at R", minval=0.5, step=0.25, group=GRP_RISK)
+useTimeStop     = input.bool(true, "Close all at end of session B", group=GRP_RISK)
+
+var string GRP_UI = "UI"
+showDashboard = input.bool(true, "Show dashboard", group=GRP_UI)
+showTradePlan = input.bool(true, "Plot stop/target", group=GRP_UI)
+shadeNoTrade  = input.bool(true, "Shade no-trade", group=GRP_UI)
+
+inPre  = not na(time(timeframe.period, sessPre, tz))
+inOpen = not na(time(timeframe.period, sessOpen, tz))
+inA    = not na(time(timeframe.period, sessA, tz))
+inB    = not na(time(timeframe.period, sessB, tz))
+tradeWindow = inA or inB
+sessionOpenBar = inOpen and not inOpen[1]
+sessionEndBar = inB[1] and not inB
+
+overnightWindow = not na(time(timeframe.period, "1800-0930:1234567", tz))
+overnightStart = overnightWindow and not overnightWindow[1]
+[pdH, pdL] = request.security(syminfo.tickerid, "D", [high[1], low[1]], lookahead=barmerge.lookahead_on)
+
+var float onH = na
+var float onL = na
+if overnightStart
+    onH := high
+    onL := low
+else if overnightWindow
+    onH := math.max(nz(onH, high), high)
+    onL := math.min(nz(onL, low), low)
+
+var float orH = na
+var float orL = na
+if sessionOpenBar
+    orH := high
+    orL := low
+else if inOpen
+    orH := math.max(nz(orH, high), high)
+    orL := math.min(nz(orL, low), low)
+
+emaFast = ta.ema(close, emaFastLen)
+emaSlow = ta.ema(close, emaSlowLen)
+atrNow  = ta.atr(atrLen)
+atrBase = ta.sma(atrNow, atrBaseLen)
+atrRatio = atrBase > 0 ? atrNow / atrBase : 1.0
+
+trendUp = emaFast > emaSlow and emaFast > emaFast[1]
+trendDown = emaFast < emaSlow and emaFast < emaFast[1]
+
+pdMid = not na(pdH) and not na(pdL) ? (pdH + pdL) / 2 : na
+biasLong = trendUp and (na(pdMid) or close > pdMid)
+biasShort = trendDown and (na(pdMid) or close < pdMid)
+bias = biasLong ? "long" : biasShort ? "short" : "neutral"
+
+volOk = atrRatio >= minAtrRatio and atrRatio <= maxAtrRatio
+distanceFromEma = atrNow > 0 ? math.abs(close - emaFast) / atrNow : 0.0
+notTooExtended = distanceFromEma <= maxDistanceATRs
+
+breakAboveOR = not na(orH) and close > orH and close[1] <= orH
+breakBelowOR = not na(orL) and close < orL and close[1] >= orL
+continuationLong = close > high[1] and low >= emaFast
+continuationShort = close < low[1] and high <= emaFast
+
+var bool tradeTakenThisSession = false
+if sessionOpenBar
+    tradeTakenThisSession := false
+
+noTrade = false
+noTradeReason = ""
+if not (inPre or inOpen or tradeWindow)
+    noTrade := true
+    noTradeReason := "outside plan"
+if bias == "neutral" and noTradeReason == ""
+    noTrade := true
+    noTradeReason := "neutral bias"
+if not volOk and noTradeReason == ""
+    noTrade := true
+    noTradeReason := atrRatio < minAtrRatio ? "vol too low" : "vol too high"
+if not notTooExtended and noTradeReason == ""
+    noTrade := true
+    noTradeReason := "too extended"
+if tradeTakenThisSession and noTradeReason == ""
+    noTrade := true
+    noTradeReason := "trade already taken"
+
+flat = strategy.position_size == 0
+entryLong = tradeWindow and flat and not noTrade and bias == "long" and (breakAboveOR or continuationLong)
+entryShort = tradeWindow and flat and not noTrade and bias == "short" and (breakBelowOR or continuationShort)
+
+swingLow = ta.lowest(low, 3)
+swingHigh = ta.highest(high, 3)
+stopLong = swingLow - atrNow * stopBufferATRs
+stopShort = swingHigh + atrNow * stopBufferATRs
+riskLong = close - stopLong
+riskShort = stopShort - close
+riskLongATRs = atrNow > 0 ? riskLong / atrNow : na
+riskShortATRs = atrNow > 0 ? riskShort / atrNow : na
+riskLongOk = not na(riskLongATRs) and riskLongATRs >= minRiskATRs and riskLongATRs <= maxRiskATRs
+riskShortOk = not na(riskShortATRs) and riskShortATRs >= minRiskATRs and riskShortATRs <= maxRiskATRs
+
+entryLong := entryLong and riskLongOk
+entryShort := entryShort and riskShortOk
+
+riskCash = strategy.equity * riskPerTradePct / 100.0
+qtyLong = riskLong > 0 ? riskCash / riskLong : 0.0
+qtyShort = riskShort > 0 ? riskCash / riskShort : 0.0
+targetLong = close + riskLong * rewardToRisk
+targetShort = close - riskShort * rewardToRisk
+
+var float activeStop = na
+var float activeTarget = na
+var float activeEntry = na
+var float initialRisk = na
+
+if entryLong
+    strategy.entry("L", strategy.long, qty=qtyLong, comment="long")
+    strategy.exit("L-x", from_entry="L", stop=stopLong, limit=targetLong)
+    activeStop := stopLong
+    activeTarget := targetLong
+    activeEntry := close
+    initialRisk := riskLong
+    tradeTakenThisSession := true
+
+if entryShort
+    strategy.entry("S", strategy.short, qty=qtyShort, comment="short")
+    strategy.exit("S-x", from_entry="S", stop=stopShort, limit=targetShort)
+    activeStop := stopShort
+    activeTarget := targetShort
+    activeEntry := close
+    initialRisk := riskShort
+    tradeTakenThisSession := true
+
+if strategy.position_size > 0 and not na(activeEntry) and not na(initialRisk) and initialRisk > 0
+    openR = (close - activeEntry) / initialRisk
+    if openR >= breakevenAtR and activeStop < activeEntry
+        activeStop := activeEntry
+        strategy.exit("L-x", from_entry="L", stop=activeStop, limit=activeTarget)
+
+if strategy.position_size < 0 and not na(activeEntry) and not na(initialRisk) and initialRisk > 0
+    openR = (activeEntry - close) / initialRisk
+    if openR >= breakevenAtR and activeStop > activeEntry
+        activeStop := activeEntry
+        strategy.exit("S-x", from_entry="S", stop=activeStop, limit=activeTarget)
+
+if useTimeStop and sessionEndBar and strategy.position_size != 0
+    strategy.close_all(comment="time stop")
+
+if strategy.position_size == 0
+    activeStop := na
+    activeTarget := na
+    activeEntry := na
+    initialRisk := na
+
+plot(pdH, "PDH", color.new(color.teal, 0), style=plot.style_linebr)
+plot(pdL, "PDL", color.new(color.teal, 0), style=plot.style_linebr)
+plot(onH, "ONH", color.new(color.orange, 0), style=plot.style_linebr)
+plot(onL, "ONL", color.new(color.orange, 0), style=plot.style_linebr)
+plot(orH, "ORH", color.new(color.fuchsia, 0), style=plot.style_linebr, linewidth=2)
+plot(orL, "ORL", color.new(color.fuchsia, 0), style=plot.style_linebr, linewidth=2)
+plot(emaFast, "EMA Fast", color.new(color.green, 0))
+plot(emaSlow, "EMA Slow", color.new(color.blue, 0))
+plot(showTradePlan and strategy.position_size != 0 ? activeStop : na, "Active Stop", color.new(color.red, 0), style=plot.style_linebr, linewidth=2)
+plot(showTradePlan and strategy.position_size != 0 ? activeTarget : na, "Active Target", color.new(color.green, 0), style=plot.style_linebr, linewidth=2)
+
+bgcolor(shadeNoTrade and noTrade and tradeWindow ? color.new(color.red, 92) : na)
+
+f_row(t, row, k, v, c) =>
+    table.cell(t, 0, row, k, text_color=color.white, bgcolor=color.new(color.black, 20))
+    table.cell(t, 1, row, v, text_color=color.white, bgcolor=c)
+
+var table dash = table.new(position.top_right, 2, 8, border_width=1)
+if barstate.islast and showDashboard
+    f_row(dash, 0, "session", inOpen ? "open" : inA ? "primary" : inB ? "secondary" : overnightWindow ? "overnight" : "closed", color.new(color.blue, 40))
+    f_row(dash, 1, "bias", bias, bias == "long" ? color.new(color.green, 30) : bias == "short" ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 2, "entry allowed", not noTrade and tradeWindow ? "yes" : "no", not noTrade and tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 3, "no-trade reason", noTradeReason == "" ? "-" : noTradeReason, color.new(color.gray, 40))
+    f_row(dash, 4, "atr ratio", str.tostring(atrRatio, "#.##"), color.new(color.gray, 40))
+    f_row(dash, 5, "dist EMA", str.tostring(distanceFromEma, "#.##"), color.new(color.gray, 40))
+    f_row(dash, 6, "risk long", str.tostring(riskLongATRs, "#.##"), color.new(color.gray, 40))
+    f_row(dash, 7, "risk short", str.tostring(riskShortATRs, "#.##"), color.new(color.gray, 40))
