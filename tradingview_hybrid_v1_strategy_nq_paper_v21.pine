@@ -14,11 +14,12 @@ strategy("Hybrid Bot V2.1 - NQ Paper Strategy",
      max_lines_count         = 50)
 
 var string GRP_SESS = "Sessions (New York time)"
-sessPre  = input.session("0800-0930", "Pre-open window", group=GRP_SESS)
-sessOpen = input.session("0930-0945", "Opening range window", group=GRP_SESS)
-sessA    = input.session("0945-1130", "Primary trade window", group=GRP_SESS)
-sessB    = input.session("1130-1330", "Secondary trade window", group=GRP_SESS)
-tz       = input.string("America/New_York", "Timezone", group=GRP_SESS)
+sessLondon = input.session("0300-0600", "London window", group=GRP_SESS)
+sessPre    = input.session("0800-0930", "Pre-open window", group=GRP_SESS)
+sessOpen   = input.session("0930-0945", "Opening range window", group=GRP_SESS)
+sessA      = input.session("0945-1130", "Primary trade window", group=GRP_SESS)
+sessB      = input.session("1130-1330", "Secondary trade window", group=GRP_SESS)
+tz         = input.string("America/New_York", "Timezone", group=GRP_SESS)
 
 var string GRP_FILTER = "Filters"
 emaFastLen      = input.int(20, "EMA fast", minval=5, group=GRP_FILTER)
@@ -43,11 +44,12 @@ showDashboard = input.bool(true, "Show dashboard", group=GRP_UI)
 showTradePlan = input.bool(true, "Plot stop/target", group=GRP_UI)
 shadeNoTrade  = input.bool(true, "Shade no-trade", group=GRP_UI)
 
-inPre  = not na(time(timeframe.period, sessPre, tz))
-inOpen = not na(time(timeframe.period, sessOpen, tz))
-inA    = not na(time(timeframe.period, sessA, tz))
-inB    = not na(time(timeframe.period, sessB, tz))
-tradeWindow = inA or inB
+inLondon = not na(time(timeframe.period, sessLondon, tz))
+inPre    = not na(time(timeframe.period, sessPre, tz))
+inOpen   = not na(time(timeframe.period, sessOpen, tz))
+inA      = not na(time(timeframe.period, sessA, tz))
+inB      = not na(time(timeframe.period, sessB, tz))
+tradeWindow = inLondon or inA or inB
 sessionOpenBar = inOpen and not inOpen[1]
 sessionEndBar = inB[1] and not inB
 
@@ -102,7 +104,7 @@ if sessionOpenBar
 
 noTrade = false
 noTradeReason = ""
-if not (inPre or inOpen or tradeWindow)
+if not (inLondon or inPre or inOpen or tradeWindow)
     noTrade := true
     noTradeReason := "outside plan"
 if bias == "neutral" and noTradeReason == ""
@@ -119,8 +121,10 @@ if tradeTakenThisSession and noTradeReason == ""
     noTradeReason := "trade already taken"
 
 flat = strategy.position_size == 0
-entryLong = tradeWindow and flat and not noTrade and bias == "long" and (breakAboveOR or continuationLong)
-entryShort = tradeWindow and flat and not noTrade and bias == "short" and (breakBelowOR or continuationShort)
+londonBreakLong = inLondon and bias == "long" and close > high[1] and close > emaFast
+londonBreakShort = inLondon and bias == "short" and close < low[1] and close < emaFast
+entryLong = tradeWindow and flat and not noTrade and bias == "long" and (breakAboveOR or continuationLong or londonBreakLong)
+entryShort = tradeWindow and flat and not noTrade and bias == "short" and (breakBelowOR or continuationShort or londonBreakShort)
 
 swingLow = ta.lowest(low, 3)
 swingHigh = ta.highest(high, 3)
@@ -205,7 +209,7 @@ f_row(t, row, k, v, c) =>
 
 var table dash = table.new(position.top_right, 2, 8, border_width=1)
 if barstate.islast and showDashboard
-    f_row(dash, 0, "session", inOpen ? "open" : inA ? "primary" : inB ? "secondary" : overnightWindow ? "overnight" : "closed", color.new(color.blue, 40))
+    f_row(dash, 0, "session", inLondon ? "london" : inOpen ? "open" : inA ? "primary" : inB ? "secondary" : overnightWindow ? "overnight" : "closed", color.new(color.blue, 40))
     f_row(dash, 1, "bias", bias, bias == "long" ? color.new(color.green, 30) : bias == "short" ? color.new(color.red, 30) : color.new(color.gray, 40))
     f_row(dash, 2, "entry allowed", not noTrade and tradeWindow ? "yes" : "no", not noTrade and tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
     f_row(dash, 3, "no-trade reason", noTradeReason == "" ? "-" : noTradeReason, color.new(color.gray, 40))
