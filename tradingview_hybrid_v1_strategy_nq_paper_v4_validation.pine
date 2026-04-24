@@ -14,6 +14,7 @@ strategy("Hybrid Bot V4 - NQ Validation Strategy",
 var string GRP_SESS = "Sessions"
 sessLondon = input.session("0300-0600", "London", group=GRP_SESS)
 sessNY     = input.session("0930-1600", "New York", group=GRP_SESS)
+tradeAllDay = input.bool(true, "Allow trades all day for testing", group=GRP_SESS)
 tz         = input.string("America/New_York", "Timezone", group=GRP_SESS)
 
 var string GRP_ENTRY = "Entry"
@@ -35,8 +36,8 @@ showTradePlan = input.bool(true, "Plot stop/target", group=GRP_UI)
 
 inLondon = not na(time(timeframe.period, sessLondon, tz))
 inNY     = not na(time(timeframe.period, sessNY, tz))
-tradeWindow = inLondon or inNY
-sessionEndBar = (inLondon[1] and not inLondon) or (inNY[1] and not inNY)
+tradeWindow = tradeAllDay ? true : (inLondon or inNY)
+sessionEndBar = tradeAllDay ? false : ((inLondon[1] and not inLondon) or (inNY[1] and not inNY))
 
 newDay = dayofmonth != dayofmonth[1] or month != month[1]
 var int tradesToday = 0
@@ -107,7 +108,7 @@ f_row(t, row, k, v, c) =>
 
 var table dash = table.new(position.top_right, 2, 9, border_width=1)
 if barstate.islast and showDashboard
-    f_row(dash, 0, "session", inLondon ? "london" : inNY ? "new york" : "closed", color.new(color.blue, 40))
+    f_row(dash, 0, "session", tradeAllDay ? "all day" : inLondon ? "london" : inNY ? "new york" : "closed", color.new(color.blue, 40))
     f_row(dash, 1, "window", tradeWindow ? "open" : "closed", tradeWindow ? color.new(color.green, 30) : color.new(color.red, 30))
     f_row(dash, 2, "can trade", canTrade ? "yes" : "no", canTrade ? color.new(color.green, 30) : color.new(color.red, 30))
     f_row(dash, 3, "long signal", longSignal ? "yes" : "no", longSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
