@@ -1,0 +1,77 @@
+//@version=6
+strategy("Hybrid Bot V5 - NQ Debug Strategy",
+     shorttitle              = "HBv5-NQ",
+     overlay                 = true,
+     initial_capital         = 10000,
+     default_qty_type        = strategy.fixed,
+     default_qty_value       = 1,
+     commission_type         = strategy.commission.cash_per_contract,
+     commission_value        = 2.5,
+     pyramiding              = 0,
+     calc_on_every_tick      = true,
+     process_orders_on_close = true)
+
+var string GRP_MAIN = "Main"
+lookbackBars = input.int(3, "Breakout lookback bars", minval=1, group=GRP_MAIN)
+atrLen       = input.int(14, "ATR", minval=5, group=GRP_MAIN)
+stopAtrMult  = input.float(0.8, "Stop ATR", minval=0.1, step=0.05, group=GRP_MAIN)
+targetAtrMult = input.float(1.2, "Target ATR", minval=0.2, step=0.05, group=GRP_MAIN)
+allowLong    = input.bool(true, "Allow long", group=GRP_MAIN)
+allowShort   = input.bool(true, "Allow short", group=GRP_MAIN)
+allowAllDay  = input.bool(true, "Allow all day", group=GRP_MAIN)
+
+atr = ta.atr(atrLen)
+highestBreak = ta.highest(high[1], lookbackBars)
+lowestBreak = ta.lowest(low[1], lookbackBars)
+
+rawLongSignal = allowLong and close > highestBreak
+rawShortSignal = allowShort and close < lowestBreak
+flat = strategy.position_size == 0
+longEntry = flat and rawLongSignal
+shortEntry = flat and rawShortSignal
+
+longStop = close - atr * stopAtrMult
+shortStop = close + atr * stopAtrMult
+longTarget = close + atr * targetAtrMult
+shortTarget = close - atr * targetAtrMult
+
+riskCash = strategy.equity * 0.005
+longRisk = close - longStop
+shortRisk = shortStop - close
+qtyLong = longRisk > 0 ? riskCash / longRisk : 0.0
+qtyShort = shortRisk > 0 ? riskCash / shortRisk : 0.0
+
+var bool lastLongEntry = false
+var bool lastShortEntry = false
+lastLongEntry := false
+lastShortEntry := false
+
+if longEntry
+    strategy.entry("L", strategy.long, qty=qtyLong, comment="debug long")
+    strategy.exit("L-x", from_entry="L", stop=longStop, limit=longTarget)
+    lastLongEntry := true
+
+if shortEntry
+    strategy.entry("S", strategy.short, qty=qtyShort, comment="debug short")
+    strategy.exit("S-x", from_entry="S", stop=shortStop, limit=shortTarget)
+    lastShortEntry := true
+
+plot(highestBreak, "Break High", color.new(color.green, 50), style=plot.style_linebr)
+plot(lowestBreak, "Break Low", color.new(color.red, 50), style=plot.style_linebr)
+plot(strategy.position_size != 0 ? longStop : na, "Long Stop Ref", color.new(color.red, 80), style=plot.style_linebr)
+plot(strategy.position_size != 0 ? longTarget : na, "Long Target Ref", color.new(color.green, 80), style=plot.style_linebr)
+
+f_row(t, row, k, v, c) =>
+    table.cell(t, 0, row, k, text_color=color.white, bgcolor=color.new(color.black, 20))
+    table.cell(t, 1, row, v, text_color=color.white, bgcolor=c)
+
+var table dash = table.new(position.top_right, 2, 8, border_width=1)
+if barstate.islast
+    f_row(dash, 0, "flat", flat ? "yes" : "no", flat ? color.new(color.green, 30) : color.new(color.red, 30))
+    f_row(dash, 1, "raw long", rawLongSignal ? "yes" : "no", rawLongSignal ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 2, "raw short", rawShortSignal ? "yes" : "no", rawShortSignal ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 3, "entry long", lastLongEntry ? "sent" : "-", lastLongEntry ? color.new(color.green, 30) : color.new(color.gray, 40))
+    f_row(dash, 4, "entry short", lastShortEntry ? "sent" : "-", lastShortEntry ? color.new(color.red, 30) : color.new(color.gray, 40))
+    f_row(dash, 5, "close", str.tostring(close, format.mintick), color.new(color.gray, 40))
+    f_row(dash, 6, "break high", str.tostring(highestBreak, format.mintick), color.new(color.gray, 40))
+    f_row(dash, 7, "break low", str.tostring(lowestBreak, format.mintick), color.new(color.gray, 40))
