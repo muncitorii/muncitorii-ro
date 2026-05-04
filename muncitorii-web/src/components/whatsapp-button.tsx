@@ -10,10 +10,7 @@ const WA_MESSAGE = encodeURIComponent(
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 
 export function WhatsAppButton() {
-  const [dismissed, setDismissed] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(true);
-
-  if (dismissed) return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-2">
