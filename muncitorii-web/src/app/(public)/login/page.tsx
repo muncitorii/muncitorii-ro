@@ -41,7 +41,7 @@ export default function LoginPage() {
       router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
       router.refresh();
     } catch (err) {
-      setError("Eroare de conexiune. Verifică internetul și încearcă din nou.");
+      setError(`Debug: ${err instanceof Error ? err.message : String(err)}`);
       setLoading(false);
     }
   }
