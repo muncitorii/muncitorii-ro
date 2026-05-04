@@ -24,22 +24,26 @@ export default function LoginPage() {
     const email = data.get("email") as string;
     const password = data.get("password") as string;
 
-    const supabase = createClient();
-    const { error: authError, data: authData } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    try {
+      const supabase = createClient();
+      const { error: authError, data: authData } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
 
-    if (authError) {
-      setError("Email sau parolă incorectă. Încearcă din nou.");
+      if (authError) {
+        setError("Email sau parolă incorectă. Încearcă din nou.");
+        setLoading(false);
+        return;
+      }
+
+      const role = authData.user?.user_metadata?.role;
+      router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
+      router.refresh();
+    } catch (err) {
+      setError("Eroare de conexiune. Verifică internetul și încearcă din nou.");
       setLoading(false);
-      return;
     }
-
-    // Redirecționare bazată pe rol
-    const role = authData.user?.user_metadata?.role;
-    router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
-    router.refresh();
   }
 
   return (

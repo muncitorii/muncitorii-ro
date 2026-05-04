@@ -34,30 +34,35 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
     const trade = data.get("trade") as string | undefined;
     const city = data.get("city") as string | undefined;
 
-    const supabase = createClient();
-    const { error: authError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: {
-          full_name: fullName,
-          role: isWorker ? "worker" : "client",
-          trade: trade ?? null,
-          city: city ?? null,
+    try {
+      const supabase = createClient();
+      const { error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            role: isWorker ? "worker" : "client",
+            trade: trade ?? null,
+            city: city ?? null,
+          },
         },
-      },
-    });
+      });
 
-    if (authError) {
-      setError(authError.message);
+      if (authError) {
+        setError(authError.message);
+        setLoading(false);
+        return;
+      }
+
+      setSuccess(true);
       setLoading(false);
-      return;
+      router.push(isWorker ? "/dashboard/muncitor" : "/dashboard/client");
+      router.refresh();
+    } catch (err) {
+      setError("Eroare de conexiune. Verifică internetul și încearcă din nou.");
+      setLoading(false);
     }
-
-    setSuccess(true);
-    setLoading(false);
-    router.push(isWorker ? "/dashboard/muncitor" : "/dashboard/client");
-    router.refresh();
   }
 
   if (success) {
