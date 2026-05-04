@@ -41,7 +41,7 @@ export default function LoginPage() {
       router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
       router.refresh();
     } catch (err) {
-      setError(`Debug: ${err instanceof Error ? err.message : String(err)}`);
+      setError(err instanceof Error ? err.message : "Eroare necunoscută. Încearcă din nou.");
       setLoading(false);
     }
   }

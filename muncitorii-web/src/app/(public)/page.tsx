@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { WorkerCard } from "@/components/worker-card";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 import { getHomepageCategories } from "@/lib/categories";
-import { getFeaturedWorkers } from "@/lib/workers";
 
 const steps = [
   {
@@ -22,25 +20,6 @@ const steps = [
     title: "Discuți și finalizezi",
     description:
       "Contactezi direct în platformă, stabilești detaliile și lucrarea se face.",
-  },
-];
-
-const featuredWorkers = getFeaturedWorkers(3);
-
-const testimonials = [
-  {
-    initials: "A",
-    name: "Andreea M.",
-    city: "București",
-    trade: "Instalație electrică",
-    text: "Am găsit electricianul potrivit în aceeași zi. Profil clar, recenzii reale, nicio surpriză.",
-  },
-  {
-    initials: "M",
-    name: "Mihai C.",
-    city: "Constanța",
-    trade: "Zugrăvit apartament",
-    text: "Am comparat 3 meseriași, am ales pe cel mai bun. Nu am mai pierdut timp pe grupuri și telefoane.",
   },
 ];
 
@@ -75,20 +54,29 @@ export default function Home() {
 
           {/* Dreapta: card search */}
           <FadeUp delay={0.1}>
-            <div className="rounded-2xl border border-white/10 bg-white/6 p-6 md:p-7">
+            <form
+              method="GET"
+              action="/muncitori"
+              className="rounded-2xl border border-white/10 bg-white/6 p-6 md:p-7"
+            >
               <h3 className="mb-5 text-base font-bold text-white">Caută un meseriaș</h3>
               <div className="flex flex-col gap-3">
                 <input
                   type="text"
+                  name="cat"
                   placeholder="Ce ai de făcut? (ex: instalator, zugrav...)"
                   className="w-full rounded-xl border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 />
                 <input
                   type="text"
+                  name="oras"
                   placeholder="Oraș sau județ"
                   className="w-full rounded-xl border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/30 focus:ring-2 focus:ring-white/10"
                 />
-                <button className="w-full rounded-xl bg-accent-700 px-4 py-3 text-sm font-bold text-white transition-all duration-200 ease-out hover:bg-accent-800">
+                <button
+                  type="submit"
+                  className="w-full rounded-xl bg-accent-700 px-4 py-3 text-sm font-bold text-white transition-all duration-200 ease-out hover:bg-accent-800"
+                >
                   Caută meseriași
                 </button>
               </div>
@@ -98,12 +86,12 @@ export default function Home() {
                 <div className="h-px flex-1 bg-white/8" />
               </div>
               <Link
-                href="/register"
+                href="/register/client"
                 className="mt-3 block text-center text-sm font-semibold text-white/60 transition hover:text-white"
               >
                 Postează o lucrare și primești oferte →
               </Link>
-            </div>
+            </form>
           </FadeUp>
 
         </div>
@@ -167,74 +155,39 @@ export default function Home() {
         </div>
       </section>
 
-      {/* MESERIAȘI RECOMANDAȚI */}
+      {/* FOUNDER STORY */}
       <section className="bg-white px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <FadeUp className="flex items-end justify-between gap-3">
-            <div>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
-                Meseriași recomandați
-              </h2>
-              <p className="mt-2 text-slate-600">
-                Profiluri verificate care inspiră încredere.
+        <div className="mx-auto max-w-4xl">
+          <FadeUp>
+            <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
+              De ce există Muncitorii.ro
+            </span>
+            <h2 className="mt-4 text-3xl font-bold tracking-[-0.02em] text-slate-950 md:text-4xl">
+              Am construit asta pentru că am pățit-o pe pielea mea.
+            </h2>
+            <div className="mt-6 space-y-4 text-base leading-relaxed text-slate-700 md:text-lg">
+              <p>
+                Sunt Liviu, electrician cu 8 ani experiență. Am cumpărat un apartament
+                și am renovat. Pe primul zugrav l-am găsit pe un grup de Facebook.
+                Mi-a cerut un preț, am acceptat, a luat avans, a lucrat 4 zile.
+              </p>
+              <p>
+                Rezultatul? <strong>Rosturi strâmbe. Pereți cu pete. Finisaj de copil de 5 ani.</strong>
+              </p>
+              <p>
+                L-am dat afară. Am angajat altul. La final, aceeași lucrare —
+                plătită de două ori. <strong>12.000 lei pierduți.</strong>
+              </p>
+              <p>
+                Eu sunt meseriaș. Cunosc termenii. Și totuși am pățit-o.
+                Pentru că pe Facebook nu vezi nimic — nici recenzii, nici poze, nici istoric.
+              </p>
+              <p className="text-slate-950 font-semibold">
+                De-aia am construit Muncitorii.ro. Profil real, lucrări făcute, recenzii adevărate.
+                Înainte să dai avansul pe primul telefon — uită-te aici.
               </p>
             </div>
-            <Link
-              href="/muncitori"
-              className="shrink-0 text-sm font-semibold text-primary-900 hover:text-primary-700"
-            >
-              Vezi toți
-            </Link>
           </FadeUp>
-
-          <StaggerContainer className="mt-8 grid gap-4 md:grid-cols-3">
-            {featuredWorkers.map((worker) => (
-              <StaggerItem key={worker.slug}>
-                <WorkerCard
-                  name={worker.name}
-                  slug={worker.slug}
-                  trade={worker.trade}
-                  city={worker.city}
-                  rating={worker.rating.toFixed(1)}
-                  badge={worker.badges[0]}
-                />
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* TESTIMONIALE */}
-      <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <FadeUp>
-            <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
-              Ce spun clienții
-            </h2>
-          </FadeUp>
-
-          <StaggerContainer className="mt-8 grid gap-6 md:grid-cols-2">
-            {testimonials.map((t) => (
-              <StaggerItem key={t.name}>
-                <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
-                  <p className="text-base leading-relaxed text-slate-700">
-                    &ldquo;{t.text}&rdquo;
-                  </p>
-                  <div className="mt-6 flex items-center gap-4">
-                    <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary-50 text-lg font-bold text-primary-900">
-                      {t.initials}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-slate-950">{t.name}</p>
-                      <p className="text-sm text-slate-500">
-                        {t.city} · {t.trade}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
         </div>
       </section>
 
@@ -254,7 +207,7 @@ export default function Home() {
                   Postează acum și primești oferte de la meseriași verificați din zona ta.
                 </p>
                 <Link
-                  href="/register"
+                  href="/register/client"
                   className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-900 transition-all duration-200 ease-out hover:bg-primary-50"
                 >
                   Postează o lucrare
