@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview OLX Style — Muncitorii.ro</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f2f4f5; color: #002f34; }
+
+  /* NAV */
+  nav { background: #002f34; padding: 0 20px; height: 60px; display: flex; align-items: center; gap: 16px; position: sticky; top: 0; z-index: 100; }
+  .nav-logo { color: #23e5db; font-size: 22px; font-weight: 900; letter-spacing: -0.5px; white-space: nowrap; }
+  .nav-logo span { color: #f7a825; }
+  .nav-search { flex: 1; max-width: 560px; display: flex; gap: 0; }
+  .nav-search input { flex: 1; padding: 10px 16px; border: none; border-radius: 8px 0 0 8px; font-size: 14px; outline: none; }
+  .nav-search button { background: #f7a825; border: none; padding: 10px 20px; border-radius: 0 8px 8px 0; font-weight: 700; font-size: 14px; color: #002f34; cursor: pointer; }
+  .nav-actions { margin-left: auto; display: flex; gap: 10px; }
+  .nav-btn { padding: 8px 18px; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; border: none; }
+  .nav-btn-outline { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,0.3); }
+  .nav-btn-primary { background: #f7a825; color: #002f34; }
+
+  /* HERO */
+  .hero { background: linear-gradient(135deg, #002f34 0%, #004d40 100%); padding: 48px 20px; text-align: center; }
+  .hero-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(35,229,219,0.12); border: 1px solid rgba(35,229,219,0.3); color: #23e5db; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
+  .hero h1 { font-size: clamp(28px, 5vw, 52px); font-weight: 900; color: #fff; line-height: 1.1; margin-bottom: 12px; }
+  .hero h1 span { color: #f7a825; }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 17px; margin-bottom: 32px; }
+  .hero-search { display: flex; max-width: 600px; margin: 0 auto 24px; gap: 0; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.3); }
+  .hero-search input { flex: 1; padding: 16px 20px; border: none; font-size: 15px; outline: none; }
+  .hero-search select { padding: 16px 16px; border: none; border-left: 1px solid #e5e7eb; font-size: 14px; outline: none; background: #fff; color: #374151; min-width: 140px; }
+  .hero-search button { background: #f7a825; border: none; padding: 16px 28px; font-size: 15px; font-weight: 800; color: #002f34; cursor: pointer; white-space: nowrap; }
+  .hero-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .hero-tag { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.7); padding: 6px 14px; border-radius: 100px; font-size: 13px; cursor: pointer; border: 1px solid rgba(255,255,255,0.12); transition: all 0.15s; }
+  .hero-tag:hover { background: rgba(35,229,219,0.15); color: #23e5db; border-color: #23e5db; }
+
+  /* STATS */
+  .stats { background: #fff; padding: 20px; display: flex; justify-content: center; gap: 40px; border-bottom: 1px solid #e5e7eb; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-size: 22px; font-weight: 900; color: #002f34; }
+  .stat-num span { color: #f7a825; }
+  .stat-label { font-size: 12px; color: #6b7280; margin-top: 2px; }
+
+  /* CATEGORIES */
+  .section { max-width: 1100px; margin: 0 auto; padding: 32px 20px; }
+  .section-title { font-size: 20px; font-weight: 800; color: #002f34; margin-bottom: 20px; display: flex; align-items: center; gap: 8px; }
+  .section-title::after { content: ''; flex: 1; height: 2px; background: #23e5db; border-radius: 2px; max-width: 60px; }
+  .categories { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 12px; }
+  .cat-card { background: #fff; border-radius: 12px; padding: 20px 10px 16px; text-align: center; cursor: pointer; border: 2px solid transparent; transition: all 0.18s; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+  .cat-card:hover { border-color: #23e5db; box-shadow: 0 4px 16px rgba(35,229,219,0.2); transform: translateY(-2px); }
+  .cat-icon { width: 52px; height: 52px; border-radius: 14px; margin: 0 auto 10px; display: flex; align-items: center; justify-content: center; font-size: 26px; }
+  .cat-name { font-size: 12px; font-weight: 700; color: #002f34; line-height: 1.3; }
+  .cat-count { font-size: 11px; color: #9ca3af; margin-top: 3px; }
+
+  /* WORKER CARDS */
+  .workers-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+  .worker-card { background: #fff; border-radius: 16px; overflow: hidden; border: 1.5px solid #e5e7eb; transition: all 0.18s; cursor: pointer; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+  .worker-card:hover { border-color: #23e5db; box-shadow: 0 6px 24px rgba(35,229,219,0.15); transform: translateY(-3px); }
+  .worker-img { height: 160px; background: linear-gradient(135deg, #002f34, #004d40); display: flex; align-items: center; justify-content: center; font-size: 64px; position: relative; }
+  .worker-verified { position: absolute; top: 10px; right: 10px; background: #23e5db; color: #002f34; font-size: 10px; font-weight: 800; padding: 4px 8px; border-radius: 100px; }
+  .worker-body { padding: 16px; }
+  .worker-name { font-size: 16px; font-weight: 800; color: #002f34; }
+  .worker-trade { font-size: 13px; color: #f7a825; font-weight: 700; margin-top: 2px; }
+  .worker-meta { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: 12px; color: #6b7280; }
+  .worker-rating { display: flex; align-items: center; gap: 4px; font-weight: 700; color: #002f34; }
+  .star { color: #f7a825; }
+  .worker-footer { padding: 12px 16px; border-top: 1px solid #f3f4f6; display: flex; justify-content: space-between; align-items: center; }
+  .worker-price { font-size: 13px; font-weight: 700; color: #002f34; }
+  .worker-price span { color: #f7a825; font-size: 16px; }
+  .btn-contact { background: #002f34; color: #fff; border: none; padding: 8px 16px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+  .btn-contact:hover { background: #f7a825; color: #002f34; }
+
+  /* HOW IT WORKS */
+  .how { background: #fff; padding: 40px 20px; }
+  .steps { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; margin-top: 24px; }
+  .step { text-align: center; padding: 24px; }
+  .step-num { width: 48px; height: 48px; background: #002f34; color: #23e5db; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: 900; margin: 0 auto 16px; }
+  .step h3 { font-size: 16px; font-weight: 800; color: #002f34; margin-bottom: 8px; }
+  .step p { font-size: 14px; color: #6b7280; line-height: 1.6; }
+
+  /* CTA */
+  .cta { background: linear-gradient(135deg, #f7a825, #ff8c00); padding: 48px 20px; text-align: center; }
+  .cta h2 { font-size: 28px; font-weight: 900; color: #002f34; margin-bottom: 8px; }
+  .cta p { color: rgba(0,47,52,0.7); margin-bottom: 24px; }
+  .cta-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .cta-btn { padding: 14px 28px; border-radius: 10px; font-size: 15px; font-weight: 800; cursor: pointer; border: none; transition: all 0.15s; }
+  .cta-btn-dark { background: #002f34; color: #fff; }
+  .cta-btn-dark:hover { background: #001f22; }
+  .cta-btn-outline { background: transparent; color: #002f34; border: 2px solid #002f34; }
+
+  /* FOOTER */
+  footer { background: #002f34; color: rgba(255,255,255,0.6); padding: 32px 20px; font-size: 13px; }
+  .footer-inner { max-width: 1100px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+  .footer-logo { color: #23e5db; font-size: 18px; font-weight: 900; }
+  .footer-logo span { color: #f7a825; }
+  .footer-links { display: flex; gap: 20px; flex-wrap: wrap; }
+  .footer-links a { color: rgba(255,255,255,0.5); text-decoration: none; }
+  .footer-links a:hover { color: #23e5db; }
+
+  /* LABEL */
+  .preview-label { position: fixed; bottom: 80px; left: 16px; background: #002f34; color: #23e5db; padding: 8px 14px; border-radius: 10px; font-size: 12px; font-weight: 700; z-index: 1000; border: 1px solid rgba(35,229,219,0.3); }
+</style>
+</head>
+<body>
+
+<div class="preview-label">Preview OLX Style</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Muncitori<span>.ro</span></div>
+  <div class="nav-search">
+    <input type="text" placeholder="Caută electrician, zugrav, instalator...">
+    <button>Caută</button>
+  </div>
+  <div class="nav-actions">
+    <button class="nav-btn nav-btn-outline">Intră în cont</button>
+    <button class="nav-btn nav-btn-primary">Postează lucrare</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">✦ Platforma #1 pentru meseriași verificați</div>
+  <h1>Găsești meseriașul potrivit.<br><span>Rapid și gratuit.</span></h1>
+  <p>De la reparații mici la renovări complete — compari profiluri reale și alegi direct.</p>
+  <div class="hero-search">
+    <input type="text" placeholder="Ce meseriaș cauți?">
+    <select>
+      <option>București</option>
+      <option>Cluj-Napoca</option>
+      <option>Timișoara</option>
+      <option>Iași</option>
+      <option>Constanța</option>
+    </select>
+    <button>🔍 Caută</button>
+  </div>
+  <div class="hero-tags">
+    <span class="hero-tag">⚡ Electrician</span>
+    <span class="hero-tag">🔧 Instalator</span>
+    <span class="hero-tag">🎨 Zugrav</span>
+    <span class="hero-tag">🪵 Dulgher</span>
+    <span class="hero-tag">🏠 Renovări</span>
+    <span class="hero-tag">❄️ Aer condiționat</span>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat"><div class="stat-num">1.2K<span>+</span></div><div class="stat-label">Meseriași activi</div></div>
+  <div class="stat"><div class="stat-num">4.8<span>★</span></div><div class="stat-label">Rating mediu</div></div>
+  <div class="stat"><div class="stat-num">18<span>+</span></div><div class="stat-label">Categorii</div></div>
+  <div class="stat"><div class="stat-num">100<span>%</span></div><div class="stat-label">Gratuit</div></div>
+</div>
+
+<!-- CATEGORIES -->
+<div class="section">
+  <div class="section-title">Caută după meserie</div>
+  <div class="categories">
+    <div class="cat-card"><div class="cat-icon" style="background:#fff8e1">⚡</div><div class="cat-name">Electrician</div><div class="cat-count">134 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#e3f2fd">🔧</div><div class="cat-name">Instalator</div><div class="cat-count">98 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#f3e5f5">🎨</div><div class="cat-name">Zugrav</div><div class="cat-count">87 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#e8f5e9">🪵</div><div class="cat-name">Dulgher</div><div class="cat-count">65 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#fce4ec">🏠</div><div class="cat-name">Renovări</div><div class="cat-count">112 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#e0f7fa">❄️</div><div class="cat-name">Aer condiționat</div><div class="cat-count">43 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#fff3e0">🪟</div><div class="cat-name">Tâmplar</div><div class="cat-count">51 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#e8eaf6">🔩</div><div class="cat-name">Faianțar</div><div class="cat-count">76 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#f1f8e9">🌿</div><div class="cat-name">Grădinar</div><div class="cat-count">38 activi</div></div>
+    <div class="cat-card"><div class="cat-icon" style="background:#fafafa">🛡️</div><div class="cat-name">Pază</div><div class="cat-count">29 activi</div></div>
+  </div>
+</div>
+
+<!-- WORKERS -->
+<div class="section" style="background:#f2f4f5; max-width:100%; padding:32px 0;">
+  <div style="max-width:1100px;margin:0 auto;padding:0 20px;">
+    <div class="section-title">Meseriași verificați lângă tine</div>
+    <div class="workers-grid">
+
+      <div class="worker-card">
+        <div class="worker-img">👷<span class="worker-verified">✓ Verificat</span></div>
+        <div class="worker-body">
+          <div class="worker-name">Alex Popescu</div>
+          <div class="worker-trade">⚡ Electrician ANRE</div>
+          <div class="worker-meta">
+            <div class="worker-rating"><span class="star">★</span> 4.9 (47 rec.)</div>
+            <span>📍 București</span>
+            <span>8 ani exp.</span>
+          </div>
+        </div>
+        <div class="worker-footer">
+          <div class="worker-price">de la <span>80 lei</span>/oră</div>
+          <button class="btn-contact">Contactează</button>
+        </div>
+      </div>
+
+      <div class="worker-card">
+        <div class="worker-img" style="background:linear-gradient(135deg,#1a4731,#2d6a4f)">🎨<span class="worker-verified">✓ Verificat</span></div>
+        <div class="worker-body">
+          <div class="worker-name">Marian Ionescu</div>
+          <div class="worker-trade">🎨 Zugrav finisaje</div>
+          <div class="worker-meta">
+            <div class="worker-rating"><span class="star">★</span> 4.8 (31 rec.)</div>
+            <span>📍 Constanța</span>
+            <span>12 ani exp.</span>
+          </div>
+        </div>
+        <div class="worker-footer">
+          <div class="worker-price">de la <span>60 lei</span>/oră</div>
+          <button class="btn-contact">Contactează</button>
+        </div>
+      </div>
+
+      <div class="worker-card">
+        <div class="worker-img" style="background:linear-gradient(135deg,#1a237e,#283593)">🔧<span class="worker-verified">✓ Recomandat</span></div>
+        <div class="worker-body">
+          <div class="worker-name">Robert Pavel</div>
+          <div class="worker-trade">🔧 Instalator sanitar</div>
+          <div class="worker-meta">
+            <div class="worker-rating"><span class="star">★</span> 5.0 (22 rec.)</div>
+            <span>📍 Cluj-Napoca</span>
+            <span>6 ani exp.</span>
+          </div>
+        </div>
+        <div class="worker-footer">
+          <div class="worker-price">de la <span>70 lei</span>/oră</div>
+          <button class="btn-contact">Contactează</button>
+        </div>
+      </div>
+
+    </div>
+    <div style="text-align:center;margin-top:28px;">
+      <button style="background:#002f34;color:#fff;padding:14px 32px;border-radius:10px;font-size:15px;font-weight:700;border:none;cursor:pointer;">
+        Vezi toți meseriașii →
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how">
+  <div style="max-width:900px;margin:0 auto;text-align:center;">
+    <div class="section-title" style="justify-content:center;">Cum funcționează</div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Caută sau postează</h3>
+        <p>Caută direct un meseriaș sau postează o lucrare și primești oferte.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Compari și alegi</h3>
+        <p>Citești recenzii reale, compari prețuri și experiența fiecăruia.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Contactezi direct</h3>
+        <p>Discuți direct, stabilești detaliile și lucrarea se face.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta">
+  <h2>Ești meseriaș? Intră pe platformă.</h2>
+  <p>Profilul este 100% gratuit. Primești cereri direct de la clienți din zona ta.</p>
+  <div class="cta-btns">
+    <button class="cta-btn cta-btn-dark">Creează profil gratuit</button>
+    <button class="cta-btn cta-btn-outline">Află mai multe</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">Muncitori<span>.ro</span></div>
+    <div class="footer-links">
+      <a href="#">Despre noi</a>
+      <a href="#">Cum funcționează</a>
+      <a href="#">Contact</a>
+      <a href="#">Termeni</a>
+      <a href="#">Confidențialitate</a>
+    </div>
+    <div>© 2026 Muncitorii.ro</div>
+  </div>
+</footer>
+
+</body>
+</html>
