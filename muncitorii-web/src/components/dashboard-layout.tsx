@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo } from "@/components/logo";
 
 type NavItem = { label: string; href: string };
 
@@ -36,9 +37,9 @@ export function DashboardLayout({
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6">
-          <Link href="/" className="block">
-            <p className="text-lg font-extrabold tracking-tight text-blue-700">Muncitorii.ro</p>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 md:px-6">
+          <Link href="/">
+            <Logo size="md" />
           </Link>
           <div className="flex items-center gap-3">
             <div className="hidden text-right md:block">
@@ -59,7 +60,7 @@ export function DashboardLayout({
         <div className="flex gap-6 md:items-start">
           {/* Sidebar — desktop */}
           <aside className="hidden w-52 shrink-0 md:block">
-            <div className="rounded-[2rem] bg-white p-3 shadow-sm">
+            <div className="rounded-3xl bg-white p-3 shadow-card">
               <div className="mb-3 border-b border-slate-100 px-3 pb-3">
                 <p className="text-sm font-semibold text-slate-900">{userName}</p>
                 <p className="text-xs text-slate-500">{roleLabel}</p>
@@ -69,9 +70,9 @@ export function DashboardLayout({
                   <Link
                     key={item.href}
                     href={item.href}
-                    className={`block rounded-2xl px-3 py-2.5 text-sm font-medium transition ${
+                    className={`block rounded-2xl px-3 py-2.5 text-sm font-medium transition-all duration-200 ease-out ${
                       activeHref === item.href
-                        ? "bg-blue-600 text-white"
+                        ? "bg-primary-900 text-white"
                         : "text-slate-700 hover:bg-slate-50 hover:text-slate-950"
                     }`}
                   >
@@ -89,10 +90,10 @@ export function DashboardLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition ${
+                  className={`shrink-0 rounded-full px-4 py-2 text-sm font-medium transition-all duration-200 ease-out ${
                     activeHref === item.href
-                      ? "bg-blue-600 text-white"
-                      : "border border-slate-200 bg-white text-slate-700"
+                      ? "bg-primary-900 text-white"
+                      : "border border-slate-200 bg-white text-slate-700 hover:bg-slate-50"
                   }`}
                 >
                   {item.label}
