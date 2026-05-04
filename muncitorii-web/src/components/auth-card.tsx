@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { categories } from "@/lib/categories";
 
 type AuthCardProps = {
   title: string;
@@ -19,6 +20,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
+  const [tradeSlug, setTradeSlug] = useState<string>("");
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -31,8 +33,23 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
     const email = data.get("email") as string;
     const password = data.get("password") as string;
     const fullName = data.get("full_name") as string;
-    const trade = data.get("trade") as string | undefined;
+    const selectedSlug = data.get("trade_slug") as string | undefined;
+    const customTrade = data.get("trade_custom") as string | undefined;
     const city = data.get("city") as string | undefined;
+
+    // Pentru meseriași: dacă "altele" → folosim descrierea, altfel numele categoriei
+    let trade: string | null = null;
+    let finalTradeSlug: string | null = null;
+    if (isWorker && selectedSlug) {
+      if (selectedSlug === "altele") {
+        trade = (customTrade ?? "").trim();
+        finalTradeSlug = "altele";
+      } else {
+        const cat = categories.find((c) => c.slug === selectedSlug);
+        trade = cat?.name ?? null;
+        finalTradeSlug = selectedSlug;
+      }
+    }
 
     try {
       const supabase = createClient();
@@ -43,7 +60,8 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
           data: {
             full_name: fullName,
             role: isWorker ? "worker" : "client",
-            trade: trade ?? null,
+            trade,
+            trade_slug: finalTradeSlug,
             city: city ?? null,
           },
         },
@@ -69,9 +87,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
     return (
       <div className="w-full max-w-md rounded-3xl border border-emerald-200 bg-emerald-50 p-8">
         <p className="font-semibold text-emerald-800">Cont creat cu succes!</p>
-        <p className="mt-2 text-sm text-emerald-700">
-          Verifică email-ul pentru a confirma contul, apoi intră în cont.
-        </p>
+        <p className="mt-2 text-sm text-emerald-700">Te redirectionăm la dashboard...</p>
       </div>
     );
   }
@@ -79,7 +95,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
   return (
     <div className="w-full max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
       <span className="inline-flex rounded-full bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-900">
-        {isWorker ? "Cont muncitor" : "Cont client"}
+        {isWorker ? "Cont meseriaș" : "Cont client"}
       </span>
       <h2 className="mt-4 text-3xl font-bold tracking-[-0.025em] text-slate-950">{title}</h2>
       <p className="mt-2 text-sm leading-relaxed text-slate-600">{subtitle}</p>
@@ -120,8 +136,46 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
               <label htmlFor="auth-trade" className="mb-1.5 block text-sm font-medium text-slate-700">
                 Meserie principală
               </label>
-              <Input id="auth-trade" name="trade" type="text" placeholder="Ex: Electrician" required />
+              <select
+                id="auth-trade"
+                name="trade_slug"
+                value={tradeSlug}
+                onChange={(e) => setTradeSlug(e.target.value)}
+                required
+                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-primary-700 focus:ring-2 focus:ring-primary-700/15"
+              >
+                <option value="" disabled>
+                  Alege meseria ta...
+                </option>
+                {categories.map((cat) => (
+                  <option key={cat.slug} value={cat.slug}>
+                    {cat.name}
+                  </option>
+                ))}
+              </select>
             </div>
+
+            {tradeSlug === "altele" && (
+              <div>
+                <label
+                  htmlFor="auth-trade-custom"
+                  className="mb-1.5 block text-sm font-medium text-slate-700"
+                >
+                  Descrie ce meserie practici
+                </label>
+                <Input
+                  id="auth-trade-custom"
+                  name="trade_custom"
+                  type="text"
+                  placeholder="Ex: Acoperitor, Tencuieli decorative, Climatizare auto"
+                  required
+                />
+                <p className="mt-1.5 text-xs text-slate-500">
+                  Scrie clar și scurt — clienții vor căuta după acest termen.
+                </p>
+              </div>
+            )}
+
             <div>
               <label htmlFor="auth-city" className="mb-1.5 block text-sm font-medium text-slate-700">
                 Oraș

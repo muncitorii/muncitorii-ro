@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { WorkerCard } from "@/components/worker-card";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
-import { categories } from "@/lib/categories";
+import { getHomepageCategories } from "@/lib/categories";
 import { getFeaturedWorkers } from "@/lib/workers";
 
 const steps = [
@@ -120,7 +120,7 @@ export default function Home() {
           </FadeUp>
 
           <StaggerContainer className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {categories.map(({ name, slug, Icon }) => (
+            {getHomepageCategories().map(({ name, slug, Icon }) => (
               <StaggerItem key={slug}>
                 <Link
                   href={`/muncitori?cat=${slug}`}
