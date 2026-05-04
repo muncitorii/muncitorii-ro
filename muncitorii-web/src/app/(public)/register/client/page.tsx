@@ -4,11 +4,11 @@ import { ArrowLeft } from "lucide-react";
 import { AuthCard } from "@/components/auth-card";
 
 export const metadata: Metadata = {
-  title: "Creează cont meseriaș | Muncitorii.ro",
-  description: "Creează-ți profilul de meseriaș și găsește clienți noi în zona ta. Gratuit primul an.",
+  title: "Creează cont client | Muncitorii.ro",
+  description: "Înregistrează-te ca client și găsește meseriași verificați pentru lucrarea ta.",
 };
 
-export default function WorkerRegisterPage() {
+export default function RegisterClientPage() {
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
       <div className="mx-auto max-w-6xl">
@@ -22,22 +22,22 @@ export default function WorkerRegisterPage() {
 
         <div className="mt-6 grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
           <div>
-            <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
-              Cont meseriaș
+            <span className="inline-flex rounded-full border border-primary-200 bg-primary-50 px-3 py-1 text-xs font-semibold text-primary-900">
+              Cont client
             </span>
             <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 md:text-5xl">
-              Primește cereri direct de la clienți din zona ta
+              Găsește meseriașul potrivit pentru lucrarea ta
             </h1>
             <p className="mt-4 max-w-xl text-base leading-7 text-slate-600 md:text-lg">
-              Profil cu poze și recenzii, cereri direct, reputație construită cu lucrări reale.
-              Gratuit primul an, fără comision.
+              Postezi o lucrare, primești oferte de la meseriași verificați și alegi pe cel mai bun.
+              Totul gratuit, fără comision.
             </p>
           </div>
 
           <AuthCard
-            role="muncitor"
-            title="Creează cont meseriaș"
-            subtitle="Completează datele de bază. După înregistrare adaugi poze și portofoliu din dashboard."
+            role="client"
+            title="Creează cont client"
+            subtitle="2 câmpuri și ești gata. Postezi prima lucrare imediat după."
           />
         </div>
       </div>
