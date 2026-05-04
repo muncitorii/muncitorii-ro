@@ -260,14 +260,14 @@ export default function Home() {
               </p>
             </FadeUp>
 
-            {/* CTA WhatsApp */}
+            {/* CTA Contact */}
             <FadeUp>
               <div className="rounded-3xl bg-slate-950 p-7 text-white md:p-10">
                 <p className="text-base leading-relaxed text-white/70 md:text-lg">
-                  Pentru idei și sugestii, în <strong className="text-white">dreapta jos</strong> aveți WhatsApp-ul meu personal.
+                  Aveți idei sau sugestii? În <strong className="text-white">dreapta jos</strong> găsiți butonul de contact.
                 </p>
                 <p className="mt-3 text-lg font-semibold leading-relaxed text-white md:text-xl">
-                  Voi aprecia feedback-ul dumneavoastră.
+                  Citesc fiecare mesaj personal — voi aprecia feedback-ul dumneavoastră.
                 </p>
                 <p className="mt-6 text-sm font-semibold tracking-wide text-accent-500">
                   — Liviu, fondator Muncitorii.ro

@@ -1,16 +1,12 @@
 import type { Metadata } from "next";
-import { Mail, MessageCircle, AlertTriangle } from "lucide-react";
+import { Mail, AlertTriangle, MessageSquare } from "lucide-react";
+import { ContactForm } from "@/components/contact-form";
 
 export const metadata: Metadata = {
   title: "Contact | Muncitorii.ro",
   description:
-    "Contactează echipa Muncitorii.ro — email, WhatsApp sau formular direct. Răspundem în aceeași zi.",
+    "Contactează echipa Muncitorii.ro — formular direct sau email. Răspundem în aceeași zi.",
 };
-
-const WA_NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "");
-const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-  "Bună! Am o întrebare despre Muncitorii.ro."
-)}`;
 
 export default function ContactPage() {
   return (
@@ -37,29 +33,22 @@ export default function ContactPage() {
               <Mail size={20} strokeWidth={1.75} />
             </div>
             <div>
-              <p className="font-semibold text-slate-950">Email</p>
-              <p className="mt-0.5 text-sm text-slate-500">
-                contact@muncitorii.ro
-              </p>
+              <p className="font-semibold text-slate-950">Email direct</p>
+              <p className="mt-0.5 text-sm text-slate-500">contact@muncitorii.ro</p>
             </div>
             <p className="text-xs text-slate-400">Răspuns în max. 24h</p>
           </a>
 
-          <a
-            href={WA_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group flex flex-col gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 shadow-card transition-shadow hover:shadow-card-hover"
-          >
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#25D366]/15 text-[#25D366]">
-              <MessageCircle size={20} strokeWidth={1.75} />
+          <div className="flex flex-col gap-3 rounded-2xl border border-primary-200 bg-primary-50/40 p-6 shadow-card">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary-900/15 text-primary-900">
+              <MessageSquare size={20} strokeWidth={1.75} />
             </div>
             <div>
-              <p className="font-semibold text-slate-950">WhatsApp</p>
-              <p className="mt-0.5 text-sm text-slate-500">Chat direct</p>
+              <p className="font-semibold text-slate-950">Formular rapid</p>
+              <p className="mt-0.5 text-sm text-slate-500">Mai jos pe pagină</p>
             </div>
-            <p className="text-xs text-slate-400">Răspuns rapid în timpul orelor de program</p>
-          </a>
+            <p className="text-xs text-slate-400">Trimite în 30 secunde</p>
+          </div>
 
           <a
             href="mailto:abuz@muncitorii.ro"
@@ -82,58 +71,9 @@ export default function ContactPage() {
             Trimite un mesaj
           </h2>
           <p className="mt-1 text-sm text-slate-500">
-            Completează formularul și îți răspundem pe email în aceeași zi.
+            Mesajul ajunge direct la Liviu. Răspuns în aceeași zi.
           </p>
-          <form className="mt-6 space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                  Nume
-                </label>
-                <input
-                  type="text"
-                  placeholder="Numele tău"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-700 focus:bg-white focus:ring-2 focus:ring-primary-700/15"
-                />
-              </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="tu@email.com"
-                  className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-700 focus:bg-white focus:ring-2 focus:ring-primary-700/15"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Subiect
-              </label>
-              <input
-                type="text"
-                placeholder="Despre ce vrei să ne scrii?"
-                className="w-full rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-700 focus:bg-white focus:ring-2 focus:ring-primary-700/15"
-              />
-            </div>
-            <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700">
-                Mesaj
-              </label>
-              <textarea
-                rows={5}
-                placeholder="Scrie mesajul tău..."
-                className="w-full resize-none rounded-xl border border-slate-200 bg-slate-50 px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-primary-700 focus:bg-white focus:ring-2 focus:ring-primary-700/15"
-              />
-            </div>
-            <button
-              type="submit"
-              className="rounded-2xl bg-primary-900 px-6 py-3 text-sm font-semibold text-white transition-all duration-200 hover:bg-primary-700 active:scale-[0.98]"
-            >
-              Trimite mesaj
-            </button>
-          </form>
+          <ContactForm />
         </div>
       </div>
     </section>
