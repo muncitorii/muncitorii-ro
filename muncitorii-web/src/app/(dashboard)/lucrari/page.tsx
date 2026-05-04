@@ -4,10 +4,20 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { jobs } from "@/lib/jobs";
 import { categories } from "@/lib/categories";
+import { createClient } from "@/lib/supabase/server";
 
-export default function JobsPage() {
+export default async function JobsPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const fullName =
+    (user?.user_metadata?.full_name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    "Utilizator";
+
   return (
-    <DashboardLayout role="muncitor" activeHref="/lucrari" userName="Alex Popescu">
+    <DashboardLayout role="muncitor" activeHref="/lucrari" userName={fullName}>
       <div className="space-y-5">
         <div>
           <h1 className="text-2xl font-bold tracking-[-0.02em] text-slate-950">Lucrări disponibile</h1>

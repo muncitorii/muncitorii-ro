@@ -1,10 +1,20 @@
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { Card } from "@/components/ui/card";
 import { categories } from "@/lib/categories";
+import { createClient } from "@/lib/supabase/server";
 
-export default function NewJobPage() {
+export default async function NewJobPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const fullName =
+    (user?.user_metadata?.full_name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    "Utilizator";
+
   return (
-    <DashboardLayout role="client" activeHref="/lucrari/nou" userName="Andreea">
+    <DashboardLayout role="client" activeHref="/lucrari/nou" userName={fullName}>
       <div className="max-w-2xl">
         <Card>
           <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">

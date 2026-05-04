@@ -2,108 +2,76 @@ import Link from "next/link";
 import { DashboardLayout } from "@/components/dashboard-layout";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { createClient } from "@/lib/supabase/server";
 
-const jobs = [
-  {
-    id: "1",
-    title: "Reparație instalație electrică",
-    status: "activ" as const,
-    applicants: 3,
-    city: "București",
-    deadline: "30 apr",
-  },
-  {
-    id: "2",
-    title: "Zugrăvit living și dormitor",
-    status: "activ" as const,
-    applicants: 5,
-    city: "București",
-    deadline: "15 mai",
-  },
-  {
-    id: "3",
-    title: "Montaj gresie baie",
-    status: "finalizat" as const,
-    applicants: 2,
-    city: "București",
-    deadline: "Finalizat",
-  },
-];
+export default async function ClientDashboardPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
-export default function ClientDashboardPage() {
+  const fullName =
+    (user?.user_metadata?.full_name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    "Utilizator";
+
   return (
-    <DashboardLayout role="client" activeHref="/dashboard/client" userName="Andreea">
+    <DashboardLayout role="client" activeHref="/dashboard/client" userName={fullName}>
       <div className="space-y-6">
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-          <StatCard value="2" label="Lucrări active" />
-          <StatCard value="8" label="Oferte primite" />
-          <StatCard value="3" label="Conversații" />
-          <StatCard value="1" label="Lucrări finalizate" />
+        {/* Welcome */}
+        <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
+          <p className="text-sm font-medium text-white/60">Bine ai venit,</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] md:text-3xl">{fullName}</h1>
+          <p className="mt-3 max-w-xl text-sm leading-relaxed text-white/75 md:text-base">
+            Postează prima ta lucrare și primește oferte de la meseriași verificați din zona ta.
+          </p>
+          <Link
+            href="/lucrari/nou"
+            className="mt-5 inline-flex rounded-full bg-accent-700 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-accent-800"
+          >
+            + Postează o lucrare
+          </Link>
         </div>
 
-        {/* Jobs list */}
+        {/* Stats — toate la 0 până când userul are activitate */}
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          <StatCard value="0" label="Lucrări active" />
+          <StatCard value="0" label="Oferte primite" />
+          <StatCard value="0" label="Conversații" />
+          <StatCard value="0" label="Lucrări finalizate" />
+        </div>
+
+        {/* Empty state pentru lucrări */}
         <Card>
           <div className="flex items-center justify-between gap-3">
             <h2 className="text-xl font-bold tracking-[-0.015em] text-slate-950">Lucrările mele</h2>
             <Link
               href="/lucrari/nou"
-              className="rounded-full bg-primary-900 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-out hover:bg-primary-700"
+              className="rounded-full bg-primary-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
             >
               + Lucrare nouă
             </Link>
           </div>
 
-          {jobs.length === 0 ? (
-            <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center">
-              <p className="font-semibold text-slate-950">Nicio lucrare postată</p>
-              <p className="mt-1 text-sm text-slate-500">Postează prima ta lucrare și primește oferte.</p>
-              <Link
-                href="/lucrari/nou"
-                className="mt-4 inline-flex rounded-full bg-primary-900 px-4 py-2 text-sm font-semibold text-white transition-all duration-200 ease-out hover:bg-primary-700"
-              >
-                Postează acum
-              </Link>
-            </div>
-          ) : (
-            <div className="mt-5 space-y-3">
-              {jobs.map((job) => (
-                <Link
-                  key={job.id}
-                  href={`/lucrari/${job.id}`}
-                  className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 p-4 transition-all duration-200 ease-out hover:border-primary-500/30 hover:bg-primary-50/40"
-                >
-                  <div className="min-w-0 flex-1">
-                    <p className="truncate font-semibold text-slate-950">{job.title}</p>
-                    <p className="mt-0.5 text-xs text-slate-500">
-                      {job.city} · {job.deadline}
-                    </p>
-                  </div>
-                  <div className="flex shrink-0 items-center gap-2">
-                    {job.status === "activ" && job.applicants > 0 && (
-                      <Badge variant="default" className="bg-primary-50 text-primary-900">
-                        {job.applicants} oferte
-                      </Badge>
-                    )}
-                    <Badge
-                      variant={job.status === "activ" ? "success" : "default"}
-                      dot={job.status === "activ"}
-                    >
-                      {job.status}
-                    </Badge>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
+          <div className="mt-6 rounded-2xl border border-slate-200 p-8 text-center">
+            <p className="font-semibold text-slate-950">Nicio lucrare postată încă</p>
+            <p className="mt-1 text-sm text-slate-500">
+              Postează prima ta lucrare și primește oferte în câteva ore.
+            </p>
+            <Link
+              href="/lucrari/nou"
+              className="mt-4 inline-flex rounded-full bg-primary-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
+            >
+              Postează acum
+            </Link>
+          </div>
         </Card>
 
         {/* Quick actions */}
         <div className="grid gap-3 md:grid-cols-2">
           <Link
             href="/lucrari/nou"
-            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition-all duration-200 ease-out hover:border-primary-500/30 hover:bg-primary-50/40"
+            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition hover:border-primary-500/30 hover:bg-primary-50/40"
           >
             <p className="font-semibold text-slate-950">Postează o lucrare nouă</p>
             <p className="mt-1 text-sm text-slate-500">
@@ -112,9 +80,9 @@ export default function ClientDashboardPage() {
           </Link>
           <Link
             href="/muncitori"
-            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition-all duration-200 ease-out hover:border-primary-500/30 hover:bg-primary-50/40"
+            className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition hover:border-primary-500/30 hover:bg-primary-50/40"
           >
-            <p className="font-semibold text-slate-950">Caută muncitori</p>
+            <p className="font-semibold text-slate-950">Caută meseriași</p>
             <p className="mt-1 text-sm text-slate-500">Răsfoiește profiluri și contactează direct.</p>
           </Link>
         </div>

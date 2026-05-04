@@ -4,6 +4,7 @@ import { DashboardLayout } from "@/components/dashboard-layout";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { getJobById } from "@/lib/jobs";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function JobDetailPage({
   params,
@@ -15,8 +16,17 @@ export default async function JobDetailPage({
 
   if (!job) notFound();
 
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const fullName =
+    (user?.user_metadata?.full_name as string | undefined) ??
+    user?.email?.split("@")[0] ??
+    "Utilizator";
+
   return (
-    <DashboardLayout role="muncitor" activeHref="/lucrari" userName="Alex Popescu">
+    <DashboardLayout role="muncitor" activeHref="/lucrari" userName={fullName}>
       <div className="space-y-5">
         <Link
           href="/lucrari"
