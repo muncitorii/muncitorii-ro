@@ -156,38 +156,125 @@ export default function Home() {
       </section>
 
       {/* FOUNDER STORY */}
-      <section className="bg-white px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-4xl">
+      <section className="bg-white px-4 py-16 md:px-6 md:py-28">
+        <div className="mx-auto max-w-3xl">
           <FadeUp>
-            <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
-              De ce există Muncitorii.ro
+            <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent-700">
+              Povestea Muncitorii.ro
             </span>
-            <h2 className="mt-4 text-3xl font-bold tracking-[-0.02em] text-slate-950 md:text-4xl">
-              Am construit asta pentru că am pățit-o pe pielea mea.
+            <h2 className="mt-5 text-4xl font-bold leading-[1.1] tracking-[-0.025em] text-slate-950 md:text-5xl">
+              De ce am construit
+              <br className="hidden sm:block" /> această platformă.
             </h2>
-            <div className="mt-6 space-y-4 text-base leading-relaxed text-slate-700 md:text-lg">
-              <p>
-                Sunt Liviu, electrician cu 8 ani experiență. Am cumpărat un apartament
-                și am renovat. Pe primul zugrav l-am găsit pe un grup de Facebook.
-                Mi-a cerut un preț, am acceptat, a luat avans, a lucrat 4 zile.
-              </p>
-              <p>
-                Rezultatul? <strong>Rosturi strâmbe. Pereți cu pete. Finisaj de copil de 5 ani.</strong>
-              </p>
-              <p>
-                L-am dat afară. Am angajat altul. La final, aceeași lucrare —
-                plătită de două ori. <strong>12.000 lei pierduți.</strong>
-              </p>
-              <p>
-                Eu sunt meseriaș. Cunosc termenii. Și totuși am pățit-o.
-                Pentru că pe Facebook nu vezi nimic — nici recenzii, nici poze, nici istoric.
-              </p>
-              <p className="text-slate-950 font-semibold">
-                De-aia am construit Muncitorii.ro. Profil real, lucrări făcute, recenzii adevărate.
-                Înainte să dai avansul pe primul telefon — uită-te aici.
-              </p>
-            </div>
           </FadeUp>
+
+          <div className="mt-12 space-y-10 md:mt-16 md:space-y-14">
+            {/* Cine sunt */}
+            <FadeUp>
+              <p className="text-xl leading-relaxed text-slate-800 md:text-2xl md:leading-[1.5]">
+                Sunt <strong className="text-slate-950">Liviu</strong>.
+              </p>
+              <p className="mt-3 text-lg leading-relaxed text-slate-600 md:text-xl">
+                La bază sunt <strong className="text-slate-800">Ofițer Electric pe nave cargo</strong>.
+              </p>
+              <p className="mt-3 text-lg leading-relaxed text-slate-600 md:text-xl">
+                Recent mi-am schimbat jobul cu unul la mal — iar asta mi-a dat timp să gândesc.
+              </p>
+              <p className="mt-5 text-2xl font-semibold tracking-[-0.015em] text-slate-950 md:text-3xl">
+                Și așa a apărut Muncitorii.ro.
+              </p>
+            </FadeUp>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* Povestea renovării */}
+            <FadeUp>
+              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
+                Cum a început totul
+              </p>
+              <p className="mt-4 text-lg leading-relaxed text-slate-700 md:text-xl">
+                Am pornit cu renovarea unui apartament.
+              </p>
+              <p className="mt-3 text-lg leading-relaxed text-slate-700 md:text-xl">
+                Din recomandarea cuiva, am colaborat cu niște muncitori. Mi-au cerut un preț pentru lucrare. Am fost de acord.
+              </p>
+              <p className="mt-5 rounded-2xl bg-slate-50 p-5 text-lg italic leading-relaxed text-slate-800 md:p-6 md:text-xl">
+                Dar pe parcurs am descoperit că finisajele nu erau la nivelul meu de perfecționist. <span className="not-italic">😅</span>
+              </p>
+              <p className="mt-5 text-lg leading-relaxed text-slate-700 md:text-xl">
+                Am dus lucrarea la bun sfârșit cu ei. Dar nu sunt mulțumit.
+              </p>
+            </FadeUp>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* De ce platformă */}
+            <FadeUp>
+              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
+                De aceea există acest site
+              </p>
+              <p className="mt-4 text-2xl font-semibold leading-[1.35] tracking-[-0.015em] text-slate-950 md:text-3xl">
+                Vreau ca lumea să aibă posibilitatea să aleagă un meseriaș care lucrează exact la nivelul lor.
+              </p>
+              <p className="mt-4 text-lg leading-relaxed text-slate-600 md:text-xl">
+                Pentru că plătești pentru asta.
+              </p>
+              <p className="mt-6 text-lg leading-relaxed text-slate-700 md:text-xl">
+                În același timp, le dăm posibilitatea <strong className="text-slate-950">muncitorilor serioși să iasă în evidență</strong> — ca lumea să aprecieze ceea ce fac.
+              </p>
+            </FadeUp>
+
+            {/* Viziunea — block evidențiat */}
+            <FadeUp>
+              <div className="rounded-3xl border-2 border-accent-700 bg-gradient-to-br from-accent-50/60 to-white p-7 md:p-10">
+                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">
+                  Viziunea
+                </p>
+                <p className="mt-4 text-2xl font-bold leading-[1.25] tracking-[-0.02em] text-slate-950 md:text-3xl">
+                  Vreau ca Muncitorii.ro să devină etalonul pentru tot ce poți face în casă.
+                </p>
+                <p className="mt-4 text-base leading-relaxed text-slate-700 md:text-lg">
+                  De la o gaură în perete. La mutări de mobilă. La lucrări complexe.
+                </p>
+                <p className="mt-3 text-base leading-relaxed text-slate-700 md:text-lg">
+                  Și să dea posibilitatea celor care vor un ban extra — să intre pe site și să vadă lucrările disponibile.
+                </p>
+              </div>
+            </FadeUp>
+
+            <div className="h-px bg-slate-100" />
+
+            {/* Promisiunea */}
+            <FadeUp>
+              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
+                Promisiunea mea
+              </p>
+              <p className="mt-4 text-xl leading-relaxed text-slate-800 md:text-2xl">
+                Pe această platformă muncitorii vor fi <strong className="text-slate-950">verificați</strong>.
+              </p>
+              <p className="mt-3 text-lg leading-relaxed text-slate-700 md:text-xl">
+                Fiecare își va face profilul cum dorește — cu poze și descrieri.
+              </p>
+              <p className="mt-3 text-lg italic leading-relaxed text-slate-600 md:text-xl">
+                Fiecare meseriaș trebuie să-și vândă marfa, cum se spune.
+              </p>
+            </FadeUp>
+
+            {/* CTA WhatsApp */}
+            <FadeUp>
+              <div className="rounded-3xl bg-slate-950 p-7 text-white md:p-10">
+                <p className="text-base leading-relaxed text-white/70 md:text-lg">
+                  Pentru idei și sugestii, în <strong className="text-white">dreapta jos</strong> aveți WhatsApp-ul meu personal.
+                </p>
+                <p className="mt-3 text-lg font-semibold leading-relaxed text-white md:text-xl">
+                  Voi aprecia feedback-ul dumneavoastră.
+                </p>
+                <p className="mt-6 text-sm font-semibold tracking-wide text-accent-500">
+                  — Liviu, fondator Muncitorii.ro
+                </p>
+              </div>
+            </FadeUp>
+          </div>
         </div>
       </section>
 
