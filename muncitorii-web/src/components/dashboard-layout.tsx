@@ -20,6 +20,7 @@ const clientNav: NavItem[] = [
 const workerNav: NavItem[] = [
   { label: "Dashboard", href: "/dashboard/muncitor" },
   { label: "Lucrări disponibile", href: "/lucrari" },
+  { label: "Profilul meu", href: "/dashboard/muncitor/profil" },
 ];
 
 export function DashboardLayout({

@@ -42,7 +42,7 @@ export default async function WorkerDashboardPage() {
               </p>
             </div>
             <Link
-              href="/muncitori"
+              href="/dashboard/muncitor/profil"
               className="shrink-0 rounded-full bg-primary-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-700"
             >
               Completează
@@ -92,11 +92,11 @@ export default async function WorkerDashboardPage() {
             <p className="mt-1 text-sm text-slate-500">Răsfoiește cereri recente și aplică rapid.</p>
           </Link>
           <Link
-            href="/muncitori"
+            href="/dashboard/muncitor/profil"
             className="rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition hover:border-primary-500/30 hover:bg-primary-50/40"
           >
-            <p className="font-semibold text-slate-950">Vezi profilul tău public</p>
-            <p className="mt-1 text-sm text-slate-500">Așa apari clienților care te caută.</p>
+            <p className="font-semibold text-slate-950">Editează profilul</p>
+            <p className="mt-1 text-sm text-slate-500">Adaugă bio, telefon, tarif, disponibilitate.</p>
           </Link>
         </div>
       </div>
