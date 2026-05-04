@@ -32,7 +32,7 @@ export function SiteHeader() {
             href="/register"
             className="rounded-full bg-accent-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-800"
           >
-            Creează cont
+            Cont nou
           </Link>
         </div>
       </div>
