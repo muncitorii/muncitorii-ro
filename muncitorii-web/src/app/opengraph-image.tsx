@@ -20,7 +20,7 @@ export default function OpengraphImage() {
           position: "relative",
         }}
       >
-        {/* Decorative grid pattern overlay */}
+        {/* Decorative grid pattern */}
         <div
           style={{
             position: "absolute",
@@ -31,70 +31,28 @@ export default function OpengraphImage() {
           }}
         />
 
-        {/* Top: badge + logo mark */}
+        {/* Top: badge */}
         <div
           style={{
             display: "flex",
-            alignItems: "center",
-            gap: "20px",
+            padding: "10px 22px",
+            borderRadius: "999px",
+            background: "rgba(255, 255, 255, 0.08)",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            color: "rgba(255, 255, 255, 0.85)",
+            fontSize: "22px",
+            fontWeight: 600,
+            letterSpacing: "0.5px",
             zIndex: 1,
+            alignSelf: "flex-start",
           }}
         >
-          {/* Logo mark */}
-          <div
-            style={{
-              width: "76px",
-              height: "76px",
-              borderRadius: "20px",
-              background: "linear-gradient(135deg, #c2410c 0%, #ea580c 100%)",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: "0 12px 40px rgba(194, 65, 12, 0.45)",
-            }}
-          >
-            <svg width="44" height="44" viewBox="0 0 64 64" fill="none">
-              <path
-                d="M14 28C14 17.5 22.3 10 32 10C41.7 10 50 17.5 50 28V31H14V28Z"
-                fill="white"
-              />
-              <path
-                d="M18 34C18 43 24.1 49 32 49C39.9 49 46 43 46 34"
-                stroke="white"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-              <path
-                d="M24 49H40"
-                stroke="white"
-                strokeWidth="6"
-                strokeLinecap="round"
-              />
-            </svg>
-          </div>
-
-          {/* Tag */}
-          <div
-            style={{
-              display: "flex",
-              padding: "8px 18px",
-              borderRadius: "999px",
-              background: "rgba(255, 255, 255, 0.08)",
-              border: "1px solid rgba(255, 255, 255, 0.15)",
-              color: "rgba(255, 255, 255, 0.85)",
-              fontSize: "20px",
-              fontWeight: 600,
-              letterSpacing: "0.5px",
-            }}
-          >
-            ✦ Platforma #1 pentru meseriași din România
-          </div>
+          ✦ Platforma #1 pentru meseriași din România
         </div>
 
-        {/* Spacer */}
         <div style={{ flex: 1, display: "flex" }} />
 
-        {/* Main heading */}
+        {/* Main heading — typography logo style */}
         <div
           style={{
             display: "flex",
@@ -104,32 +62,31 @@ export default function OpengraphImage() {
         >
           <div
             style={{
-              fontSize: "108px",
+              fontSize: "150px",
               fontWeight: 900,
               color: "white",
               lineHeight: 1,
-              letterSpacing: "-0.04em",
+              letterSpacing: "-0.05em",
               display: "flex",
             }}
           >
-            Muncitorii<span style={{ color: "#ea580c" }}>.ro</span>
+            Muncitorii<span style={{ color: "#ea580c" }}>.</span>ro
           </div>
 
           <div
             style={{
-              fontSize: "38px",
+              fontSize: "40px",
               fontWeight: 500,
               color: "rgba(255, 255, 255, 0.75)",
               lineHeight: 1.3,
-              marginTop: "24px",
-              maxWidth: "900px",
+              marginTop: "32px",
+              maxWidth: "1000px",
               letterSpacing: "-0.01em",
             }}
           >
             Meseriași verificați. Recenzii reale. Profile cu portofoliu.
           </div>
 
-          {/* Bottom value props */}
           <div
             style={{
               display: "flex",
@@ -143,7 +100,7 @@ export default function OpengraphImage() {
                 <div
                   key={item}
                   style={{
-                    fontSize: "22px",
+                    fontSize: "24px",
                     fontWeight: 600,
                     color: "rgba(255, 255, 255, 0.6)",
                     display: "flex",
@@ -156,7 +113,6 @@ export default function OpengraphImage() {
           </div>
         </div>
 
-        {/* Bottom URL */}
         <div
           style={{
             position: "absolute",
