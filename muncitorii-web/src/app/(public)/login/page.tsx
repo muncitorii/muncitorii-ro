@@ -1,11 +1,47 @@
-import type { Metadata } from "next";
+"use client";
 
-export const metadata: Metadata = {
-  title: "Intră în cont | Muncitorii.ro",
-  description: "Accesează contul tău pe Muncitorii.ro.",
-};
+import Link from "next/link";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
+
+// metadata nu funcționează în Client Components — mutată în layout dacă e nevoie
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setError(null);
+    setLoading(true);
+
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    const email = data.get("email") as string;
+    const password = data.get("password") as string;
+
+    const supabase = createClient();
+    const { error: authError, data: authData } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (authError) {
+      setError("Email sau parolă incorectă. Încearcă din nou.");
+      setLoading(false);
+      return;
+    }
+
+    // Redirecționare bazată pe rol
+    const role = authData.user?.user_metadata?.role;
+    router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
+    router.refresh();
+  }
+
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
       <div className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
@@ -17,37 +53,37 @@ export default function LoginPage() {
           Continuă de unde ai rămas și gestionează lucrările, ofertele și conversațiile tale.
         </p>
 
-        <form className="mt-6 space-y-4">
+        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
-            <input
-              type="email"
-              placeholder="tu@email.com"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-primary-700 focus:ring-2 focus:ring-primary-700/20"
-            />
+            <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
+            <Input id="email" name="email" type="email" placeholder="tu@email.com" autoComplete="email" required />
           </div>
 
           <div>
-            <label className="mb-1.5 block text-sm font-medium text-slate-700">Parolă</label>
-            <input
-              type="password"
-              placeholder="Introdu parola"
-              className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-primary-700 focus:ring-2 focus:ring-primary-700/20"
-            />
+            <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-slate-700">Parolă</label>
+            <Input id="password" name="password" type="password" placeholder="Parola ta" autoComplete="current-password" required />
           </div>
 
-          <button
-            type="submit"
-            className="w-full rounded-2xl bg-primary-900 px-5 py-3 text-sm font-semibold text-white transition-all duration-200 ease-out hover:bg-primary-700"
-          >
-            Intră în cont
-          </button>
+          {error && (
+            <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
+          )}
+
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? "Se verifică..." : "Intră în cont"}
+          </Button>
         </form>
 
-        <div className="mt-5 text-center text-sm text-slate-600">
-          <a href="/register" className="font-semibold text-primary-900 hover:text-primary-700">
-            Nu ai cont? Creează unul acum
-          </a>
+        <div className="mt-5 space-y-2 text-center text-sm text-slate-600">
+          <div>
+            <Link href="/register" className="font-semibold text-primary-900 hover:text-primary-700">
+              Nu ai cont? Creează unul acum
+            </Link>
+          </div>
+          <div>
+            <Link href="/register/muncitor" className="text-slate-500 hover:text-slate-700">
+              Ești meseriaș? Înregistrează-te ca profesionist
+            </Link>
+          </div>
         </div>
       </div>
     </section>
