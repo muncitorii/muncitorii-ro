@@ -60,7 +60,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
       router.push(isWorker ? "/dashboard/muncitor" : "/dashboard/client");
       router.refresh();
     } catch (err) {
-      setError("Eroare de conexiune. Verifică internetul și încearcă din nou.");
+      setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
     }
   }
