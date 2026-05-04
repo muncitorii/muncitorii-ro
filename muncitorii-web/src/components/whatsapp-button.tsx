@@ -3,7 +3,7 @@
 import { MessageCircle, X } from "lucide-react";
 import { useState } from "react";
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678";
+const WA_NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "");
 const WA_MESSAGE = encodeURIComponent(
   "Bună! Am o întrebare despre Muncitorii.ro."
 );

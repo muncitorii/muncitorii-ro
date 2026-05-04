@@ -7,7 +7,7 @@ export const metadata: Metadata = {
     "Contactează echipa Muncitorii.ro — email, WhatsApp sau formular direct. Răspundem în aceeași zi.",
 };
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678";
+const WA_NUMBER = (process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "");
 const WA_URL = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
   "Bună! Am o întrebare despre Muncitorii.ro."
 )}`;
