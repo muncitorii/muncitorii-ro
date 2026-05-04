@@ -9,3 +9,12 @@ HEARTBEAT.md
 # Node / Next.js (covered by muncitorii-web/.gitignore but kept here too)
 node_modules/
 .next/
+
+# Live bridge (paper trading only)
+.env
+alerts_inbox.jsonl
+alerts_inbox-*.jsonl
+
+# Env files
+.env.local
+.env*.local
