@@ -8,7 +8,7 @@ fi
 
 INPUT="$1"
 LANGUAGE="${2:-ro}"
-MODEL_SIZE="${3:-small}"
+MODEL_SIZE="${3:-large-v3}"
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 VENV="/home/Liviu/.openclaw/venvs/voice-stt"
 TMP_DIR="${SCRIPT_DIR}/.tmp"
