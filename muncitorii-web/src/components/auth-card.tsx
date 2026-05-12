@@ -53,7 +53,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
 
     try {
       const supabase = createClient();
-      const { error: authError } = await supabase.auth.signUp({
+      const { data: authData, error: authError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -75,8 +75,15 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
 
       setSuccess(true);
       setLoading(false);
-      router.push(isWorker ? "/dashboard/muncitor" : "/dashboard/client");
-      router.refresh();
+
+      if (authData.session) {
+        router.push(isWorker ? "/dashboard/muncitor" : "/dashboard/client");
+        router.refresh();
+      } else {
+        router.push(
+          `/verify?email=${encodeURIComponent(email)}&role=${isWorker ? "worker" : "client"}`,
+        );
+      }
     } catch (err) {
       setError(err instanceof Error ? err.message : String(err));
       setLoading(false);
@@ -87,7 +94,7 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
     return (
       <div className="w-full max-w-md rounded-3xl border border-emerald-200 bg-emerald-50 p-8">
         <p className="font-semibold text-emerald-800">Cont creat cu succes!</p>
-        <p className="mt-2 text-sm text-emerald-700">Te redirectionăm la dashboard...</p>
+        <p className="mt-2 text-sm text-emerald-700">Te trimitem să confirmi codul primit pe email...</p>
       </div>
     );
   }
