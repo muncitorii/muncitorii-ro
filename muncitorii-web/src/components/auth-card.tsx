@@ -32,10 +32,23 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
 
     const email = data.get("email") as string;
     const password = data.get("password") as string;
+    const passwordConfirm = data.get("password_confirm") as string;
     const fullName = data.get("full_name") as string;
     const selectedSlug = data.get("trade_slug") as string | undefined;
     const customTrade = data.get("trade_custom") as string | undefined;
     const city = data.get("city") as string | undefined;
+
+    if (password !== passwordConfirm) {
+      setError("Parolele nu se potrivesc. Verifică și încearcă din nou.");
+      setLoading(false);
+      return;
+    }
+
+    if (password.length < 8) {
+      setError("Parola trebuie să aibă minim 8 caractere.");
+      setLoading(false);
+      return;
+    }
 
     // Pentru meseriași: dacă "altele" → folosim descrierea, altfel numele categoriei
     let trade: string | null = null;
@@ -131,6 +144,21 @@ export function AuthCard({ title, subtitle, role }: AuthCardProps) {
             name="password"
             type="password"
             placeholder="Minim 8 caractere"
+            autoComplete="new-password"
+            minLength={8}
+            required
+          />
+        </div>
+
+        <div>
+          <label htmlFor="auth-password-confirm" className="mb-1.5 block text-sm font-medium text-slate-700">
+            Confirmă parola
+          </label>
+          <Input
+            id="auth-password-confirm"
+            name="password_confirm"
+            type="password"
+            placeholder="Reintrodu parola"
             autoComplete="new-password"
             minLength={8}
             required
