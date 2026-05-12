@@ -19,4 +19,4 @@ WAV="${TMP_DIR}/${BASENAME}.wav"
 
 ffmpeg -y -i "$INPUT" -ac 1 -ar 16000 -c:a pcm_s16le "$WAV" >/dev/null 2>&1
 source "${VENV}/bin/activate"
-python "${SCRIPT_DIR}/faster_whisper_transcribe.py" "$WAV" "$LANGUAGE" "$MODEL_SIZE"
+python "${SCRIPT_DIR}/enhanced_transcribe.py" "$WAV" "$LANGUAGE" "$MODEL_SIZE"
