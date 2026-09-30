@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Despre noi | Muncitorii.ro",
   description:
-    "Cine suntem și de ce am construit Muncitorii.ro — platforma care conectează clienți cu meseriași serioși din România.",
+    "Cine suntem și de ce am construit Muncitorii.ro, platforma care conectează clienți cu meseriași serioși din România.",
 };
 
 export default function DesprePage() {
@@ -32,7 +32,7 @@ export default function DesprePage() {
             <p className="mt-3 text-sm leading-relaxed text-slate-600">
               Pe piața din România, găsirea unui meseriaș serios era o problemă reală. Grupuri
               Facebook dezorganizate, recomandări nesigure, prețuri netransparente. Am construit
-              Muncitorii.ro ca să schimbăm asta — un loc clar, simplu și cinstit unde poți
+              Muncitorii.ro ca să schimbăm asta, un loc simplu și cinstit unde poți
               compara, alege și angaja.
             </p>
           </div>

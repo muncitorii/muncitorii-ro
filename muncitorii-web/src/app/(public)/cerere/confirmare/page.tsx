@@ -37,8 +37,8 @@ export default async function CerereConfirmarePage({
           <div className="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6 text-left">
             <p className="text-sm font-semibold text-slate-950">Linkul tău de urmărire</p>
             <p className="mt-1 text-sm leading-relaxed text-slate-600">
-              Din momentul în care lucrarea intră în etapa de execuție, poți urmări progresul aici —
-              salvează linkul, nu ai nevoie de cont:
+              Din momentul în care lucrarea intră în etapa de execuție, poți urmări progresul aici.
+              Salvează linkul, nu ai nevoie de cont:
             </p>
             <Link
               href={`/p/${token}`}

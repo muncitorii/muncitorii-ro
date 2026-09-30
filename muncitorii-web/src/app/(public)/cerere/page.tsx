@@ -4,7 +4,7 @@ import { IntakeForm } from "@/components/intake-form";
 export const metadata: Metadata = {
   title: "Descrie lucrarea | Muncitorii.ro",
   description:
-    "Descrie lucrarea de renovare cu poze — primești caiet de sarcini și oferte comparabile în câteva zile.",
+    "Trimite poze și descrierea lucrării. Primești caietul de sarcini și 2–3 oferte comparabile în 3–5 zile lucrătoare.",
 };
 
 export default function CererePage() {
@@ -17,7 +17,7 @@ export default function CererePage() {
             Descrie lucrarea
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-white/75">
-            Trei minute, poze incluse. Te sunăm în 24h cu următorii pași — taxa de evaluare de 200 lei
+            Trei minute, poze incluse. Te sunăm în 24h cu următorii pași. Taxa de evaluare de 200 lei
             se deduce integral din valoarea lucrării.
           </p>
         </div>

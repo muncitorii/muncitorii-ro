@@ -4,24 +4,29 @@ import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
 const promises = [
   {
-    title: "Lucrare clară",
-    description: "Descrii o dată, cu poze — primești un caiet de sarcini scris, nu vorbe în vânt.",
+    title: "Caiet de sarcini",
+    description:
+      "Descrii lucrarea o singură dată, cu poze. Primești un document scris cu ce se face, în ce ordine și cu ce materiale.",
   },
   {
-    title: "Ofertă clară",
-    description: "Compari oferte pe aceleași criterii, nu ghicești ce e inclus și ce nu.",
+    title: "Oferte pe același caiet de sarcini",
+    description:
+      "Doi sau trei meseriași din rețea cotează aceeași listă de lucrări. Compari prețul, termenul și garanția pe aceleași rânduri.",
   },
   {
-    title: "Dovadă clară",
-    description: "Fiecare etapă are poze înainte/după și confirmarea ta, nu \"pe cuvânt\".",
+    title: "Etape cu poze și confirmare",
+    description:
+      "Lucrarea e împărțită în etape cu termen. La fiecare etapă primești poze înainte și după și confirmi din telefon înainte să se treacă mai departe.",
   },
   {
-    title: "Costuri fără surprize",
-    description: "Orice cost suplimentar se aprobă în scris, de tine, înainte să fie făcut.",
+    title: "Costuri suplimentare aprobate în scris",
+    description:
+      "Dacă apare ceva neprevăzut, primești devizul suplimentar explicat. Se execută numai după aprobarea ta scrisă.",
   },
   {
-    title: "Dosar complet la final",
-    description: "Facturi, garanții, instrucțiuni de întreținere — totul într-un singur loc.",
+    title: "Dosarul lucrării",
+    description:
+      "La recepție primești facturile, garanțiile, procesul-verbal și instrucțiunile de întreținere, într-un singur dosar digital.",
   },
 ];
 
@@ -29,22 +34,24 @@ const steps = [
   {
     num: "01",
     title: "Descrii lucrarea",
-    description: "Trimiți poze, tipul lucrării, orașul și bugetul orientativ. Durează 3 minute.",
+    description: "Trimiți poze, tipul lucrării, adresa și bugetul orientativ. Formularul durează 3 minute.",
   },
   {
     num: "02",
-    title: "Primești caiet de sarcini și oferte",
-    description: "Evaluăm lucrarea și îți trimitem oferte comparabile de la meseriași din rețea.",
+    title: "Primești caietul de sarcini și ofertele",
+    description:
+      "Evaluăm lucrarea, la fața locului sau din poze, și îți trimitem 2–3 oferte pe același caiet de sarcini, în 3–5 zile lucrătoare.",
   },
   {
     num: "03",
-    title: "Urmărești etapele cu poze",
-    description: "Fiecare etapă are termen, poze înainte/după și un buton de confirmare pentru tine.",
+    title: "Urmărești etapele",
+    description:
+      "Fiecare etapă are termen și poze înainte și după. Confirmi etapa din linkul tău, apoi se trece la următoarea.",
   },
   {
     num: "04",
     title: "Primești dosarul digital",
-    description: "La final: facturi, garanții, instrucțiuni de întreținere, totul organizat.",
+    description: "La recepție primești dosarul lucrării: facturi, garanții, proces-verbal, instrucțiuni de întreținere.",
   },
 ];
 
@@ -64,8 +71,9 @@ export default function Home() {
                 <span className="text-accent-500">dovadă</span>.
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/75">
-                Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
-                de sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
+                Lucrare clară, ofertă clară, dovadă clară. Coordonăm renovări în Iași și în jur.
+                Caiet de sarcini scris, oferte comparabile, etape cu poze și confirmarea ta, dosar
+                complet la recepție.
               </p>
 
               <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -86,7 +94,7 @@ export default function Home() {
               </div>
 
               <p className="mt-4 text-sm text-white/60">
-                Taxă de evaluare 200 lei — se deduce integral din lucrare.
+                Taxă de evaluare 200 lei, se deduce integral din lucrare.
               </p>
             </div>
           </FadeUp>
@@ -98,9 +106,9 @@ export default function Home() {
         <div className="mx-auto max-w-3xl">
           <FadeUp>
             <h2 className="text-2xl font-bold tracking-[-0.02em] text-primary-900 md:text-3xl">
-              Ce înseamnă „coordonat&rdquo;
+              Ce primești
             </h2>
-            <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
+            <p className="mt-2 text-slate-600">Cinci lucruri incluse în fiecare lucrare pe care o coordonăm.</p>
           </FadeUp>
 
           <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-2">
@@ -116,14 +124,14 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CUM LUCRĂM — 4 pași */}
+      {/* CUM LUCRĂM, 4 pași */}
       <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-6xl">
           <FadeUp className="max-w-2xl">
             <h2 className="text-2xl font-bold tracking-[-0.02em] text-primary-900 md:text-3xl">
               Cum lucrăm
             </h2>
-            <p className="mt-2 text-slate-600">Patru pași, fără zone gri.</p>
+            <p className="mt-2 text-slate-600">Patru pași, de la prima poză la recepție.</p>
           </FadeUp>
 
           <StaggerContainer className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-4">

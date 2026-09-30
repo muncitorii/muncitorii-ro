@@ -5,7 +5,7 @@ import { Check, X } from "lucide-react";
 export const metadata: Metadata = {
   title: "Cum lucrăm | Muncitorii.ro",
   description:
-    "Flow-ul complet de coordonare a renovării: de la descrierea lucrării la dosarul digital final. Plata pe etape, costuri fără surprize.",
+    "Cum coordonăm o renovare: caiet de sarcini, oferte comparabile, etape cu poze și confirmare, plată 40/40/20, dosar la recepție.",
 };
 
 const flowSteps = [
@@ -21,28 +21,28 @@ const flowSteps = [
   },
   {
     num: "03",
-    title: "Compari oferte comparabile",
-    text: "Primești oferte scrise pe același caiet de sarcini — le compari pe cifre, nu pe promisiuni verbale diferite de la fiecare meseriaș.",
+    title: "Compari ofertele",
+    text: "Primești ofertele scrise pe același caiet de sarcini. Compari prețul, termenul și garanția rând cu rând.",
   },
   {
     num: "04",
     title: "Lucrarea are etape cu poze",
-    text: "Fiecare etapă are un termen. Când etapa e gata, primești poze înainte/după și un buton de confirmare — nimic nu trece la etapa următoare fără aprobarea ta.",
+    text: "Fiecare etapă are un termen. Când etapa e gata, primești poze înainte și după. Confirmi din telefon, apoi se trece la etapa următoare.",
   },
   {
     num: "05",
-    title: "Costurile extra se aprobă în scris",
-    text: "Dacă apare ceva neprevăzut (ex. o instalație veche care trebuie înlocuită), primești costul suplimentar explicat și îl aprobi sau îl respingi tu, înainte să fie făcut.",
+    title: "Costurile suplimentare se aprobă în scris",
+    text: "Dacă apare ceva neprevăzut, de exemplu o coloană de apă corodată, primești costul suplimentar explicat și îl aprobi sau îl respingi tu, înainte să fie făcut.",
   },
   {
     num: "06",
     title: "Primești dosarul digital",
-    text: "La final: facturi, garanții, instrucțiuni de întreținere, procesul verbal de recepție — toate organizate într-un singur loc, accesibile oricând.",
+    text: "La final primești facturile, garanțiile, procesul-verbal de recepție și instrucțiunile de întreținere, organizate într-un singur dosar digital, accesibil oricând.",
   },
 ];
 
 const youDo = [
-  "Descrii lucrarea cu poze, cât mai clar posibil",
+  "Descrii lucrarea și trimiți poze",
   "Confirmi etapele pe măsură ce sunt finalizate",
   "Aprobi sau respingi costurile suplimentare propuse",
   "Plătești pe etape, conform planului de plată",
@@ -62,10 +62,10 @@ const paymentSplit = [
 ];
 
 const weDontDo = [
-  "Nu garantăm un preț fix înainte de evaluare — bugetul orientativ e o estimare, oferta fermă vine după caietul de sarcini",
-  "Nu suntem angajatorul meseriașilor din rețea — coordonăm lucrarea, nu suntem intermediar de forță de muncă",
-  "Nu facem lucrări în afara Iașiului și împrejurimilor, momentan",
-  "Nu începem nicio etapă nouă fără confirmarea celei anterioare",
+  "Prețul ferm vine după caietul de sarcini. Bugetul orientativ din formular este doar o estimare.",
+  "Coordonăm lucrarea. Meseriașii din rețea sunt firme sau PFA independente, nu angajații noștri.",
+  "Lucrăm momentan în Iași și pe o rază de 50 km.",
+  "Nu începem o etapă nouă până nu ai confirmat-o pe cea anterioară.",
 ];
 
 export default function CumLucramPage() {
@@ -75,10 +75,10 @@ export default function CumLucramPage() {
         <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
           <p className="text-sm font-medium text-white/60">Cum lucrăm</p>
           <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] text-white md:text-3xl">
-            Flow-ul complet, fără zone gri
+            Flow-ul complet, pas cu pas
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
-            De la primul mesaj la dosarul digital final — șase pași, fiecare cu o dovadă.
+            De la primul mesaj la dosarul digital final. Șase pași, fiecare cu o dovadă.
           </p>
         </div>
 

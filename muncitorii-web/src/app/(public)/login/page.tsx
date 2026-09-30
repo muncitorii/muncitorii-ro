@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
 
-// metadata nu funcționează în Client Components — mutată în layout dacă e nevoie
+// metadata nu funcționează în Client Components, mutată în layout dacă e nevoie
 
 export default function LoginPage() {
   return (

@@ -5,7 +5,7 @@ import { ContactForm } from "@/components/contact-form";
 export const metadata: Metadata = {
   title: "Contact | Muncitorii.ro",
   description:
-    "Contactează echipa Muncitorii.ro — formular direct sau email. Răspundem în aceeași zi.",
+    "Contactează echipa Muncitorii.ro, prin formular sau email. Răspundem în aceeași zi.",
 };
 
 export default function ContactPage() {

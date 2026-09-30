@@ -89,7 +89,7 @@ export default async function ClientPortalPage({
       <div className="mx-auto max-w-3xl">
         {seed && (
           <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-xs font-medium text-amber-800">
-            Date demo — SUPABASE_SERVICE_ROLE_KEY nu e configurat, se afișează o lucrare seed.
+            Date demo. SUPABASE_SERVICE_ROLE_KEY nu e configurat, se afișează o lucrare seed.
           </div>
         )}
 
@@ -97,7 +97,7 @@ export default async function ClientPortalPage({
         <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
           <p className="text-sm font-medium text-white/60">Lucrarea ta</p>
           <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] md:text-3xl">
-            {getJobTypeLabel(brief.work_type)} {job.city ? `— ${job.city}` : ""}
+            {getJobTypeLabel(brief.work_type)} {job.city ? `, ${job.city}` : ""}
           </h1>
           <div className="mt-3">
             <Badge variant="accent">{jobStatusLabel[job.status] ?? job.status}</Badge>
@@ -292,7 +292,7 @@ export default async function ClientPortalPage({
         )}
 
         <p className="mt-8 text-center text-xs text-slate-400">
-          Acest link e personal — nu îl distribui. Nu vezi date despre alte lucrări.
+          Acest link e personal, nu îl distribui. Nu vezi date despre alte lucrări.
         </p>
       </div>
     </section>

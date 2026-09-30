@@ -61,7 +61,7 @@ export async function submitIntakeAction(
     await attachIntakePhotos(result.jobId, uploaded);
   }
 
-  // Notificare email — non-blocking pentru utilizator (nu oprim redirect-ul
+  // Notificare email, non-blocking pentru utilizator (nu oprim redirect-ul
   // dacă Resend nu e configurat sau dă eroare).
   const jobWithClient = await getJobWithClientById(result.jobId);
   if (jobWithClient) {

@@ -5,14 +5,14 @@ import { PartnerForm } from "@/components/partner-form";
 export const metadata: Metadata = {
   title: "Pentru meseriași | Muncitorii.ro",
   description:
-    "Intră în rețeaua de subcontractori Muncitorii.ro și primești cereri de ofertă pentru lucrări deja evaluate, în Iași și împrejurimi.",
+    "Rețeaua de meseriași Muncitorii.ro, Iași. Primești cereri de ofertă pe lucrări evaluate, cu caiet de sarcini, și ești plătit pe etape.",
 };
 
 const benefits = [
-  "Primești cereri de ofertă pentru lucrări deja evaluate, cu caiet de sarcini clar",
-  "Nu mai pierzi timp cu clienți care nu știu exact ce vor",
-  "Ești plătit pe etape, la fel ca clientul — fără să aștepți totul la final",
-  "Construiești un istoric de lucrări documentate cu poze",
+  "Primești cereri de ofertă pe lucrări deja evaluate, cu caiet de sarcini scris.",
+  "Clientul a fost deja consultat. Știi ce se cere înainte să dai prețul.",
+  "Ești plătit pe etape, la 3–5 zile după ce clientul achită etapa.",
+  "Fiecare lucrare rămâne documentată cu poze, în istoricul tău.",
 ];
 
 export default function ParteneriPage() {
@@ -25,14 +25,13 @@ export default function ParteneriPage() {
             Lucrări deja evaluate, clienți care știu ce vor
           </h1>
           <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
-            Nu suntem o platformă unde aplici la sute de anunțuri. Coordonăm lucrarea înainte să
-            ajungă la tine — tu te ocupi de execuție.
+            Coordonăm lucrarea înainte să ajungă la tine. Tu te ocupi de execuție.
           </p>
         </div>
 
         <div className="mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-start">
           <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-xl font-bold tracking-tight text-primary-900">De ce să lucrezi cu noi</h2>
+            <h2 className="text-xl font-bold tracking-tight text-primary-900">Cum funcționează pentru tine</h2>
             <ul className="mt-5 space-y-3.5">
               {benefits.map((b) => (
                 <li key={b} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700">
@@ -42,14 +41,14 @@ export default function ParteneriPage() {
               ))}
             </ul>
             <p className="mt-6 text-xs text-slate-400">
-              Trimitem cererea ta unui admin care revizuiește manual profilul — nu e aprobare
+              Trimitem cererea ta unui admin care revizuiește manual profilul. Aprobarea nu este
               automată. Te contactăm dacă profilul se pretează la lucrările din rețea.
             </p>
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
             <h2 className="text-xl font-bold tracking-tight text-primary-900">Aplică ca partener</h2>
-            <p className="mt-1 text-sm text-slate-500">Un formular scurt, 1 minut.</p>
+            <p className="mt-1 text-sm text-slate-500">Formularul durează un minut.</p>
             <div className="mt-5">
               <PartnerForm />
             </div>

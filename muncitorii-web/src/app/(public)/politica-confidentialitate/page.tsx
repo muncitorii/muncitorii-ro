@@ -24,7 +24,7 @@ const sections = [
   },
   {
     title: "5. Securitate",
-    text: "Datele sunt stocate în siguranță, cu acces restricționat. Nu stocăm parole în clar — folosim hashing standard.",
+    text: "Datele sunt stocate în siguranță, cu acces restricționat. Parolele sunt criptate, nu stocăm parole necriptate.",
   },
   {
     title: "6. Contact",
