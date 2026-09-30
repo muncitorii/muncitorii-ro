@@ -152,6 +152,22 @@ export async function attachIntakePhotos(jobId: string, storagePaths: string[]) 
     .insert(storagePaths.map((storage_path) => ({ job_id: jobId, kind: "intake" as const, storage_path })));
 }
 
+export async function attachStagePhoto(input: {
+  jobId: string;
+  stageId?: string;
+  kind: "before" | "after";
+  storagePath: string;
+}) {
+  const admin = createAdminClient();
+  if (!admin) return;
+  await admin.from("photos").insert({
+    job_id: input.jobId,
+    stage_id: input.stageId || null,
+    kind: input.kind,
+    storage_path: input.storagePath,
+  });
+}
+
 export async function getJobWithClientById(jobId: string): Promise<JobWithClient | null> {
   const admin = createAdminClient();
   if (!admin) return null;

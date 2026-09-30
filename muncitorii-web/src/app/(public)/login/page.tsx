@@ -1,8 +1,7 @@
 "use client";
 
-import Link from "next/link";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
@@ -10,7 +9,17 @@ import { createClient } from "@/lib/supabase/client";
 // metadata nu funcționează în Client Components — mutată în layout dacă e nevoie
 
 export default function LoginPage() {
+  return (
+    <Suspense>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const notAdmin = searchParams.get("error") === "not_admin";
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,10 +35,7 @@ export default function LoginPage() {
 
     try {
       const supabase = createClient();
-      const { error: authError, data: authData } = await supabase.auth.signInWithPassword({
-        email,
-        password,
-      });
+      const { error: authError } = await supabase.auth.signInWithPassword({ email, password });
 
       if (authError) {
         setError("Email sau parolă incorectă. Încearcă din nou.");
@@ -37,8 +43,7 @@ export default function LoginPage() {
         return;
       }
 
-      const role = authData.user?.user_metadata?.role;
-      router.push(role === "worker" ? "/dashboard/muncitor" : "/dashboard/client");
+      router.push("/admin");
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Eroare necunoscută. Încearcă din nou.");
@@ -50,11 +55,12 @@ export default function LoginPage() {
     <section className="px-4 py-10 md:px-6 md:py-16">
       <div className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
         <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-          Bine ai revenit
+          Zonă administrare
         </span>
         <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">Intră în cont</h1>
         <p className="mt-2 text-sm leading-6 text-slate-600">
-          Continuă de unde ai rămas și gestionează lucrările, ofertele și conversațiile tale.
+          Acces rezervat echipei Muncitorii.ro. Dacă ești client, urmărește lucrarea pe linkul
+          personal primit după ce ai trimis cererea prin /cerere.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
@@ -68,6 +74,12 @@ export default function LoginPage() {
             <Input id="password" name="password" type="password" placeholder="Parola ta" autoComplete="current-password" required />
           </div>
 
+          {notAdmin && !error && (
+            <p className="rounded-xl bg-amber-50 px-4 py-3 text-sm text-amber-800">
+              Contul tău nu are rol de admin.
+            </p>
+          )}
+
           {error && (
             <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>
           )}
@@ -76,19 +88,6 @@ export default function LoginPage() {
             {loading ? "Se verifică..." : "Intră în cont"}
           </Button>
         </form>
-
-        <div className="mt-5 space-y-2 text-center text-sm text-slate-600">
-          <div>
-            <Link href="/register" className="font-semibold text-primary-900 hover:text-primary-700">
-              Nu ai cont? Creează unul acum
-            </Link>
-          </div>
-          <div>
-            <Link href="/register/muncitor" className="text-slate-500 hover:text-slate-700">
-              Ești meseriaș? Înregistrează-te ca profesionist
-            </Link>
-          </div>
-        </div>
       </div>
     </section>
   );
