@@ -70,12 +70,19 @@ function ProgressCard() {
               flexShrink: 0,
               background: stage.done ? "#1e3a8a" : "white",
               border: stage.done ? "none" : "2px solid #cbd5e1",
-              color: "white",
-              fontSize: "14px",
-              fontWeight: 700,
             }}
           >
-            {stage.done ? "✓" : ""}
+            {stage.done && (
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M4 12.5L9.5 18L20 6"
+                  stroke="white"
+                  strokeWidth="3"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            )}
           </div>
           <div
             style={{
