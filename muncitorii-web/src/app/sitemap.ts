@@ -1,16 +1,8 @@
 import type { MetadataRoute } from "next";
-import { workers } from "@/lib/workers";
 
 const BASE_URL = "https://muncitorii.ro";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const workerUrls: MetadataRoute.Sitemap = workers.map((w) => ({
-    url: `${BASE_URL}/muncitori/${w.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
-
   return [
     {
       url: BASE_URL,
@@ -19,16 +11,22 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${BASE_URL}/muncitori`,
+      url: `${BASE_URL}/cerere`,
       lastModified: new Date(),
-      changeFrequency: "daily",
+      changeFrequency: "monthly",
       priority: 0.9,
     },
     {
-      url: `${BASE_URL}/cum-functioneaza`,
+      url: `${BASE_URL}/cum-lucram`,
       lastModified: new Date(),
       changeFrequency: "monthly",
-      priority: 0.7,
+      priority: 0.8,
+    },
+    {
+      url: `${BASE_URL}/parteneri`,
+      lastModified: new Date(),
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${BASE_URL}/despre`,
@@ -54,6 +52,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.3,
     },
-    ...workerUrls,
   ];
 }

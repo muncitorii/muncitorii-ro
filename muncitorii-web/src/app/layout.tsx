@@ -15,21 +15,21 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://muncitorii.ro"),
-  title: "Muncitorii.ro — Meseriași verificați din România",
+  title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
   description:
-    "Găsește meseriași verificați din România. Compară profiluri, citește recenzii și alege direct.",
+    "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară. Descrii lucrarea, primești caiet de sarcini și oferte comparabile, urmărești etapele cu poze înainte/după.",
   openGraph: {
     type: "website",
     locale: "ro_RO",
     siteName: "Muncitorii.ro",
-    title: "Muncitorii.ro — Meseriași verificați din România",
+    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
     description:
-      "Găsește meseriași verificați din România. Compară profiluri, citește recenzii și alege direct.",
+      "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muncitorii.ro — Meseriași verificați din România",
-    description: "Găsește meseriași verificați din România.",
+    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
+    description: "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
   },
 };
 

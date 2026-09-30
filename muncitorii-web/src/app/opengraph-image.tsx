@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Muncitorii.ro — Meseriași verificați din România";
+export const alt = "Muncitorii.ro — Renovări coordonate, cu dovadă";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 

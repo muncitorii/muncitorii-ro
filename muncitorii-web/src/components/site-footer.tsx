@@ -6,14 +6,17 @@ export function SiteFooter() {
       <div className="mx-auto flex max-w-6xl flex-col gap-6 md:flex-row md:items-center md:justify-between">
         <div>
           <p className="font-semibold text-slate-800">Muncitorii.ro</p>
-          <p className="mt-1">Platformă pentru lucrări și servicii locale din România.</p>
+          <p className="mt-1">Renovări coordonate în Iași și împrejurimi.</p>
         </div>
         <nav className="flex flex-wrap gap-x-5 gap-y-2">
+          <Link href="/cum-lucram" className="hover:text-slate-800 transition">
+            Cum lucrăm
+          </Link>
+          <Link href="/parteneri" className="hover:text-slate-800 transition">
+            Pentru meseriași
+          </Link>
           <Link href="/despre" className="hover:text-slate-800 transition">
             Despre noi
-          </Link>
-          <Link href="/cum-functioneaza" className="hover:text-slate-800 transition">
-            Cum funcționează
           </Link>
           <Link href="/contact" className="hover:text-slate-800 transition">
             Contact
