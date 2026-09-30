@@ -16,21 +16,21 @@ const ibmPlexMono = IBM_Plex_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://muncitorii.ro"),
-  title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
+  title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
   description:
-    "Renovezi baia sau apartamentul și nu vrei meseriaș dispărut și factură dublă. Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
+    "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară. Descrii lucrarea, primești caiet de sarcini și oferte comparabile, urmărești etapele cu poze înainte/după.",
   openGraph: {
     type: "website",
     locale: "ro_RO",
     siteName: "Muncitorii.ro",
-    title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
+    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
     description:
-      "Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
+      "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
-    description: "Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
+    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
+    description: "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
   },
 };
 
