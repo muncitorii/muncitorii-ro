@@ -23,4 +23,4 @@ A+ : warm & human + premium discipline. Adaptat RO. Vezi `DESIGN_SYSTEM.md` pent
 
 ## Status
 
-Pre-Supabase, mock data, Sprint 0 (UI polish) în curs. NU integrăm DB înainte de finalizarea polish-ului.
+Renovări coordonate (nu mai marketplace). Supabase live (migrare 004), branch `coordonare`. Vezi `README-COORDONARE.md` pentru fluxul curent.
