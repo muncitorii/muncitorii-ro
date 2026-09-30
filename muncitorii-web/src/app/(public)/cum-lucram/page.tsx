@@ -85,7 +85,7 @@ export default function CumLucramPage() {
         <div className="mt-10 space-y-4">
           {flowSteps.map((step) => (
             <div key={step.num} className="flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-card md:p-6">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-900 text-sm font-bold text-white">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-900 font-mono text-sm font-semibold text-white">
                 {step.num}
               </div>
               <div>

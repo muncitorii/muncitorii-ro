@@ -57,10 +57,12 @@ export default async function AdminJobsPage() {
                     </p>
                     <p className="mt-0.5 text-xs text-slate-500">
                       {job.city ?? "—"} ·{" "}
-                      {new Date(job.created_at).toLocaleDateString("ro-RO", {
-                        day: "numeric",
-                        month: "short",
-                      })}
+                      <span className="font-mono">
+                        {new Date(job.created_at).toLocaleDateString("ro-RO", {
+                          day: "numeric",
+                          month: "short",
+                        })}
+                      </span>
                     </p>
                   </div>
                   <Badge variant={job.status === "finalizat" ? "success" : "default"} dot>

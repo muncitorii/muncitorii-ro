@@ -52,7 +52,7 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="bg-[#f7f2ea] px-4 py-16 md:px-6 md:py-24">
+      <section className="bg-white px-4 py-16 md:px-6 md:py-24">
         <div className="mx-auto max-w-4xl text-center">
           <FadeUp>
             <span className="inline-flex items-center gap-2 rounded-full border border-accent-700/30 bg-accent-700/10 px-4 py-1.5 text-xs font-bold tracking-wide text-accent-700">
@@ -60,7 +60,7 @@ export default function Home() {
             </span>
             <h1 className="mt-5 text-4xl leading-[1.08] tracking-[-0.03em] text-slate-950 md:text-6xl">
               Renovarea ta, coordonată cu{" "}
-              <span className="italic text-accent-700">dovadă</span>.
+              <span className="text-accent-700">dovadă</span>.
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-700">
               Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
@@ -99,12 +99,12 @@ export default function Home() {
             <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
           </FadeUp>
 
-          <StaggerContainer className="mt-6 divide-y divide-slate-200 border-t border-slate-200">
+          <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-2">
             {promises.map(({ title, description }) => (
               <StaggerItem key={title}>
-                <div className="py-4">
-                  <p className="font-medium text-slate-950">{title}</p>
-                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{description}</p>
+                <div className="h-full rounded-2xl border border-slate-200 p-5 shadow-card">
+                  <p className="font-semibold text-slate-950">{title}</p>
+                  <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{description}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -126,7 +126,7 @@ export default function Home() {
             {steps.map(({ num, title, description }) => (
               <StaggerItem key={num}>
                 <div className="h-full rounded-3xl bg-white p-6 shadow-card">
-                  <p className="text-4xl font-extrabold tracking-[-0.03em] text-slate-100">{num}</p>
+                  <p className="font-mono text-4xl font-light tracking-[-0.02em] text-slate-300">{num}</p>
                   <h3 className="mt-3 text-lg font-semibold tracking-[-0.015em] text-slate-950">
                     {title}
                   </h3>

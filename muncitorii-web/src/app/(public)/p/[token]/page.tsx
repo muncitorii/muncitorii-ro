@@ -4,6 +4,7 @@ import { CheckCircle2, Circle, Clock, FileText } from "lucide-react";
 import { getJobByToken, getSignedUrl } from "@/lib/coordonare/data";
 import { getJobTypeLabel } from "@/lib/job-types";
 import { Badge } from "@/components/ui/badge";
+import { cn } from "@/components/ui/utils";
 import { approveStageFormAction, decideChangeOrderFormAction } from "./actions";
 import type { JobStage } from "@/lib/coordonare/types";
 
@@ -26,6 +27,28 @@ const stageStatusLabel: Record<JobStage["status"], string> = {
   awaiting_approval: "Așteaptă confirmarea ta",
   approved: "Confirmat",
 };
+
+const stageChipClasses: Record<JobStage["status"], { chip: string; dot: string }> = {
+  approved: { chip: "border-emerald-200 bg-emerald-50 text-emerald-700", dot: "bg-emerald-600" },
+  awaiting_approval: { chip: "border-accent-200 bg-accent-50 text-accent-700", dot: "bg-accent-700" },
+  in_progress: { chip: "border-primary-200 bg-primary-50 text-primary-700", dot: "bg-primary-700" },
+  pending: { chip: "border-slate-200 bg-slate-50 text-slate-500", dot: "bg-slate-400" },
+};
+
+function StatusChip({ status }: { status: JobStage["status"] }) {
+  const c = stageChipClasses[status];
+  return (
+    <span
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-xs font-semibold",
+        c.chip,
+      )}
+    >
+      <span className={cn("size-1.5 rounded-full", c.dot)} />
+      {stageStatusLabel[status]}
+    </span>
+  );
+}
 
 function StageIcon({ status }: { status: JobStage["status"] }) {
   if (status === "approved") return <CheckCircle2 size={18} className="text-emerald-600" />;
@@ -57,6 +80,10 @@ export default async function ClientPortalPage({
 
   const brief = job.brief as { work_type?: string; description?: string };
 
+  const totalStages = job.stages.length;
+  const approvedStages = job.stages.filter((s) => s.status === "approved").length;
+  const progressPct = totalStages > 0 ? Math.round((approvedStages / totalStages) * 100) : 0;
+
   return (
     <section className="px-4 py-10 md:px-6 md:py-14">
       <div className="mx-auto max-w-3xl">
@@ -75,6 +102,22 @@ export default async function ClientPortalPage({
           <div className="mt-3">
             <Badge variant="accent">{jobStatusLabel[job.status] ?? job.status}</Badge>
           </div>
+          {totalStages > 0 && (
+            <div className="mt-4 max-w-xs">
+              <div className="flex items-center justify-between text-xs text-white/70">
+                <span>Progres etape</span>
+                <span className="font-mono text-white">
+                  {approvedStages} din {totalStages} etape
+                </span>
+              </div>
+              <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/20">
+                <div
+                  className="h-full rounded-full bg-amber-400"
+                  style={{ width: `${progressPct}%` }}
+                />
+              </div>
+            </div>
+          )}
           {brief.description && (
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/75">{brief.description}</p>
           )}
@@ -104,22 +147,36 @@ export default async function ClientPortalPage({
             </p>
           ) : (
             <div className="mt-5 space-y-3">
-              {job.stages.map((stage) => (
+              {job.stages.map((stage, index) => (
                 <div
                   key={stage.id}
-                  className="flex flex-col gap-3 rounded-2xl border border-slate-200 p-4 sm:flex-row sm:items-center sm:justify-between"
+                  className="flex flex-col gap-3 rounded-2xl border border-slate-200 p-4 sm:flex-row sm:items-start sm:justify-between"
                 >
                   <div className="flex items-start gap-3">
+                    <span className="mt-0.5 font-mono text-sm text-slate-400">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
                     <StageIcon status={stage.status} />
                     <div>
                       <p className="font-semibold text-slate-950">{stage.name}</p>
                       <p className="mt-0.5 text-xs text-slate-500">
-                        {stage.deadline
-                          ? `Termen: ${new Date(stage.deadline).toLocaleDateString("ro-RO", { day: "numeric", month: "long" })}`
-                          : "Fără termen fixat"}
-                        {" · "}
-                        {stageStatusLabel[stage.status]}
+                        {stage.deadline ? (
+                          <>
+                            Termen:{" "}
+                            <span className="font-mono">
+                              {new Date(stage.deadline).toLocaleDateString("ro-RO", {
+                                day: "numeric",
+                                month: "long",
+                              })}
+                            </span>
+                          </>
+                        ) : (
+                          "Fără termen fixat"
+                        )}
                       </p>
+                      <div className="mt-2">
+                        <StatusChip status={stage.status} />
+                      </div>
                     </div>
                   </div>
 
@@ -180,7 +237,7 @@ export default async function ClientPortalPage({
               {pendingChangeOrders.map((co) => (
                 <div key={co.id} className="rounded-2xl bg-white p-5 shadow-card">
                   <p className="text-sm leading-relaxed text-slate-700">{co.description}</p>
-                  <p className="mt-2 text-lg font-bold text-slate-950">
+                  <p className="mt-2 font-mono text-lg font-bold text-slate-950">
                     +{co.extra_cost.toLocaleString("ro-RO")} lei
                   </p>
                   <div className="mt-4 flex gap-2">

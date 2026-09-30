@@ -138,10 +138,14 @@ export default async function AdminJobDetailPage({
               <div className="flex flex-wrap items-center justify-between gap-3">
                 <div>
                   <p className="font-semibold text-slate-950">
-                    {stage.sequence}. {stage.name}
+                    <span className="font-mono text-slate-400">
+                      {String(stage.sequence).padStart(2, "0")}
+                    </span>{" "}
+                    {stage.name}
                   </p>
                   <p className="mt-0.5 text-xs text-slate-500">
-                    {stage.deadline ?? "fără termen"} · {stageStatusLabel[stage.status] ?? stage.status}
+                    <span className="font-mono">{stage.deadline ?? "fără termen"}</span> ·{" "}
+                    {stageStatusLabel[stage.status] ?? stage.status}
                   </p>
                 </div>
 
@@ -254,7 +258,7 @@ export default async function AdminJobDetailPage({
             <div key={co.id} className="rounded-2xl border border-slate-200 p-4">
               <p className="text-sm text-slate-700">{co.description}</p>
               <div className="mt-1 flex items-center gap-3">
-                <p className="font-semibold text-slate-950">+{co.extra_cost} lei</p>
+                <p className="font-mono font-semibold text-slate-950">+{co.extra_cost} lei</p>
                 <Badge variant={co.status === "approved" ? "success" : co.status === "rejected" ? "default" : "pending"} dot>
                   {co.status}
                 </Badge>

@@ -1,6 +1,6 @@
 # Muncitorii.ro — Design System Spec
 
-> Notă 2026-09-30: tipografia s-a mutat de la Geist la Fraunces (titluri) + Inter Tight (text). Secțiunea de mai jos care menționează Geist e depășită.
+> Notă 2026-09-30: tipografie finală = Geist Sans (titluri + text) + IBM Plex Mono (`font-mono`, folosit pentru numerale de pași, date, prețuri, ID-uri). Varianta E din `public/previews/e-combinatie.html`. Secțiunea de mai jos referitoare la Fraunces/Inter Tight e depășită.
 
 Document de referință pentru implementare. Toate deciziile sunt finale (luate pe Opus 4.7). Implementarea se face pe Sonnet 4.6.
 

@@ -19,7 +19,7 @@ Citește `DESIGN_SYSTEM.md` la rădăcină. Conține tokens, componente, structu
 
 ## Direcție design
 
-A+ : warm & human + premium discipline. Adaptat RO. Vezi `DESIGN_SYSTEM.md` pentru paletă (slate-blue 900 + terracotta accent), tipografie (Fraunces titluri + Inter Tight text), reguli stricte.
+A+ : warm & human + premium discipline. Adaptat RO. Vezi `DESIGN_SYSTEM.md` pentru paletă (slate-blue 900 + terracotta accent), tipografie (Geist Sans titluri + text, IBM Plex Mono pentru numerale/date/prețuri — variantă E), reguli stricte.
 
 ## Status
 

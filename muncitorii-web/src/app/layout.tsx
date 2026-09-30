@@ -1,19 +1,17 @@
 import type { Metadata, Viewport } from "next";
-import { Fraunces, Inter_Tight } from "next/font/google";
+import { Geist, IBM_Plex_Mono } from "next/font/google";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 
-const fraunces = Fraunces({
+const geistSans = Geist({
   subsets: ["latin"],
-  weight: ["500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-fraunces",
+  variable: "--font-geist-sans",
 });
 
-const interTight = Inter_Tight({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--font-inter-tight",
+  weight: ["400", "500", "600"],
+  variable: "--font-plex-mono",
 });
 
 export const metadata: Metadata = {
@@ -48,7 +46,7 @@ export default function RootLayout({
   return (
     <html
       lang="ro"
-      className={`${fraunces.variable} ${interTight.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
         {children}
