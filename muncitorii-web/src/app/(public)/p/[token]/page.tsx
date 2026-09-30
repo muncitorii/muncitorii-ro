@@ -48,6 +48,12 @@ export default async function ClientPortalPage({
   const documentUrls = await Promise.all(
     job.documents.map(async (doc) => ({ doc, url: await getSignedUrl(doc.storage_path) })),
   );
+  const photoUrls = await Promise.all(
+    job.photos.map(async (photo) => ({ photo, url: await getSignedUrl(photo.storage_path) })),
+  );
+  const intakePhotos = photoUrls.filter(({ photo, url }) => photo.kind === "intake" && url);
+  const photosForStage = (stageId: string, kind: "before" | "after") =>
+    photoUrls.filter(({ photo, url }) => photo.stage_id === stageId && photo.kind === kind && url);
 
   const brief = job.brief as { work_type?: string; description?: string };
 
@@ -71,6 +77,20 @@ export default async function ClientPortalPage({
           </div>
           {brief.description && (
             <p className="mt-4 max-w-xl text-sm leading-relaxed text-white/75">{brief.description}</p>
+          )}
+          {intakePhotos.length > 0 && (
+            <div className="mt-5 grid grid-cols-3 gap-2 sm:grid-cols-4">
+              {intakePhotos.map(({ photo, url }) => (
+                <a key={photo.id} href={url!} target="_blank" rel="noopener noreferrer">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url!}
+                    alt="Poză trimisă de client"
+                    className="aspect-square w-full rounded-xl object-cover ring-1 ring-white/20"
+                  />
+                </a>
+              ))}
+            </div>
           )}
         </div>
 
@@ -102,6 +122,35 @@ export default async function ClientPortalPage({
                       </p>
                     </div>
                   </div>
+
+                  {(photosForStage(stage.id, "before").length > 0 ||
+                    photosForStage(stage.id, "after").length > 0) && (
+                    <div className="grid grid-cols-2 gap-3 sm:w-72">
+                      {(["before", "after"] as const).map((kind) => {
+                        const items = photosForStage(stage.id, kind);
+                        if (items.length === 0) return null;
+                        return (
+                          <div key={kind}>
+                            <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                              {kind === "before" ? "Înainte" : "După"}
+                            </p>
+                            <div className="grid grid-cols-2 gap-1.5">
+                              {items.map(({ photo, url }) => (
+                                <a key={photo.id} href={url!} target="_blank" rel="noopener noreferrer">
+                                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                                  <img
+                                    src={url!}
+                                    alt={kind === "before" ? "Înainte" : "După"}
+                                    className="aspect-square w-full rounded-lg object-cover ring-1 ring-slate-200"
+                                  />
+                                </a>
+                              ))}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
 
                   {stage.status === "awaiting_approval" && (
                     <form action={approveStageFormAction}>

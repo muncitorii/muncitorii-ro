@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
-import { getJobByIdForAdmin } from "@/lib/coordonare/data";
+import { getJobByIdForAdmin, getSignedUrl } from "@/lib/coordonare/data";
 import { getJobTypeLabel } from "@/lib/job-types";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
@@ -43,6 +43,13 @@ export default async function AdminJobDetailPage({
   const brief = job.brief as { work_type?: string; description?: string; name?: string; phone?: string };
   const nextSequence = job.stages.length > 0 ? Math.max(...job.stages.map((s) => s.sequence)) + 1 : 1;
 
+  const photoUrls = await Promise.all(
+    job.photos.map(async (photo) => ({ photo, url: await getSignedUrl(photo.storage_path) })),
+  );
+  const intakePhotos = photoUrls.filter(({ photo, url }) => photo.kind === "intake" && url);
+  const photosForStage = (stageId: string, kind: "before" | "after") =>
+    photoUrls.filter(({ photo, url }) => photo.stage_id === stageId && photo.kind === kind && url);
+
   return (
     <div className="space-y-5">
       <Link href="/admin" className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary-900 hover:text-primary-700">
@@ -80,6 +87,26 @@ export default async function AdminJobDetailPage({
           <span>Buget orientativ: {job.budget_hint ?? "—"}</span>
           <span>Termen dorit: {job.deadline_hint ?? "—"}</span>
         </div>
+
+        {intakePhotos.length > 0 && (
+          <div className="mt-4">
+            <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+              Poze de la client
+            </p>
+            <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
+              {intakePhotos.map(({ photo, url }) => (
+                <a key={photo.id} href={url!} target="_blank" rel="noopener noreferrer">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={url!}
+                    alt="Poză trimisă de client"
+                    className="aspect-square w-full rounded-xl object-cover ring-1 ring-slate-200"
+                  />
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
 
         <form action={updateJobStatusAction} className="mt-5 flex flex-wrap items-center gap-2">
           <input type="hidden" name="job_id" value={job.id} />
@@ -139,6 +166,36 @@ export default async function AdminJobDetailPage({
                   </form>
                 )}
               </div>
+
+              {/* Poze etapă existente */}
+              {(photosForStage(stage.id, "before").length > 0 ||
+                photosForStage(stage.id, "after").length > 0) && (
+                <div className="mt-3 grid grid-cols-2 gap-3 sm:w-72">
+                  {(["before", "after"] as const).map((kind) => {
+                    const items = photosForStage(stage.id, kind);
+                    if (items.length === 0) return null;
+                    return (
+                      <div key={kind}>
+                        <p className="mb-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">
+                          {kind === "before" ? "Înainte" : "După"}
+                        </p>
+                        <div className="grid grid-cols-2 gap-1.5">
+                          {items.map(({ photo, url }) => (
+                            <a key={photo.id} href={url!} target="_blank" rel="noopener noreferrer">
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              <img
+                                src={url!}
+                                alt={kind === "before" ? "Înainte" : "După"}
+                                className="aspect-square w-full rounded-lg object-cover ring-1 ring-slate-200"
+                              />
+                            </a>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
 
               {/* Upload poze etapă */}
               <div className="mt-3 flex flex-wrap gap-2">
