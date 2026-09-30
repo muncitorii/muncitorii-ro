@@ -1,25 +1,62 @@
 import Link from "next/link";
+import {
+  ClipboardList,
+  FileCheck2,
+  Camera,
+  FileSignature,
+  FolderCheck,
+  MapPin,
+} from "lucide-react";
 import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
-import { getHomepageCategories } from "@/lib/categories";
+
+const promises = [
+  {
+    Icon: ClipboardList,
+    title: "Lucrare clară",
+    description: "Descrii o dată, cu poze — primești un caiet de sarcini scris, nu vorbe în vânt.",
+  },
+  {
+    Icon: FileCheck2,
+    title: "Ofertă clară",
+    description: "Compari oferte pe aceleași criterii, nu ghicești ce e inclus și ce nu.",
+  },
+  {
+    Icon: Camera,
+    title: "Dovadă clară",
+    description: "Fiecare etapă are poze înainte/după și confirmarea ta, nu \"pe cuvânt\".",
+  },
+  {
+    Icon: FileSignature,
+    title: "Costuri fără surprize",
+    description: "Orice cost suplimentar se aprobă în scris, de tine, înainte să fie făcut.",
+  },
+  {
+    Icon: FolderCheck,
+    title: "Dosar complet la final",
+    description: "Facturi, garanții, instrucțiuni de întreținere — totul într-un singur loc.",
+  },
+];
 
 const steps = [
   {
     num: "01",
-    title: "Postezi sau cauți",
-    description:
-      "Publică o lucrare sau caută direct în catalogul de meseriași verificați din zona ta.",
+    title: "Descrii lucrarea",
+    description: "Trimiți poze, tipul lucrării, orașul și bugetul orientativ. Durează 3 minute.",
   },
   {
     num: "02",
-    title: "Compari și alegi",
-    description:
-      "Citești recenzii reale, compari experiența și prețurile, alegi omul potrivit.",
+    title: "Primești caiet de sarcini și oferte",
+    description: "Evaluăm lucrarea și îți trimitem oferte comparabile de la meseriași din rețea.",
   },
   {
     num: "03",
-    title: "Discuți și finalizezi",
-    description:
-      "Contactezi direct în platformă, stabilești detaliile și lucrarea se face.",
+    title: "Urmărești etapele cu poze",
+    description: "Fiecare etapă are termen, poze înainte/după și un buton de confirmare pentru tine.",
+  },
+  {
+    num: "04",
+    title: "Primești dosarul digital",
+    description: "La final: facturi, garanții, instrucțiuni de întreținere, totul organizat.",
   },
 ];
 
@@ -28,126 +65,63 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="bg-gradient-to-br from-primary-900 to-primary-950 px-4 py-16 md:px-6 md:py-24">
-        <div className="mx-auto grid max-w-6xl items-center gap-10 md:grid-cols-2 lg:gap-20">
-
-          {/* Stânga: text + checks */}
+        <div className="mx-auto max-w-4xl text-center">
           <FadeUp>
             <span className="inline-flex items-center gap-2 rounded-full border border-accent-700/30 bg-accent-700/10 px-4 py-1.5 text-xs font-bold tracking-wide text-accent-500">
-              ✦ Platforma #1 pentru meseriași din România
+              <MapPin size={14} /> Iași și împrejurimi
             </span>
-            <h1 className="mt-5 text-5xl font-black leading-[1.04] tracking-[-0.035em] text-white md:text-6xl lg:text-[64px]">
-              Găsești meseriașul potrivit.{" "}
-              <span className="text-accent-500">Rapid.</span>
+            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.03em] text-white md:text-6xl">
+              Renovarea ta, coordonată cu{" "}
+              <span className="text-accent-500">dovadă</span>.
             </h1>
-            <p className="mt-4 text-lg leading-relaxed text-white/60">
-              De la reparații mici la renovări complete — compari profiluri reale, citești recenzii și alegi direct.
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/65">
+              Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet de
+              sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
             </p>
-            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3">
-              {["Gratuit", "Fără comision", "Profil verificat", "Recenzii reale"].map((item) => (
-                <li key={item} className="flex items-center gap-2 text-sm font-medium text-white/55">
-                  <span className="font-bold text-emerald-400">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </FadeUp>
 
-          {/* Dreapta: card search */}
-          <FadeUp delay={0.1}>
-            <form
-              method="GET"
-              action="/muncitori"
-              className="rounded-2xl border border-white/10 bg-white/6 p-6 md:p-7"
-            >
-              <h3 className="mb-5 text-base font-bold text-white">Caută un meseriaș</h3>
-              <div className="flex flex-col gap-3">
-                <input
-                  type="text"
-                  name="cat"
-                  placeholder="Ce ai de făcut? (ex: instalator, zugrav...)"
-                  className="w-full rounded-xl border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/30 focus:ring-2 focus:ring-white/10"
-                />
-                <input
-                  type="text"
-                  name="oras"
-                  placeholder="Oraș sau județ"
-                  className="w-full rounded-xl border border-white/12 bg-white/8 px-4 py-3 text-sm text-white outline-none placeholder:text-white/35 focus:border-white/30 focus:ring-2 focus:ring-white/10"
-                />
-                <button
-                  type="submit"
-                  className="w-full rounded-xl bg-accent-700 px-4 py-3 text-sm font-bold text-white transition-all duration-200 ease-out hover:bg-accent-800"
-                >
-                  Caută meseriași
-                </button>
-              </div>
-              <div className="mt-4 flex items-center gap-2">
-                <div className="h-px flex-1 bg-white/8" />
-                <span className="text-xs text-white/30">sau</span>
-                <div className="h-px flex-1 bg-white/8" />
-              </div>
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
-                href="/register/client"
-                className="mt-3 block text-center text-sm font-semibold text-white/60 transition hover:text-white"
+                href="/cerere"
+                className="w-full rounded-2xl bg-accent-700 px-6 py-3.5 text-center text-base font-bold text-white transition-all duration-200 ease-out hover:bg-accent-800 sm:w-auto"
               >
-                Postează o lucrare și primești oferte →
+                Descrie lucrarea
               </Link>
-            </form>
-          </FadeUp>
+              <a
+                href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full rounded-2xl border border-white/20 bg-white/5 px-6 py-3.5 text-center text-base font-semibold text-white transition-all duration-200 ease-out hover:bg-white/10 sm:w-auto"
+              >
+                Scrie-ne pe WhatsApp
+              </a>
+            </div>
 
+            <p className="mt-4 text-sm text-white/45">
+              Taxă de evaluare 200 lei — se deduce integral din lucrare.
+            </p>
+          </FadeUp>
         </div>
       </section>
 
-      {/* CATEGORII */}
+      {/* CELE 5 PROMISIUNI */}
       <section className="bg-white px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-6xl">
-          <FadeUp>
-            <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
-              Categorii populare
-            </h2>
-            <p className="mt-2 text-slate-600">Alege rapid domeniul care te interesează.</p>
-          </FadeUp>
-
-          <StaggerContainer className="mt-8 grid grid-cols-2 gap-4 md:grid-cols-4">
-            {getHomepageCategories().map(({ name, slug, Icon }) => (
-              <StaggerItem key={slug}>
-                <Link
-                  href={`/muncitori?cat=${slug}`}
-                  className="group flex flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-primary-500/20 hover:shadow-card-hover"
-                >
-                  <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary-50 text-primary-900 transition-colors duration-200 group-hover:bg-primary-100">
-                    <Icon size={22} />
-                  </div>
-                  <span className="font-semibold text-slate-900">{name}</span>
-                </Link>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
-        </div>
-      </section>
-
-      {/* CUM FUNCȚIONEAZĂ */}
-      <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-6xl">
           <FadeUp className="max-w-2xl">
             <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
-              Cum funcționează
+              Ce înseamnă „coordonat"
             </h2>
-            <p className="mt-2 text-slate-600">
-              Simplu, clar și fără pierdere de timp.
-            </p>
+            <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
           </FadeUp>
 
-          <StaggerContainer className="mt-10 grid gap-6 md:grid-cols-3">
-            {steps.map(({ num, title, description }) => (
-              <StaggerItem key={num}>
-                <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-                  <p className="text-5xl font-extrabold tracking-[-0.03em] text-slate-100">
-                    {num}
-                  </p>
-                  <h3 className="mt-4 text-xl font-semibold tracking-[-0.015em] text-slate-950">
-                    {title}
-                  </h3>
-                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+          <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+            {promises.map(({ Icon, title, description }) => (
+              <StaggerItem key={title}>
+                <div className="flex h-full flex-col gap-3 rounded-3xl border border-slate-200 bg-white p-5 shadow-card transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-primary-500/20 hover:shadow-card-hover">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-primary-50 text-primary-900">
+                    <Icon size={20} />
+                  </div>
+                  <p className="font-semibold text-slate-950">{title}</p>
+                  <p className="text-sm leading-relaxed text-slate-600">{description}</p>
                 </div>
               </StaggerItem>
             ))}
@@ -155,130 +129,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FOUNDER STORY */}
-      <section className="bg-white px-4 py-16 md:px-6 md:py-28">
-        <div className="mx-auto max-w-3xl">
-          <FadeUp>
-            <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-accent-700">
-              Povestea Muncitorii.ro
-            </span>
-            <h2 className="mt-5 text-4xl font-bold leading-[1.1] tracking-[-0.025em] text-slate-950 md:text-5xl">
-              De ce am construit
-              <br className="hidden sm:block" /> această platformă.
+      {/* CUM LUCRĂM — 4 pași */}
+      <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <FadeUp className="max-w-2xl">
+            <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
+              Cum lucrăm
             </h2>
+            <p className="mt-2 text-slate-600">Patru pași, fără zone gri.</p>
           </FadeUp>
 
-          <div className="mt-12 space-y-10 md:mt-16 md:space-y-14">
-            {/* Cine sunt */}
-            <FadeUp>
-              <p className="text-xl leading-relaxed text-slate-800 md:text-2xl md:leading-[1.5]">
-                Sunt <strong className="text-slate-950">Liviu</strong>.
-              </p>
-              <p className="mt-3 text-lg leading-relaxed text-slate-600 md:text-xl">
-                La bază sunt <strong className="text-slate-800">Ofițer Electric pe nave cargo</strong>.
-              </p>
-              <p className="mt-3 text-lg leading-relaxed text-slate-600 md:text-xl">
-                Recent mi-am schimbat jobul cu unul la mal — iar asta mi-a dat timp să gândesc.
-              </p>
-              <p className="mt-5 text-2xl font-semibold tracking-[-0.015em] text-slate-950 md:text-3xl">
-                Și așa a apărut Muncitorii.ro.
-              </p>
-            </FadeUp>
+          <StaggerContainer className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+            {steps.map(({ num, title, description }) => (
+              <StaggerItem key={num}>
+                <div className="h-full rounded-3xl bg-white p-6 shadow-card">
+                  <p className="text-4xl font-extrabold tracking-[-0.03em] text-slate-100">{num}</p>
+                  <h3 className="mt-3 text-lg font-semibold tracking-[-0.015em] text-slate-950">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
 
-            <div className="h-px bg-slate-100" />
-
-            {/* Povestea renovării */}
-            <FadeUp>
-              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
-                Cum a început totul
-              </p>
-              <p className="mt-4 text-lg leading-relaxed text-slate-700 md:text-xl">
-                Am pornit cu renovarea unui apartament.
-              </p>
-              <p className="mt-3 text-lg leading-relaxed text-slate-700 md:text-xl">
-                Din recomandarea cuiva, am colaborat cu niște muncitori. Mi-au cerut un preț pentru lucrare. Am fost de acord.
-              </p>
-              <p className="mt-5 rounded-2xl bg-slate-50 p-5 text-lg italic leading-relaxed text-slate-800 md:p-6 md:text-xl">
-                Dar pe parcurs am descoperit că finisajele nu erau la nivelul meu de perfecționist. <span className="not-italic">😅</span>
-              </p>
-              <p className="mt-5 text-lg leading-relaxed text-slate-700 md:text-xl">
-                Am dus lucrarea la bun sfârșit cu ei. Dar nu sunt mulțumit.
-              </p>
-            </FadeUp>
-
-            <div className="h-px bg-slate-100" />
-
-            {/* De ce platformă */}
-            <FadeUp>
-              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
-                De aceea există acest site
-              </p>
-              <p className="mt-4 text-2xl font-semibold leading-[1.35] tracking-[-0.015em] text-slate-950 md:text-3xl">
-                Vreau ca lumea să aibă posibilitatea să aleagă un meseriaș care lucrează exact la nivelul lor.
-              </p>
-              <p className="mt-4 text-lg leading-relaxed text-slate-600 md:text-xl">
-                Pentru că plătești pentru asta.
-              </p>
-              <p className="mt-6 text-lg leading-relaxed text-slate-700 md:text-xl">
-                În același timp, le dăm posibilitatea <strong className="text-slate-950">muncitorilor serioși să iasă în evidență</strong> — ca lumea să aprecieze ceea ce fac.
-              </p>
-            </FadeUp>
-
-            {/* Viziunea — block evidențiat */}
-            <FadeUp>
-              <div className="rounded-3xl border-2 border-accent-700 bg-gradient-to-br from-accent-50/60 to-white p-7 md:p-10">
-                <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">
-                  Viziunea
-                </p>
-                <p className="mt-4 text-2xl font-bold leading-[1.25] tracking-[-0.02em] text-slate-950 md:text-3xl">
-                  Vreau ca Muncitorii.ro să devină etalonul pentru tot ce poți face în casă.
-                </p>
-                <p className="mt-4 text-base leading-relaxed text-slate-700 md:text-lg">
-                  De la o gaură în perete. La mutări de mobilă. La lucrări complexe.
-                </p>
-                <p className="mt-3 text-base leading-relaxed text-slate-700 md:text-lg">
-                  Și să dea posibilitatea celor care vor un ban extra — să intre pe site și să vadă lucrările disponibile.
-                </p>
-              </div>
-            </FadeUp>
-
-            <div className="h-px bg-slate-100" />
-
-            {/* Promisiunea */}
-            <FadeUp>
-              <p className="text-sm font-semibold uppercase tracking-widest text-accent-700">
-                Promisiunea mea
-              </p>
-              <p className="mt-4 text-xl leading-relaxed text-slate-800 md:text-2xl">
-                Pe această platformă muncitorii vor fi <strong className="text-slate-950">verificați</strong>.
-              </p>
-              <p className="mt-3 text-lg leading-relaxed text-slate-700 md:text-xl">
-                Fiecare își va face profilul cum dorește — cu poze și descrieri.
-              </p>
-              <p className="mt-3 text-lg italic leading-relaxed text-slate-600 md:text-xl">
-                Fiecare meseriaș trebuie să-și vândă marfa, cum se spune.
-              </p>
-            </FadeUp>
-
-            {/* CTA Contact */}
-            <FadeUp>
-              <div className="rounded-3xl bg-slate-950 p-7 text-white md:p-10">
-                <p className="text-base leading-relaxed text-white/70 md:text-lg">
-                  Aveți idei sau sugestii? În <strong className="text-white">dreapta jos</strong> găsiți butonul de contact.
-                </p>
-                <p className="mt-3 text-lg font-semibold leading-relaxed text-white md:text-xl">
-                  Citesc fiecare mesaj personal — voi aprecia feedback-ul dumneavoastră.
-                </p>
-                <p className="mt-6 text-sm font-semibold tracking-wide text-accent-500">
-                  — Liviu, fondator Muncitorii.ro
-                </p>
-              </div>
-            </FadeUp>
-          </div>
+          <FadeUp className="mt-8 text-center">
+            <Link
+              href="/cum-lucram"
+              className="text-sm font-semibold text-primary-900 hover:text-primary-700"
+            >
+              Vezi tot flow-ul, inclusiv plata pe etape →
+            </Link>
+          </FadeUp>
         </div>
       </section>
 
-      {/* CTA DUAL */}
+      {/* PENTRU MESERIAȘI */}
       <section className="px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-6xl">
           <FadeUp>
@@ -288,16 +174,16 @@ export default function Home() {
                   Pentru clienți
                 </p>
                 <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-white md:text-3xl">
-                  Ai o lucrare de făcut?
+                  Ai o renovare de făcut?
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-white/80">
-                  Postează acum și primești oferte de la meseriași verificați din zona ta.
+                  Descrie lucrarea și te sunăm în 24h cu următorii pași.
                 </p>
                 <Link
-                  href="/register/client"
+                  href="/cerere"
                   className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-900 transition-all duration-200 ease-out hover:bg-primary-50"
                 >
-                  Postează o lucrare
+                  Descrie lucrarea
                 </Link>
               </div>
 
@@ -306,16 +192,16 @@ export default function Home() {
                   Pentru meseriași
                 </p>
                 <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-white md:text-3xl">
-                  Ești meseriaș?
+                  Ești meseriaș în Iași?
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-white/80">
-                  Creează-ți profilul și primește cereri de la clienți care caută exact meseria ta.
+                  Intri în rețeaua de subcontractori și primești cereri de ofertă pentru lucrări deja evaluate.
                 </p>
                 <Link
-                  href="/register/muncitor"
+                  href="/parteneri"
                   className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-900 transition-all duration-200 ease-out hover:bg-primary-50"
                 >
-                  Creează cont de meseriaș
+                  Aplică ca partener
                 </Link>
               </div>
             </div>

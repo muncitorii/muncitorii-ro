@@ -152,6 +152,13 @@ export async function attachIntakePhotos(jobId: string, storagePaths: string[]) 
     .insert(storagePaths.map((storage_path) => ({ job_id: jobId, kind: "intake" as const, storage_path })));
 }
 
+export async function getJobWithClientById(jobId: string): Promise<JobWithClient | null> {
+  const admin = createAdminClient();
+  if (!admin) return null;
+  const { data } = await admin.from("jobs").select("*, client:clients(*)").eq("id", jobId).maybeSingle();
+  return (data as unknown as JobWithClient) ?? null;
+}
+
 // ------------------------------------------------------------
 // /parteneri — formular subcontractori (server action)
 // ------------------------------------------------------------
@@ -330,7 +337,7 @@ export async function adminCreateDocument(input: {
 /** Upload generic în bucket-ul privat job-photos, returnează storage_path. */
 export async function uploadJobFile(
   jobId: string,
-  folder: "before" | "after" | "documents",
+  folder: "intake" | "before" | "after" | "documents",
   file: File,
 ): Promise<{ ok: true; path: string } | { ok: false; error: string }> {
   const admin = createAdminClient();

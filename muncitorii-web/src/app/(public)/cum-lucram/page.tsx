@@ -1,64 +1,164 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { Check, X } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Cum funcționează | Muncitorii.ro",
-  description: "Pași simpli pentru clienți și meseriași — postezi, compari și finalizezi direct.",
+  title: "Cum lucrăm | Muncitorii.ro",
+  description:
+    "Flow-ul complet de coordonare a renovării: de la descrierea lucrării la dosarul digital final. Plata pe etape, costuri fără surprize.",
 };
 
-const clientSteps = [
-  "Postezi lucrarea sau cauți un meseriaș după categorie și oraș",
-  "Compari profiluri, experiență și recenzii",
-  "Discuți direct și alegi omul potrivit pentru lucrare",
+const flowSteps = [
+  {
+    num: "01",
+    title: "Descrii lucrarea",
+    text: "Trimiți poze și detalii prin formularul de pe /cerere. Plătești o taxă de evaluare de 200 lei, care se deduce integral din valoarea lucrării.",
+  },
+  {
+    num: "02",
+    title: "Evaluăm și scriem caietul de sarcini",
+    text: "Venim la fața locului (sau evaluăm din poze, pentru lucrări mici), scriem clar ce trebuie făcut și trimitem cereri de ofertă către meseriași din rețeaua noastră.",
+  },
+  {
+    num: "03",
+    title: "Compari oferte comparabile",
+    text: "Primești oferte scrise pe același caiet de sarcini — le compari pe cifre, nu pe promisiuni verbale diferite de la fiecare meseriaș.",
+  },
+  {
+    num: "04",
+    title: "Lucrarea are etape cu poze",
+    text: "Fiecare etapă are un termen. Când etapa e gata, primești poze înainte/după și un buton de confirmare — nimic nu trece la etapa următoare fără aprobarea ta.",
+  },
+  {
+    num: "05",
+    title: "Costurile extra se aprobă în scris",
+    text: "Dacă apare ceva neprevăzut (ex. o instalație veche care trebuie înlocuită), primești costul suplimentar explicat și îl aprobi sau îl respingi tu, înainte să fie făcut.",
+  },
+  {
+    num: "06",
+    title: "Primești dosarul digital",
+    text: "La final: facturi, garanții, instrucțiuni de întreținere, procesul verbal de recepție — toate organizate într-un singur loc, accesibile oricând.",
+  },
 ];
 
-const workerSteps = [
-  "Îți creezi profilul și adaugi meseria, zona și experiența ta",
-  "Aplici la lucrări sau primești cereri direct de la clienți",
-  "Finalizezi lucrarea și primești recenzii care îți construiesc reputația",
+const youDo = [
+  "Descrii lucrarea cu poze, cât mai clar posibil",
+  "Confirmi etapele pe măsură ce sunt finalizate",
+  "Aprobi sau respingi costurile suplimentare propuse",
+  "Plătești pe etape, conform planului de plată",
 ];
 
-export default function HowItWorksPage() {
+const weDo = [
+  "Evaluăm lucrarea și scriem caietul de sarcini",
+  "Găsim și coordonăm meseriași din rețeaua noastră",
+  "Documentăm fiecare etapă cu poze înainte/după",
+  "Ținem dosarul digital la zi și îl predăm complet la final",
+];
+
+const paymentSplit = [
+  { pct: "40%", label: "La începerea lucrării", detail: "după ce ai aprobat oferta și caietul de sarcini" },
+  { pct: "40%", label: "La jumătatea etapelor", detail: "când etapele intermediare sunt confirmate de tine" },
+  { pct: "20%", label: "La finalizare", detail: "după predarea dosarului digital complet" },
+];
+
+const weDontDo = [
+  "Nu garantăm un preț fix înainte de evaluare — bugetul orientativ e o estimare, oferta fermă vine după caietul de sarcini",
+  "Nu suntem angajatorul meseriașilor din rețea — coordonăm lucrarea, nu suntem intermediar de forță de muncă",
+  "Nu facem lucrări în afara Iașiului și împrejurimilor, momentan",
+  "Nu începem nicio etapă nouă fără confirmarea celei anterioare",
+];
+
+export default function CumLucramPage() {
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-4xl">
         <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-          Cum funcționează
+          Cum lucrăm
         </span>
         <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 md:text-5xl">
-          O platformă simplă pentru clienți și meseriași
+          Flow-ul complet, fără zone gri
         </h1>
-        <p className="mt-4 max-w-3xl text-base leading-7 text-slate-600 md:text-lg">
-          Muncitorii.ro îi aduce laolaltă pe oamenii care au o lucrare de făcut și pe cei care o pot rezolva bine, rapid și clar.
+        <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
+          De la primul mesaj la dosarul digital final — șase pași, fiecare cu o dovadă.
         </p>
 
-        <div className="mt-10 grid gap-6 md:grid-cols-2">
-          <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-950">Pentru clienți</h2>
-            <div className="mt-6 space-y-4">
-              {clientSteps.map((step, index) => (
-                <div key={step} className="flex gap-4 rounded-2xl border border-slate-200 p-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-900 text-sm font-bold text-white">
-                    0{index + 1}
-                  </div>
-                  <p className="text-sm leading-6 text-slate-700">{step}</p>
-                </div>
-              ))}
+        <div className="mt-10 space-y-4">
+          {flowSteps.map((step) => (
+            <div key={step.num} className="flex gap-4 rounded-3xl border border-slate-200 bg-white p-5 shadow-card md:p-6">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-900 text-sm font-bold text-white">
+                {step.num}
+              </div>
+              <div>
+                <h2 className="font-semibold text-slate-950">{step.title}</h2>
+                <p className="mt-1 text-sm leading-relaxed text-slate-600">{step.text}</p>
+              </div>
             </div>
-          </div>
+          ))}
+        </div>
 
+        {/* Ce faci tu / ce facem noi */}
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-2xl font-bold tracking-tight text-slate-950">Pentru meseriași</h2>
-            <div className="mt-6 space-y-4">
-              {workerSteps.map((step, index) => (
-                <div key={step} className="flex gap-4 rounded-2xl border border-slate-200 p-4">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary-900 text-sm font-bold text-white">
-                    0{index + 1}
-                  </div>
-                  <p className="text-sm leading-6 text-slate-700">{step}</p>
-                </div>
+            <h2 className="text-xl font-bold tracking-tight text-slate-950">Ce faci tu</h2>
+            <ul className="mt-5 space-y-3">
+              {youDo.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                  <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" strokeWidth={2.5} />
+                  {item}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
+          <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
+            <h2 className="text-xl font-bold tracking-tight text-slate-950">Ce facem noi</h2>
+            <ul className="mt-5 space-y-3">
+              {weDo.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
+                  <Check size={16} className="mt-0.5 shrink-0 text-emerald-600" strokeWidth={2.5} />
+                  {item}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Plata pe etape */}
+        <div className="mt-12 rounded-3xl border-2 border-primary-900/10 bg-primary-50/40 p-6 md:p-8">
+          <h2 className="text-xl font-bold tracking-tight text-slate-950">Cum se plătește: 40/40/20</h2>
+          <p className="mt-2 text-sm text-slate-600">
+            Plata e împărțită pe etape, ca să nu plătești totul înainte să vezi rezultatul.
+          </p>
+          <div className="mt-6 grid gap-4 sm:grid-cols-3">
+            {paymentSplit.map((p) => (
+              <div key={p.label} className="rounded-2xl bg-white p-5 shadow-card">
+                <p className="text-3xl font-extrabold tracking-[-0.02em] text-primary-900">{p.pct}</p>
+                <p className="mt-2 text-sm font-semibold text-slate-950">{p.label}</p>
+                <p className="mt-1 text-xs leading-relaxed text-slate-500">{p.detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Ce nu facem */}
+        <div className="mt-12 rounded-3xl bg-slate-950 p-6 text-white md:p-8">
+          <h2 className="text-xl font-bold tracking-tight">Ce nu facem</h2>
+          <ul className="mt-5 space-y-3">
+            {weDontDo.map((item) => (
+              <li key={item} className="flex items-start gap-2.5 text-sm text-white/75">
+                <X size={16} className="mt-0.5 shrink-0 text-white/40" strokeWidth={2.5} />
+                {item}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-10 text-center">
+          <Link
+            href="/cerere"
+            className="inline-flex rounded-2xl bg-accent-700 px-6 py-3.5 text-base font-bold text-white transition hover:bg-accent-800"
+          >
+            Descrie lucrarea
+          </Link>
         </div>
       </div>
     </section>
