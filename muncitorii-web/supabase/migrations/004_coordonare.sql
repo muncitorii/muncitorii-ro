@@ -279,3 +279,18 @@ $$;
 drop trigger if exists jobs_set_updated_at on public.jobs;
 create trigger jobs_set_updated_at before update on public.jobs
   for each row execute procedure public.set_updated_at();
+
+-- ============================================================
+-- GRANTS — fără acestea, cheia service_role/sb_secret primește
+-- "permission denied for table ..." (42501) pe PostgREST.
+-- ============================================================
+grant usage on schema public to anon, authenticated, service_role;
+grant all on all tables in schema public to service_role;
+grant all on all sequences in schema public to service_role;
+grant all on all functions in schema public to service_role;
+alter default privileges in schema public grant all on tables to service_role;
+alter default privileges in schema public grant all on sequences to service_role;
+alter default privileges in schema public grant all on functions to service_role;
+-- authenticated: doar prin RLS (politicile admin) — fără grant nu poate nici cu policy
+grant select, insert, update, delete on all tables in schema public to authenticated;
+alter default privileges in schema public grant select, insert, update, delete on tables to authenticated;
