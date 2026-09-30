@@ -13,9 +13,9 @@ export function PartnerForm() {
     return (
       <div className="flex flex-col items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-8 text-center">
         <CheckCircle2 size={40} className="text-emerald-600" strokeWidth={1.75} />
-        <p className="text-lg font-semibold text-emerald-800">Am primit cererea</p>
+        <p className="text-lg font-semibold text-emerald-800">Cererea a fost trimisă!</p>
         <p className="text-sm text-emerald-700">
-          Îți citesc profilul și te contactez dacă se potrivește cu lucrările pe care le am.
+          Analizăm profilul tău și te contactăm dacă ai un fit bun cu lucrările din rețea.
         </p>
       </div>
     );
@@ -88,7 +88,7 @@ export function PartnerForm() {
         disabled={isPending}
         className="w-full rounded-2xl bg-primary-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:opacity-60"
       >
-        {isPending ? "Se trimite..." : "Trimite aplicația"}
+        {isPending ? "Se trimite..." : "Trimite cererea"}
       </button>
     </form>
   );

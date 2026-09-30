@@ -23,7 +23,7 @@ export function SiteHeader() {
             href="/cerere"
             className="rounded-full bg-accent-700 px-4 py-2 text-sm font-semibold text-white transition hover:bg-accent-800"
           >
-            Trimite-mi pozele
+            Descrie lucrarea
           </Link>
         </div>
       </div>

@@ -51,7 +51,7 @@ export function IntakeForm() {
       className="mt-6 space-y-5"
     >
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-slate-700">Ce fel de lucrare e *</label>
+        <label className="mb-1.5 block text-sm font-medium text-slate-700">Tip lucrare *</label>
         <select
           name="work_type"
           required
@@ -59,7 +59,7 @@ export function IntakeForm() {
           className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:border-primary-700 focus:ring-2 focus:ring-primary-700/15"
         >
           <option value="" disabled>
-            Alege...
+            Alege tipul lucrării...
           </option>
           {jobTypes.map(({ slug, label }) => (
             <option key={slug} value={slug}>
@@ -83,14 +83,14 @@ export function IntakeForm() {
           minLength={10}
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Ce ai de făcut: suprafață, cum stă acum, ce vrei să obții..."
+          placeholder="Descrie ce ai de făcut: suprafață, stare actuală, ce vrei să obții..."
           className="w-full resize-none rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-primary-700 focus:ring-2 focus:ring-primary-700/15"
         />
       </div>
 
       <div>
         <label className="mb-1.5 block text-sm font-medium text-slate-700">
-          Poze <span className="text-slate-400">(până la {MAX_PHOTOS} — cu poze văd mai clar despre ce e vorba)</span>
+          Poze <span className="text-slate-400">(până la {MAX_PHOTOS}, opțional dar recomandat)</span>
         </label>
         <div className="flex flex-wrap gap-2">
           {photos.map((photo, i) => (
@@ -196,7 +196,7 @@ export function IntakeForm() {
         disabled={isPending || compressing}
         className="w-full rounded-2xl bg-primary-900 px-5 py-3 text-sm font-semibold text-white transition hover:bg-primary-700 disabled:opacity-60"
       >
-        {isPending ? "Se trimite..." : "Trimite-mi pozele cu lucrarea"}
+        {isPending ? "Se trimite..." : "Trimite cererea"}
       </button>
     </form>
   );

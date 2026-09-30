@@ -1,24 +1,51 @@
 import Link from "next/link";
-import { FadeUp } from "@/components/ui/motion";
+import { MapPin } from "lucide-react";
+import { FadeUp, StaggerContainer, StaggerItem } from "@/components/ui/motion";
 
-const primesti = [
-  "Un caiet de sarcini de o pagină.",
-  "Oferte pe care le poți compara.",
-  "Poze la fiecare etapă, în telefonul tău.",
-  "Costuri extra doar cu OK-ul tău scris.",
-  "Dosar cu facturi și garanții, la final.",
+const promises = [
+  {
+    title: "Lucrare clară",
+    description: "Descrii o dată, cu poze — primești un caiet de sarcini scris, nu vorbe în vânt.",
+  },
+  {
+    title: "Ofertă clară",
+    description: "Compari oferte pe aceleași criterii, nu ghicești ce e inclus și ce nu.",
+  },
+  {
+    title: "Dovadă clară",
+    description: "Fiecare etapă are poze înainte/după și confirmarea ta, nu \"pe cuvânt\".",
+  },
+  {
+    title: "Costuri fără surprize",
+    description: "Orice cost suplimentar se aprobă în scris, de tine, înainte să fie făcut.",
+  },
+  {
+    title: "Dosar complet la final",
+    description: "Facturi, garanții, instrucțiuni de întreținere — totul într-un singur loc.",
+  },
 ];
 
-const nuFac = [
-  "lucrări sub 1.000 lei",
-  "urgențe de noapte",
-  "renovări peste 90.000 lei în primul an",
-];
-
-const costuri = [
-  { titlu: "Evaluare", detaliu: "200 lei, se scad din lucrare." },
-  { titlu: "Coordonare", detaliu: "10–12% din valoarea lucrării." },
-  { titlu: "Plata lucrării", detaliu: "40% la start, 40% la etapa intermediară, 20% la recepție." },
+const steps = [
+  {
+    num: "01",
+    title: "Descrii lucrarea",
+    description: "Trimiți poze, tipul lucrării, orașul și bugetul orientativ. Durează 3 minute.",
+  },
+  {
+    num: "02",
+    title: "Primești caiet de sarcini și oferte",
+    description: "Evaluăm lucrarea și îți trimitem oferte comparabile de la meseriași din rețea.",
+  },
+  {
+    num: "03",
+    title: "Urmărești etapele cu poze",
+    description: "Fiecare etapă are termen, poze înainte/după și un buton de confirmare pentru tine.",
+  },
+  {
+    num: "04",
+    title: "Primești dosarul digital",
+    description: "La final: facturi, garanții, instrucțiuni de întreținere, totul organizat.",
+  },
 ];
 
 export default function Home() {
@@ -26,109 +53,141 @@ export default function Home() {
     <>
       {/* HERO */}
       <section className="bg-[#f7f2ea] px-4 py-16 md:px-6 md:py-24">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl text-center">
           <FadeUp>
-            <p className="text-sm font-medium text-slate-500">Iași și 50 km în jur</p>
-            <h1 className="mt-4 text-3xl leading-tight text-slate-950 md:text-5xl md:leading-tight">
-              Renovezi baia sau apartamentul și nu vrei să te trezești cu meseriașul{" "}
-              <em className="font-medium italic text-primary-900">dispărut</em> și factura dublă.
+            <span className="inline-flex items-center gap-2 rounded-full border border-accent-700/30 bg-accent-700/10 px-4 py-1.5 text-xs font-bold tracking-wide text-accent-700">
+              <MapPin size={14} /> Iași și împrejurimi
+            </span>
+            <h1 className="mt-5 text-4xl leading-[1.08] tracking-[-0.03em] text-slate-950 md:text-6xl">
+              Renovarea ta, coordonată cu{" "}
+              <span className="italic text-accent-700">dovadă</span>.
             </h1>
-            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-700">
-              Mă numesc Liviu, sunt electrician. Din 2026 organizez lucrări în Iași: îți scriu ce
-              trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape și nu se
-              pune un leu în plus fără să semnezi tu.
+            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-700">
+              Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
+              de sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
             </p>
 
-            <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center">
+            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
               <Link
                 href="/cerere"
-                className="rounded-2xl bg-accent-700 px-6 py-3.5 text-base font-medium text-white transition-all duration-200 ease-out hover:bg-accent-800"
+                className="w-full rounded-2xl bg-accent-700 px-6 py-3.5 text-center text-base font-medium text-white transition-all duration-200 ease-out hover:bg-accent-800 sm:w-auto"
               >
-                Trimite-mi pozele cu lucrarea
+                Descrie lucrarea
               </Link>
               <a
                 href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-medium text-slate-700 underline underline-offset-4 hover:text-slate-950"
+                className="w-full rounded-2xl border border-slate-300 bg-white/60 px-6 py-3.5 text-center text-base font-medium text-slate-800 transition-all duration-200 ease-out hover:bg-white sm:w-auto"
               >
-                sau scrie-mi pe WhatsApp
+                Scrie-ne pe WhatsApp
               </a>
             </div>
-          </FadeUp>
-        </div>
-      </section>
 
-      {/* CE PRIMEȘTI */}
-      <section className="bg-white px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-3xl">
-          <FadeUp>
-            <h2 className="text-2xl text-slate-950 md:text-3xl">Ce primești, pe scurt</h2>
-            <ul className="mt-6 divide-y divide-slate-200 border-t border-slate-200">
-              {primesti.map((item) => (
-                <li key={item} className="py-4 text-base leading-relaxed text-slate-700">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </FadeUp>
-        </div>
-      </section>
-
-      {/* CE NU FAC */}
-      <section className="bg-[#f7f2ea] px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-3xl">
-          <FadeUp>
-            <h2 className="text-2xl text-slate-950 md:text-3xl">Ce nu fac</h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-700">
-              Nu iau {nuFac.join(", ")}. Și nu promit „meseriași verificați&rdquo; — spun exact ce
-              verific: fiecare meseriaș a făcut o lucrare de probă plătită cu mine, are poze din
-              lucrările lui și acte în regulă, iar tu nu plătești o etapă până n-ai văzut-o.
+            <p className="mt-4 text-sm text-slate-500">
+              Taxă de evaluare 200 lei — se deduce integral din lucrare.
             </p>
           </FadeUp>
         </div>
       </section>
 
-      {/* CAT COSTA */}
+      {/* CELE 5 PROMISIUNI */}
       <section className="bg-white px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-3xl">
           <FadeUp>
-            <h2 className="text-2xl text-slate-950 md:text-3xl">Cât costă</h2>
-            <div className="mt-6 divide-y divide-slate-200 border-t border-slate-200">
-              {costuri.map((c) => (
-                <div key={c.titlu} className="flex flex-col gap-1 py-4 sm:flex-row sm:items-baseline sm:gap-6">
-                  <p className="w-40 shrink-0 text-sm font-medium text-slate-500">{c.titlu}</p>
-                  <p className="text-base leading-relaxed text-slate-800">{c.detaliu}</p>
+            <h2 className="text-2xl text-slate-950 md:text-3xl">Ce înseamnă „coordonat&rdquo;</h2>
+            <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
+          </FadeUp>
+
+          <StaggerContainer className="mt-6 divide-y divide-slate-200 border-t border-slate-200">
+            {promises.map(({ title, description }) => (
+              <StaggerItem key={title}>
+                <div className="py-4">
+                  <p className="font-medium text-slate-950">{title}</p>
+                  <p className="mt-1 text-sm leading-relaxed text-slate-600">{description}</p>
                 </div>
-              ))}
-            </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+        </div>
+      </section>
+
+      {/* CUM LUCRĂM — 4 pași */}
+      <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
+        <div className="mx-auto max-w-6xl">
+          <FadeUp className="max-w-2xl">
+            <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
+              Cum lucrăm
+            </h2>
+            <p className="mt-2 text-slate-600">Patru pași, fără zone gri.</p>
           </FadeUp>
 
-          <FadeUp className="mt-8">
-            <Link href="/cum-lucram" className="text-sm font-medium text-primary-900 underline underline-offset-4 hover:text-primary-700">
-              Vezi cum lucrez pas cu pas →
+          <StaggerContainer className="mt-10 grid gap-6 sm:grid-cols-2 md:grid-cols-4">
+            {steps.map(({ num, title, description }) => (
+              <StaggerItem key={num}>
+                <div className="h-full rounded-3xl bg-white p-6 shadow-card">
+                  <p className="text-4xl font-extrabold tracking-[-0.03em] text-slate-100">{num}</p>
+                  <h3 className="mt-3 text-lg font-semibold tracking-[-0.015em] text-slate-950">
+                    {title}
+                  </h3>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-600">{description}</p>
+                </div>
+              </StaggerItem>
+            ))}
+          </StaggerContainer>
+
+          <FadeUp className="mt-8 text-center">
+            <Link
+              href="/cum-lucram"
+              className="text-sm font-semibold text-primary-900 hover:text-primary-700"
+            >
+              Vezi tot flow-ul, inclusiv plata pe etape →
             </Link>
           </FadeUp>
         </div>
       </section>
 
-      {/* PENTRU MESERIASI */}
-      <section className="bg-slate-950 px-4 py-12 md:px-6 md:py-20">
-        <div className="mx-auto max-w-3xl">
+      {/* PENTRU MESERIAȘI */}
+      <section className="px-4 py-12 md:px-6 md:py-20">
+        <div className="mx-auto max-w-6xl">
           <FadeUp>
-            <p className="text-sm font-medium text-white/50">Ești meseriaș</p>
-            <h2 className="mt-2 text-2xl text-white md:text-3xl">
-              Lucrezi bine și te-ai săturat să alergi după clienți?
-            </h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/70">
-              Eu aduc lucrarea, tu o faci, ești plătit la 3–5 zile după ce încasez.
-            </p>
-            <Link
-              href="/parteneri"
-              className="mt-6 inline-flex text-sm font-medium text-white underline underline-offset-4 hover:text-white/80"
-            >
-              Vezi cum aplici →
-            </Link>
+            <div className="grid gap-px overflow-hidden rounded-3xl bg-slate-200 md:grid-cols-2">
+              <div className="bg-primary-900 px-8 py-10 md:px-10 md:py-14">
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
+                  Pentru clienți
+                </p>
+                <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-white md:text-3xl">
+                  Ai o renovare de făcut?
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/80">
+                  Descrie lucrarea și te sunăm în 24h cu următorii pași.
+                </p>
+                <Link
+                  href="/cerere"
+                  className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-900 transition-all duration-200 ease-out hover:bg-primary-50"
+                >
+                  Descrie lucrarea
+                </Link>
+              </div>
+
+              <div className="bg-primary-800 px-8 py-10 md:px-10 md:py-14">
+                <p className="text-xs font-semibold uppercase tracking-widest text-white/60">
+                  Pentru meseriași
+                </p>
+                <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-white md:text-3xl">
+                  Ești meseriaș în Iași?
+                </h2>
+                <p className="mt-3 text-sm leading-relaxed text-white/80">
+                  Intri în rețeaua de subcontractori și primești cereri de ofertă pentru lucrări deja evaluate.
+                </p>
+                <Link
+                  href="/parteneri"
+                  className="mt-6 inline-flex rounded-full bg-white px-5 py-3 text-sm font-semibold text-primary-900 transition-all duration-200 ease-out hover:bg-primary-50"
+                >
+                  Aplică ca partener
+                </Link>
+              </div>
+            </div>
           </FadeUp>
         </div>
       </section>
