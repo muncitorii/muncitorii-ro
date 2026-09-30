@@ -52,41 +52,43 @@ export default function Home() {
   return (
     <>
       {/* HERO */}
-      <section className="bg-white px-4 py-16 md:px-6 md:py-24">
-        <div className="mx-auto max-w-4xl text-center">
+      <section className="bg-white px-4 py-10 md:px-6 md:py-14">
+        <div className="mx-auto max-w-4xl">
           <FadeUp>
-            <span className="inline-flex items-center gap-2 rounded-full border border-accent-700/30 bg-accent-700/10 px-4 py-1.5 text-xs font-bold tracking-wide text-accent-700">
-              <MapPin size={14} /> Iași și împrejurimi
-            </span>
-            <h1 className="mt-5 text-4xl leading-[1.08] tracking-[-0.03em] text-slate-950 md:text-6xl">
-              Renovarea ta, coordonată cu{" "}
-              <span className="text-accent-700">dovadă</span>.
-            </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-slate-700">
-              Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
-              de sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
-            </p>
+            <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-10 text-center text-white md:px-10 md:py-16">
+              <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white/60">
+                <MapPin size={14} /> Iași și împrejurimi
+              </span>
+              <h1 className="mt-3 text-4xl leading-[1.08] tracking-[-0.03em] text-white md:text-6xl">
+                Renovarea ta, coordonată cu{" "}
+                <span className="text-accent-500">dovadă</span>.
+              </h1>
+              <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/75">
+                Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
+                de sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
+              </p>
 
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Link
-                href="/cerere"
-                className="w-full rounded-2xl bg-accent-700 px-6 py-3.5 text-center text-base font-medium text-white transition-all duration-200 ease-out hover:bg-accent-800 sm:w-auto"
-              >
-                Descrie lucrarea
-              </Link>
-              <a
-                href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "")}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full rounded-2xl border border-slate-300 bg-white/60 px-6 py-3.5 text-center text-base font-medium text-slate-800 transition-all duration-200 ease-out hover:bg-white sm:w-auto"
-              >
-                Scrie-ne pe WhatsApp
-              </a>
+              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
+                <Link
+                  href="/cerere"
+                  className="w-full rounded-full bg-accent-700 px-6 py-3.5 text-center text-base font-semibold text-white transition-all duration-200 ease-out hover:bg-accent-800 sm:w-auto"
+                >
+                  Descrie lucrarea
+                </Link>
+                <a
+                  href={`https://wa.me/${(process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "40712345678").replace(/^\+/, "")}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full rounded-full border border-white/30 px-6 py-3.5 text-center text-base font-medium text-white transition-all duration-200 ease-out hover:bg-white/10 sm:w-auto"
+                >
+                  Scrie-ne pe WhatsApp
+                </a>
+              </div>
+
+              <p className="mt-4 text-sm text-white/60">
+                Taxă de evaluare 200 lei — se deduce integral din lucrare.
+              </p>
             </div>
-
-            <p className="mt-4 text-sm text-slate-500">
-              Taxă de evaluare 200 lei — se deduce integral din lucrare.
-            </p>
           </FadeUp>
         </div>
       </section>
@@ -95,14 +97,16 @@ export default function Home() {
       <section className="bg-white px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-3xl">
           <FadeUp>
-            <h2 className="text-2xl text-slate-950 md:text-3xl">Ce înseamnă „coordonat&rdquo;</h2>
+            <h2 className="text-2xl font-bold tracking-[-0.02em] text-primary-900 md:text-3xl">
+              Ce înseamnă „coordonat&rdquo;
+            </h2>
             <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
           </FadeUp>
 
           <StaggerContainer className="mt-8 grid gap-4 sm:grid-cols-2">
             {promises.map(({ title, description }) => (
               <StaggerItem key={title}>
-                <div className="h-full rounded-2xl border border-slate-200 p-5 shadow-card">
+                <div className="h-full rounded-2xl border border-primary-900/10 p-5 shadow-card">
                   <p className="font-semibold text-slate-950">{title}</p>
                   <p className="mt-1.5 text-sm leading-relaxed text-slate-600">{description}</p>
                 </div>
@@ -116,7 +120,7 @@ export default function Home() {
       <section className="bg-slate-50 px-4 py-12 md:px-6 md:py-20">
         <div className="mx-auto max-w-6xl">
           <FadeUp className="max-w-2xl">
-            <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
+            <h2 className="text-2xl font-bold tracking-[-0.02em] text-primary-900 md:text-3xl">
               Cum lucrăm
             </h2>
             <p className="mt-2 text-slate-600">Patru pași, fără zone gri.</p>

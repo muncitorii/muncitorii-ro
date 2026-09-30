@@ -16,6 +16,13 @@ import {
 } from "./actions";
 
 const jobStatuses = ["intake", "evaluare", "oferte", "in_lucru", "finalizat"] as const;
+const jobStatusLabel: Record<string, string> = {
+  intake: "Cerere primită",
+  evaluare: "În evaluare",
+  oferte: "Oferte în comparare",
+  in_lucru: "În lucru",
+  finalizat: "Finalizat",
+};
 const stageStatuses = ["pending", "in_progress", "awaiting_approval"] as const;
 const stageStatusLabel: Record<string, string> = {
   pending: "Neînceput",
@@ -42,6 +49,9 @@ export default async function AdminJobDetailPage({
 
   const brief = job.brief as { work_type?: string; description?: string; name?: string; phone?: string };
   const nextSequence = job.stages.length > 0 ? Math.max(...job.stages.map((s) => s.sequence)) + 1 : 1;
+  const totalStages = job.stages.length;
+  const approvedStages = job.stages.filter((s) => s.status === "approved").length;
+  const progressPct = totalStages > 0 ? Math.round((approvedStages / totalStages) * 100) : 0;
 
   const photoUrls = await Promise.all(
     job.photos.map(async (photo) => ({ photo, url: await getSignedUrl(photo.storage_path) })),
@@ -63,17 +73,37 @@ export default async function AdminJobDetailPage({
       )}
 
       {/* Header lucrare */}
+      <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
+        <p className="text-sm font-medium text-white/60">{getJobTypeLabel(brief.work_type)}</p>
+        <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] md:text-3xl">
+          {job.client?.full_name ?? brief.name ?? "Client necunoscut"}
+        </h1>
+        <div className="mt-3 flex flex-wrap items-center gap-3">
+          <Badge variant="accent">{jobStatusLabel[job.status] ?? job.status}</Badge>
+          <span className="text-sm text-white/70">
+            {job.client?.phone ?? brief.phone ?? "—"} · {job.city ?? "—"}
+          </span>
+        </div>
+        {totalStages > 0 && (
+          <div className="mt-4 max-w-xs">
+            <div className="flex items-center justify-between text-xs text-white/70">
+              <span>Progres etape</span>
+              <span className="font-mono text-white">
+                {approvedStages} din {totalStages} etape
+              </span>
+            </div>
+            <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-white/20">
+              <div
+                className="h-full rounded-full bg-amber-400"
+                style={{ width: `${progressPct}%` }}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
       <Card>
         <div className="flex flex-wrap items-start justify-between gap-4">
-          <div>
-            <Badge variant="accent">{getJobTypeLabel(brief.work_type)}</Badge>
-            <h1 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-slate-950">
-              {job.client?.full_name ?? brief.name ?? "Client necunoscut"}
-            </h1>
-            <p className="mt-1 text-sm text-slate-500">
-              {job.client?.phone ?? brief.phone ?? "—"} · {job.city ?? "—"}
-            </p>
-          </div>
           <CopyLinkButton path={`/p/${job.public_token}`} />
         </div>
 
@@ -130,7 +160,7 @@ export default async function AdminJobDetailPage({
 
       {/* Etape */}
       <Card>
-        <h2 className="text-xl font-bold tracking-[-0.015em] text-slate-950">Etape</h2>
+        <h2 className="text-xl font-bold tracking-[-0.015em] text-primary-900">Etape</h2>
 
         <div className="mt-4 space-y-3">
           {job.stages.map((stage) => (
@@ -251,7 +281,7 @@ export default async function AdminJobDetailPage({
 
       {/* Change orders */}
       <Card>
-        <h2 className="text-xl font-bold tracking-[-0.015em] text-slate-950">Costuri suplimentare</h2>
+        <h2 className="text-xl font-bold tracking-[-0.015em] text-primary-900">Costuri suplimentare</h2>
 
         <div className="mt-4 space-y-2">
           {job.change_orders.map((co) => (
@@ -306,7 +336,7 @@ export default async function AdminJobDetailPage({
 
       {/* Documente */}
       <Card>
-        <h2 className="text-xl font-bold tracking-[-0.015em] text-slate-950">Documente</h2>
+        <h2 className="text-xl font-bold tracking-[-0.015em] text-primary-900">Documente</h2>
         <div className="mt-4 space-y-2">
           {job.documents.map((doc) => (
             <div key={doc.id} className="flex items-center justify-between rounded-xl border border-slate-200 px-4 py-2.5 text-sm">

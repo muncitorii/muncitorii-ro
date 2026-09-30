@@ -17,18 +17,21 @@ export default async function CerereConfirmarePage({
   const { token } = await searchParams;
 
   return (
-    <section className="px-4 py-16 md:px-6 md:py-24">
+    <section className="px-4 py-10 md:px-6 md:py-14">
       <div className="mx-auto max-w-lg text-center">
-        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-50">
-          <CheckCircle2 size={28} className="text-emerald-600" strokeWidth={1.75} />
+        <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-9 text-white md:px-8 md:py-11">
+          <p className="text-sm font-medium text-white/60">Cerere trimisă</p>
+          <div className="mx-auto mt-3 flex h-14 w-14 items-center justify-center rounded-full bg-white/10">
+            <CheckCircle2 size={28} className="text-accent-500" strokeWidth={1.75} />
+          </div>
+          <h1 className="mt-4 text-2xl font-bold tracking-[-0.015em] text-white md:text-3xl">
+            Cererea a fost trimisă
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-white/75 md:text-base">
+            Te sunăm în 24h ca să stabilim următorii pași. Taxa de evaluare de 200 lei se deduce
+            integral din valoarea lucrării, dacă mergem mai departe.
+          </p>
         </div>
-        <h1 className="mt-5 text-3xl font-bold tracking-[-0.025em] text-slate-950">
-          Cererea a fost trimisă
-        </h1>
-        <p className="mt-3 text-base leading-relaxed text-slate-600">
-          Te sunăm în 24h ca să stabilim următorii pași. Taxa de evaluare de 200 lei se deduce
-          integral din valoarea lucrării, dacă mergem mai departe.
-        </p>
 
         {token && (
           <div className="mt-8 rounded-3xl border border-slate-200 bg-slate-50 p-6 text-left">

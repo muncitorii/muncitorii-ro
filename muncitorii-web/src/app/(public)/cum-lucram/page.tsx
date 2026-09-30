@@ -72,15 +72,15 @@ export default function CumLucramPage() {
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
       <div className="mx-auto max-w-4xl">
-        <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-          Cum lucrăm
-        </span>
-        <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 md:text-5xl">
-          Flow-ul complet, fără zone gri
-        </h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-          De la primul mesaj la dosarul digital final — șase pași, fiecare cu o dovadă.
-        </p>
+        <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
+          <p className="text-sm font-medium text-white/60">Cum lucrăm</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] text-white md:text-3xl">
+            Flow-ul complet, fără zone gri
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
+            De la primul mesaj la dosarul digital final — șase pași, fiecare cu o dovadă.
+          </p>
+        </div>
 
         <div className="mt-10 space-y-4">
           {flowSteps.map((step) => (
@@ -99,7 +99,7 @@ export default function CumLucramPage() {
         {/* Ce faci tu / ce facem noi */}
         <div className="mt-12 grid gap-6 md:grid-cols-2">
           <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-xl font-bold tracking-tight text-slate-950">Ce faci tu</h2>
+            <h2 className="text-xl font-bold tracking-tight text-primary-900">Ce faci tu</h2>
             <ul className="mt-5 space-y-3">
               {youDo.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -110,7 +110,7 @@ export default function CumLucramPage() {
             </ul>
           </div>
           <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-xl font-bold tracking-tight text-slate-950">Ce facem noi</h2>
+            <h2 className="text-xl font-bold tracking-tight text-primary-900">Ce facem noi</h2>
             <ul className="mt-5 space-y-3">
               {weDo.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm text-slate-700">
@@ -124,7 +124,7 @@ export default function CumLucramPage() {
 
         {/* Plata pe etape */}
         <div className="mt-12 rounded-3xl border-2 border-primary-900/10 bg-primary-50/40 p-6 md:p-8">
-          <h2 className="text-xl font-bold tracking-tight text-slate-950">Cum se plătește: 40/40/20</h2>
+          <h2 className="text-xl font-bold tracking-tight text-primary-900">Cum se plătește: 40/40/20</h2>
           <p className="mt-2 text-sm text-slate-600">
             Plata e împărțită pe etape, ca să nu plătești totul înainte să vezi rezultatul.
           </p>
@@ -155,7 +155,7 @@ export default function CumLucramPage() {
         <div className="mt-10 text-center">
           <Link
             href="/cerere"
-            className="inline-flex rounded-2xl bg-accent-700 px-6 py-3.5 text-base font-bold text-white transition hover:bg-accent-800"
+            className="inline-flex rounded-full bg-accent-700 px-6 py-3.5 text-base font-bold text-white transition hover:bg-accent-800"
           >
             Descrie lucrarea
           </Link>

@@ -17,7 +17,7 @@ export function DashboardLogout() {
   return (
     <button
       onClick={handleLogout}
-      className="inline-flex items-center gap-1.5 rounded-full border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-50"
+      className="inline-flex items-center gap-1.5 rounded-full border border-white/30 px-4 py-2 text-sm font-medium text-white transition hover:bg-white/10"
     >
       <LogOut size={14} />
       Ieși

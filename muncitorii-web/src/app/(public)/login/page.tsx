@@ -53,17 +53,20 @@ function LoginForm() {
 
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
-      <div className="mx-auto max-w-md rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
-        <span className="inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-semibold text-slate-700">
-          Zonă administrare
-        </span>
-        <h1 className="mt-4 text-3xl font-bold tracking-tight text-slate-950">Intră în cont</h1>
-        <p className="mt-2 text-sm leading-6 text-slate-600">
-          Acces rezervat echipei Muncitorii.ro. Dacă ești client, urmărește lucrarea pe linkul
-          personal primit după ce ai trimis cererea prin /cerere.
-        </p>
+      <div className="mx-auto max-w-md">
+        <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
+          <p className="text-sm font-medium text-white/60">Zonă administrare</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] text-white md:text-3xl">
+            Intră în cont
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-white/75">
+            Acces rezervat echipei Muncitorii.ro. Dacă ești client, urmărește lucrarea pe linkul
+            personal primit după ce ai trimis cererea prin /cerere.
+          </p>
+        </div>
 
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        <div className="mt-6 rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-slate-700">Email</label>
             <Input id="email" name="email" type="email" placeholder="tu@email.com" autoComplete="email" required />
@@ -88,6 +91,7 @@ function LoginForm() {
             {loading ? "Se verifică..." : "Intră în cont"}
           </Button>
         </form>
+        </div>
       </div>
     </section>
   );

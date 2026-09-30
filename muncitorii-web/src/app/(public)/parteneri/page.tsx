@@ -19,20 +19,20 @@ export default function ParteneriPage() {
   return (
     <section className="px-4 py-10 md:px-6 md:py-16">
       <div className="mx-auto max-w-6xl">
-        <span className="inline-flex rounded-full border border-accent-200 bg-accent-50 px-3 py-1 text-xs font-semibold text-accent-700">
-          Pentru meseriași
-        </span>
-        <h1 className="mt-4 text-4xl font-extrabold tracking-tight text-slate-950 md:text-5xl">
-          Lucrări deja evaluate, clienți care știu ce vor
-        </h1>
-        <p className="mt-4 max-w-2xl text-base leading-7 text-slate-600 md:text-lg">
-          Nu suntem o platformă unde aplici la sute de anunțuri. Coordonăm lucrarea înainte să
-          ajungă la tine — tu te ocupi de execuție.
-        </p>
+        <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-7 text-white md:px-8 md:py-9">
+          <p className="text-sm font-medium text-white/60">Pentru meseriași</p>
+          <h1 className="mt-1 text-2xl font-bold tracking-[-0.015em] text-white md:text-3xl">
+            Lucrări deja evaluate, clienți care știu ce vor
+          </h1>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
+            Nu suntem o platformă unde aplici la sute de anunțuri. Coordonăm lucrarea înainte să
+            ajungă la tine — tu te ocupi de execuție.
+          </p>
+        </div>
 
         <div className="mt-10 grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-start">
           <div className="rounded-3xl bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-xl font-bold tracking-tight text-slate-950">De ce să lucrezi cu noi</h2>
+            <h2 className="text-xl font-bold tracking-tight text-primary-900">De ce să lucrezi cu noi</h2>
             <ul className="mt-5 space-y-3.5">
               {benefits.map((b) => (
                 <li key={b} className="flex items-start gap-2.5 text-sm leading-relaxed text-slate-700">
@@ -48,7 +48,7 @@ export default function ParteneriPage() {
           </div>
 
           <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-card md:p-8">
-            <h2 className="text-xl font-bold tracking-tight text-slate-950">Aplică ca partener</h2>
+            <h2 className="text-xl font-bold tracking-tight text-primary-900">Aplică ca partener</h2>
             <p className="mt-1 text-sm text-slate-500">Un formular scurt, 1 minut.</p>
             <div className="mt-5">
               <PartnerForm />
