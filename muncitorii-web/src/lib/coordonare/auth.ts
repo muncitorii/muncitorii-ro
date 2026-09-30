@@ -16,7 +16,7 @@ export async function getCurrentAdmin() {
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("role, full_name")
+    .select("*")
     .eq("id", user.id)
     .maybeSingle();
 

@@ -44,6 +44,7 @@ export function VoiceDictationButton({ onResult }: { onResult: (text: string) =>
       return;
     }
 
+    if (!SpeechRecognitionCtor) return;
     const recognition = new SpeechRecognitionCtor();
     recognition.lang = "ro-RO";
     recognition.continuous = false;

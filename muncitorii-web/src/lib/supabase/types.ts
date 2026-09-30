@@ -48,6 +48,7 @@ export type Database = {
           city?: string | null;
           county?: string | null;
         };
+        Relationships: [];
       };
       contact_messages: {
         Row: {
@@ -70,6 +71,7 @@ export type Database = {
         Update: {
           status?: "new" | "read" | "replied" | "archived";
         };
+        Relationships: [];
       };
       clients: {
         Row: {
@@ -92,6 +94,7 @@ export type Database = {
           email?: string | null;
           city?: string | null;
         };
+        Relationships: [];
       };
       subcontractors: {
         Row: {
@@ -117,6 +120,7 @@ export type Database = {
         Update: {
           status?: SubcontractorStatus;
         };
+        Relationships: [];
       };
       jobs: {
         Row: {
@@ -146,6 +150,7 @@ export type Database = {
           budget_hint?: string | null;
           deadline_hint?: string | null;
         };
+        Relationships: [];
       };
       job_stages: {
         Row: {
@@ -176,6 +181,7 @@ export type Database = {
           client_approved_ip?: string | null;
           client_approved_method?: ApprovalMethod | null;
         };
+        Relationships: [];
       };
       rfqs: {
         Row: {
@@ -193,6 +199,7 @@ export type Database = {
         Update: {
           status?: "sent" | "responded" | "declined";
         };
+        Relationships: [];
       };
       offers: {
         Row: {
@@ -216,6 +223,7 @@ export type Database = {
           notes?: string;
           status?: "pending" | "accepted" | "rejected";
         };
+        Relationships: [];
       };
       change_orders: {
         Row: {
@@ -243,6 +251,7 @@ export type Database = {
           approved_ip?: string | null;
           approved_method?: ApprovalMethod | null;
         };
+        Relationships: [];
       };
       photos: {
         Row: {
@@ -260,6 +269,7 @@ export type Database = {
           storage_path: string;
         };
         Update: Record<string, never>;
+        Relationships: [];
       };
       documents: {
         Row: {
@@ -277,6 +287,7 @@ export type Database = {
           label?: string;
         };
         Update: Record<string, never>;
+        Relationships: [];
       };
     };
     Views: Record<string, never>;

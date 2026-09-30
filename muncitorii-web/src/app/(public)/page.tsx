@@ -75,8 +75,8 @@ export default function Home() {
               <span className="text-accent-500">dovadă</span>.
             </h1>
             <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/65">
-              Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet de
-              sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
+              Lucrare clară, ofertă clară, dovadă clară. Descrii ce ai de făcut, primești caiet
+              de sarcini și oferte comparabile, urmărești fiecare etapă cu poze înainte/după.
             </p>
 
             <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
@@ -108,7 +108,7 @@ export default function Home() {
         <div className="mx-auto max-w-6xl">
           <FadeUp className="max-w-2xl">
             <h2 className="text-2xl font-bold tracking-[-0.02em] text-slate-950 md:text-3xl">
-              Ce înseamnă „coordonat"
+              Ce înseamnă „coordonat&rdquo;
             </h2>
             <p className="mt-2 text-slate-600">Cinci promisiuni concrete, nu cuvinte goale.</p>
           </FadeUp>

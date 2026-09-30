@@ -9,6 +9,15 @@ import type { JobBrief } from "@/lib/supabase/types";
 
 export { hasServiceRole };
 
+function stripRelations(job: JobFull): JobWithClient {
+  const rest: Partial<JobFull> = { ...job };
+  delete rest.stages;
+  delete rest.change_orders;
+  delete rest.photos;
+  delete rest.documents;
+  return rest as JobWithClient;
+}
+
 // ------------------------------------------------------------
 // Listare pentru /admin
 // ------------------------------------------------------------
@@ -18,7 +27,7 @@ export async function listJobsForAdmin(): Promise<{
 }> {
   const admin = createAdminClient();
   if (!admin) {
-    return { jobs: seedJobs.map(({ stages, change_orders, photos, documents, ...j }) => j), seed: true };
+    return { jobs: seedJobs.map((j) => stripRelations(j)), seed: true };
   }
 
   const { data, error } = await admin
@@ -27,7 +36,7 @@ export async function listJobsForAdmin(): Promise<{
     .order("created_at", { ascending: false });
 
   if (error || !data) {
-    return { jobs: seedJobs.map(({ stages, change_orders, photos, documents, ...j }) => j), seed: true };
+    return { jobs: seedJobs.map((j) => stripRelations(j)), seed: true };
   }
 
   return { jobs: data as unknown as JobWithClient[], seed: false };
