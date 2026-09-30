@@ -82,7 +82,8 @@ export default function Home() {
             <h2 className="text-2xl text-slate-950 md:text-3xl">Ce nu fac</h2>
             <p className="mt-4 max-w-xl text-base leading-relaxed text-slate-700">
               Nu iau {nuFac.join(", ")}. Și nu promit „meseriași verificați&rdquo; — spun exact ce
-              verific: actele lucrării, calitatea materialelor, ce s-a discutat și s-a scris.
+              verific: fiecare meseriaș a făcut o lucrare de probă plătită cu mine, are poze din
+              lucrările lui și acte în regulă, iar tu nu plătești o etapă până n-ai văzut-o.
             </p>
           </FadeUp>
         </div>

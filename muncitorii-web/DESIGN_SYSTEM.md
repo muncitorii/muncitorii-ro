@@ -1,5 +1,7 @@
 # Muncitorii.ro — Design System Spec
 
+> Notă 2026-09-30: tipografia s-a mutat de la Geist la Fraunces (titluri) + Inter Tight (text). Secțiunea de mai jos care menționează Geist e depășită.
+
 Document de referință pentru implementare. Toate deciziile sunt finale (luate pe Opus 4.7). Implementarea se face pe Sonnet 4.6.
 
 ## Direcție generală
