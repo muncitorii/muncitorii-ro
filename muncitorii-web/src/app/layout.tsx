@@ -15,7 +15,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://muncitorii.ro"),
+  metadataBase: new URL("https://www.muncitorii.ro"),
   title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
   description:
     "Coordonăm renovarea ta în Brașov: lucrare clară, ofertă clară, dovadă clară. Descrii lucrarea, primești caiet de sarcini și oferte comparabile, urmărești etapele cu poze înainte/după.",
