@@ -1,35 +1,38 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Fraunces, Inter_Tight } from "next/font/google";
 import { CookieBanner } from "@/components/cookie-banner";
 import "./globals.css";
 
-const geistSans = Geist({
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-fraunces",
 });
 
-const geistMono = Geist_Mono({
+const interTight = Inter_Tight({
   subsets: ["latin"],
-  variable: "--font-geist-mono",
+  weight: ["400", "500"],
+  variable: "--font-inter-tight",
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://muncitorii.ro"),
-  title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
+  title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
   description:
-    "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară. Descrii lucrarea, primești caiet de sarcini și oferte comparabile, urmărești etapele cu poze înainte/după.",
+    "Renovezi baia sau apartamentul și nu vrei meseriaș dispărut și factură dublă. Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
   openGraph: {
     type: "website",
     locale: "ro_RO",
     siteName: "Muncitorii.ro",
-    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
+    title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
     description:
-      "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
+      "Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Muncitorii.ro — Renovări coordonate, cu dovadă",
-    description: "Coordonăm renovarea ta în Iași: lucrare clară, ofertă clară, dovadă clară.",
+    title: "Muncitorii.ro — Liviu îți coordonează renovarea, în Iași",
+    description: "Îți scriu ce trebuie făcut, aduc 2–3 oferte pe același format, țin șantierul pe etape.",
   },
 };
 
@@ -45,7 +48,7 @@ export default function RootLayout({
   return (
     <html
       lang="ro"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${interTight.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-slate-50 text-slate-900">
         {children}

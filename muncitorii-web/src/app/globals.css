@@ -1,8 +1,10 @@
 @import "tailwindcss";
 
 @theme {
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  --font-sans: var(--font-inter-tight), system-ui, sans-serif;
+  --font-body: var(--font-inter-tight), system-ui, sans-serif;
+  --font-heading: var(--font-fraunces), Georgia, serif;
+  --font-mono: ui-monospace, monospace;
 
   --color-primary-50: #eff4fb;
   --color-primary-100: #dde7f5;
@@ -35,6 +37,11 @@
 
   body {
     margin: 0;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-heading);
+    font-weight: 600;
   }
 
   a {
