@@ -51,7 +51,7 @@ export function PartnerForm() {
           <input
             name="city"
             type="text"
-            placeholder="Ex: Iași"
+            placeholder="Ex: Brașov"
             className="w-full rounded-xl border border-slate-300 px-4 py-3 text-sm outline-none placeholder:text-slate-400 focus:border-primary-700 focus:ring-2 focus:ring-primary-700/15"
           />
         </div>

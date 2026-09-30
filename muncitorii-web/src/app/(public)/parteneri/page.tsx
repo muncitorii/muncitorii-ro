@@ -5,7 +5,7 @@ import { PartnerForm } from "@/components/partner-form";
 export const metadata: Metadata = {
   title: "Pentru meseriași | Muncitorii.ro",
   description:
-    "Rețeaua de meseriași Muncitorii.ro, Iași. Primești cereri de ofertă pe lucrări evaluate, cu caiet de sarcini, și ești plătit pe etape.",
+    "Rețeaua de meseriași Muncitorii.ro, Brașov. Primești cereri de ofertă pe lucrări evaluate, cu caiet de sarcini, și ești plătit pe etape.",
 };
 
 const benefits = [

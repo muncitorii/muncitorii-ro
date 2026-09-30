@@ -64,7 +64,7 @@ const paymentSplit = [
 const weDontDo = [
   "Prețul ferm vine după caietul de sarcini. Bugetul orientativ din formular este doar o estimare.",
   "Coordonăm lucrarea. Meseriașii din rețea sunt firme sau PFA independente, nu angajații noștri.",
-  "Lucrăm momentan în Iași și pe o rază de 50 km.",
+  "Lucrăm momentan în Brașov și pe o rază de 50 km.",
   "Nu începem o etapă nouă până nu ai confirmat-o pe cea anterioară.",
 ];
 

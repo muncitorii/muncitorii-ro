@@ -64,14 +64,14 @@ export default function Home() {
           <FadeUp>
             <div className="rounded-3xl bg-gradient-to-br from-primary-900 to-primary-950 px-6 py-10 text-center text-white md:px-10 md:py-16">
               <span className="inline-flex items-center gap-1.5 text-sm font-medium text-white/60">
-                <MapPin size={14} /> Iași și împrejurimi
+                <MapPin size={14} /> Brașov și împrejurimi
               </span>
               <h1 className="mt-3 text-4xl leading-[1.08] tracking-[-0.03em] text-white md:text-6xl">
                 Renovarea ta, coordonată cu{" "}
                 <span className="text-accent-500">dovadă</span>.
               </h1>
               <p className="mx-auto mt-4 max-w-2xl text-lg leading-relaxed text-white/75">
-                Lucrare clară, ofertă clară, dovadă clară. Coordonăm renovări în Iași și în jur.
+                Lucrare clară, ofertă clară, dovadă clară. Coordonăm renovări în Brașov și în jur.
                 Caiet de sarcini scris, oferte comparabile, etape cu poze și confirmarea ta, dosar
                 complet la recepție.
               </p>
@@ -187,7 +187,7 @@ export default function Home() {
                   Pentru meseriași
                 </p>
                 <h2 className="mt-3 text-2xl font-bold tracking-[-0.02em] text-white md:text-3xl">
-                  Ești meseriaș în Iași?
+                  Ești meseriaș în Brașov?
                 </h2>
                 <p className="mt-3 text-sm leading-relaxed text-white/80">
                   Intri în rețeaua de subcontractori și primești cereri de ofertă pentru lucrări deja evaluate.

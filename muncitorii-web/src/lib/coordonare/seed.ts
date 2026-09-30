@@ -11,7 +11,7 @@ export const seedClient: Client = {
   full_name: "Andreea Munteanu",
   phone: "0740123456",
   email: "andreea@example.com",
-  city: "Iași",
+  city: "Brașov",
   created_at: "2026-09-20T09:00:00.000Z",
 };
 
@@ -27,7 +27,7 @@ export const seedJob: JobFull = {
   },
   status: "in_lucru",
   public_token: SEED_PUBLIC_TOKEN,
-  city: "Iași",
+  city: "Brașov",
   budget_hint: "8000-12000 lei",
   deadline_hint: "3 săptămâni",
   created_at: "2026-09-20T09:00:00.000Z",
@@ -109,7 +109,7 @@ export const seedSubcontractors: Subcontractor[] = [
     id: "seed-sub-1",
     full_name: "Vasile Croitoru",
     trade: "Instalator",
-    city: "Iași",
+    city: "Brașov",
     phone: "0745000000",
     experience_years: 12,
     portfolio_photos: [],
