@@ -25,6 +25,20 @@ begin
   if exists (select 1 from information_schema.tables where table_schema = 'public' and table_name = 'jobs') then
     alter table public.jobs rename to legacy_marketplace_jobs;
   end if;
+  -- indexurile vechi păstrează numele după rename → le redenumim ca să nu
+  -- intre în coliziune cu indexurile noii tabele `jobs`
+  if exists (select 1 from pg_indexes where schemaname='public' and tablename='legacy_marketplace_jobs' and indexname='jobs_status_idx') then
+    alter index public.jobs_status_idx rename to legacy_marketplace_jobs_status_idx;
+  end if;
+  if exists (select 1 from pg_indexes where schemaname='public' and tablename='legacy_marketplace_jobs' and indexname='jobs_category_idx') then
+    alter index public.jobs_category_idx rename to legacy_marketplace_jobs_category_idx;
+  end if;
+  if exists (select 1 from pg_indexes where schemaname='public' and tablename='legacy_marketplace_jobs' and indexname='jobs_city_idx') then
+    alter index public.jobs_city_idx rename to legacy_marketplace_jobs_city_idx;
+  end if;
+  if exists (select 1 from pg_indexes where schemaname='public' and tablename='legacy_marketplace_jobs' and indexname='jobs_pkey') then
+    alter index public.jobs_pkey rename to legacy_marketplace_jobs_pkey;
+  end if;
 end $$;
 
 -- Permite rolul 'admin' pe profiles (fostul check permitea doar client/worker)
@@ -35,7 +49,7 @@ alter table public.profiles add constraint profiles_role_check
 -- ------------------------------------------------------------
 -- 1. CLIENTS — clienți ai serviciului de coordonare (fără cont)
 -- ------------------------------------------------------------
-create table public.clients (
+create table if not exists public.clients (
   id          uuid primary key default uuid_generate_v4(),
   full_name   text not null,
   phone       text not null,
@@ -55,7 +69,7 @@ alter table public.clients enable row level security;
 -- ------------------------------------------------------------
 -- 2. SUBCONTRACTORS — meseriași parteneri (fără cont, gestionați de admin)
 -- ------------------------------------------------------------
-create table public.subcontractors (
+create table if not exists public.subcontractors (
   id                uuid primary key default uuid_generate_v4(),
   full_name         text not null,
   trade             text not null,
@@ -72,7 +86,7 @@ alter table public.subcontractors enable row level security;
 -- ------------------------------------------------------------
 -- 3. JOBS (coordonare) — lucrarea unui client, coordonată de admin
 -- ------------------------------------------------------------
-create table public.jobs (
+create table if not exists public.jobs (
   id            uuid primary key default uuid_generate_v4(),
   client_id     uuid not null references public.clients(id) on delete cascade,
   brief         jsonb default '{}'::jsonb not null, -- tip lucrare, descriere, poze intake, etc.
@@ -85,16 +99,16 @@ create table public.jobs (
   updated_at    timestamptz default now() not null
 );
 
-create index jobs_public_token_idx on public.jobs(public_token);
-create index jobs_client_idx on public.jobs(client_id);
-create index jobs_status_idx on public.jobs(status);
+create index if not exists jobs_public_token_idx on public.jobs(public_token);
+create index if not exists jobs_client_idx on public.jobs(client_id);
+create index if not exists jobs_status_idx on public.jobs(status);
 
 alter table public.jobs enable row level security;
 
 -- ------------------------------------------------------------
 -- 4. JOB_STAGES — etapele lucrării, cu confirmare client
 -- ------------------------------------------------------------
-create table public.job_stages (
+create table if not exists public.job_stages (
   id                    uuid primary key default uuid_generate_v4(),
   job_id                uuid not null references public.jobs(id) on delete cascade,
   sequence              int not null default 1,
@@ -107,7 +121,7 @@ create table public.job_stages (
   created_at            timestamptz default now() not null
 );
 
-create index job_stages_job_idx on public.job_stages(job_id);
+create index if not exists job_stages_job_idx on public.job_stages(job_id);
 create unique index job_stages_job_sequence_idx on public.job_stages(job_id, sequence);
 
 alter table public.job_stages enable row level security;
@@ -115,7 +129,7 @@ alter table public.job_stages enable row level security;
 -- ------------------------------------------------------------
 -- 5. RFQS — cereri de ofertă trimise către subcontractori (Sprint 2+ folosește mai mult; schema pregătită acum)
 -- ------------------------------------------------------------
-create table public.rfqs (
+create table if not exists public.rfqs (
   id                uuid primary key default uuid_generate_v4(),
   job_id            uuid not null references public.jobs(id) on delete cascade,
   subcontractor_id  uuid references public.subcontractors(id) on delete set null,
@@ -123,14 +137,14 @@ create table public.rfqs (
   created_at        timestamptz default now() not null
 );
 
-create index rfqs_job_idx on public.rfqs(job_id);
+create index if not exists rfqs_job_idx on public.rfqs(job_id);
 
 alter table public.rfqs enable row level security;
 
 -- ------------------------------------------------------------
 -- 6. OFFERS — oferte primite (comparabile) pentru o lucrare
 -- ------------------------------------------------------------
-create table public.offers (
+create table if not exists public.offers (
   id                uuid primary key default uuid_generate_v4(),
   job_id            uuid not null references public.jobs(id) on delete cascade,
   subcontractor_id  uuid references public.subcontractors(id) on delete set null,
@@ -140,14 +154,14 @@ create table public.offers (
   created_at        timestamptz default now() not null
 );
 
-create index offers_job_idx on public.offers(job_id);
+create index if not exists offers_job_idx on public.offers(job_id);
 
 alter table public.offers enable row level security;
 
 -- ------------------------------------------------------------
 -- 7. CHANGE_ORDERS — costuri extra, aprobate explicit de client
 -- ------------------------------------------------------------
-create table public.change_orders (
+create table if not exists public.change_orders (
   id            uuid primary key default uuid_generate_v4(),
   job_id        uuid not null references public.jobs(id) on delete cascade,
   stage_id      uuid references public.job_stages(id) on delete set null,
@@ -160,14 +174,14 @@ create table public.change_orders (
   created_at    timestamptz default now() not null
 );
 
-create index change_orders_job_idx on public.change_orders(job_id);
+create index if not exists change_orders_job_idx on public.change_orders(job_id);
 
 alter table public.change_orders enable row level security;
 
 -- ------------------------------------------------------------
 -- 8. PHOTOS — poze intake / înainte / după, legate de etapă (opțional)
 -- ------------------------------------------------------------
-create table public.photos (
+create table if not exists public.photos (
   id            uuid primary key default uuid_generate_v4(),
   job_id        uuid not null references public.jobs(id) on delete cascade,
   stage_id      uuid references public.job_stages(id) on delete set null,
@@ -176,15 +190,15 @@ create table public.photos (
   created_at    timestamptz default now() not null
 );
 
-create index photos_job_idx on public.photos(job_id);
-create index photos_stage_idx on public.photos(stage_id);
+create index if not exists photos_job_idx on public.photos(job_id);
+create index if not exists photos_stage_idx on public.photos(stage_id);
 
 alter table public.photos enable row level security;
 
 -- ------------------------------------------------------------
 -- 9. DOCUMENTS — dosarul digital final (facturi, garanții, instrucțiuni, PV, oferte PDF)
 -- ------------------------------------------------------------
-create table public.documents (
+create table if not exists public.documents (
   id            uuid primary key default uuid_generate_v4(),
   job_id        uuid not null references public.jobs(id) on delete cascade,
   kind          text not null check (kind in ('invoice', 'warranty', 'instructions', 'pv', 'offer_pdf')),
@@ -193,7 +207,7 @@ create table public.documents (
   created_at    timestamptz default now() not null
 );
 
-create index documents_job_idx on public.documents(job_id);
+create index if not exists documents_job_idx on public.documents(job_id);
 
 alter table public.documents enable row level security;
 
@@ -213,14 +227,23 @@ returns boolean language sql stable security definer set search_path = public as
   );
 $$;
 
+drop policy if exists "Admin full access clients" on public.clients;
 create policy "Admin full access clients" on public.clients for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access subcontractors" on public.subcontractors;
 create policy "Admin full access subcontractors" on public.subcontractors for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access jobs" on public.jobs;
 create policy "Admin full access jobs" on public.jobs for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access job_stages" on public.job_stages;
 create policy "Admin full access job_stages" on public.job_stages for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access rfqs" on public.rfqs;
 create policy "Admin full access rfqs" on public.rfqs for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access offers" on public.offers;
 create policy "Admin full access offers" on public.offers for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access change_orders" on public.change_orders;
 create policy "Admin full access change_orders" on public.change_orders for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access photos" on public.photos;
 create policy "Admin full access photos" on public.photos for all using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "Admin full access documents" on public.documents;
 create policy "Admin full access documents" on public.documents for all using (public.is_admin()) with check (public.is_admin());
 
 -- ============================================================
@@ -230,6 +253,7 @@ insert into storage.buckets (id, name, public)
 values ('job-photos', 'job-photos', false)
 on conflict do nothing;
 
+drop policy if exists "Admin full access job-photos storage" on storage.objects;
 create policy "Admin full access job-photos storage"
   on storage.objects for all
   using (bucket_id = 'job-photos' and public.is_admin())
@@ -252,6 +276,6 @@ begin
 end;
 $$;
 
-create trigger jobs_set_updated_at
-  before update on public.jobs
+drop trigger if exists jobs_set_updated_at on public.jobs;
+create trigger jobs_set_updated_at before update on public.jobs
   for each row execute procedure public.set_updated_at();
